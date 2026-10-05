@@ -7,11 +7,21 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Кнопка открытия/закрытия меню -->
-    <button class="menu-toggle-btn" id="menuToggleBtn">☰ Разделы</button>
 
-    <div class="app-container">
-        <!-- Левая панель: Список категорий (по умолчанию скрыта) -->
+    <!-- Верхняя панель для кнопок -->
+    <header class="top-navbar">
+        <div class="nav-container">
+            <button class="menu-toggle-btn" id="menuToggleBtn">☰ Разделы</button>
+            <!-- Сюда в будущем можно просто добавлять новые кнопки, например: -->
+            <!-- <button class="nav-btn">Поиск</button> -->
+            <!-- <button class="nav-btn">Тесты</button> -->
+        </div>
+    </header>
+
+    <!-- Основной каркас сайта (ниже хедера) -->
+    <div class="main-layout">
+
+        <!-- Левая панель: Список категорий (теперь плавно сжимается до 0) -->
         <aside class="sidebar" id="sidebar">
             <h2>Разделы физики</h2>
             <ul class="category-list">
@@ -21,14 +31,13 @@
             </ul>
         </aside>
 
-        <!-- Правая панель: Контент -->
+        <!-- Правая панель: Контент (будет автоматически сдвигаться) -->
         <main class="content-area">
 
             <!-- Раздел: Механика -->
             <div id="mechanics" class="content-section active">
                 <div class="section-header">
                     <h2>Механика</h2>
-                    <!-- Кнопка углубленного изучения с data-depth, указывающим на ID конспекта -->
                     <button class="advanced-btn" data-depth="mechanics-deep">Углублённое изучение</button>
                 </div>
                 <p class="description">Изучает движение тел и их взаимодействие.</p>
@@ -36,10 +45,6 @@
                 <div class="card">
                     <h3>Равномерное движение</h3>
                     <p>Формула скорости: <code class="formula">v = s / t</code></p>
-                </div>
-                <div class="card">
-                    <h3>Второй закон Ньютона</h3>
-                    <p>Формула: <code class="formula">F = m · a</code></p>
                 </div>
             </div>
 
@@ -74,32 +79,23 @@
         </main>
     </div>
 
-    <!-- Модальное окно для углубленного изучения -->
+    <!-- Модальное окно (остается без изменений) -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-window">
             <button class="modal-close" id="modalClose">&times;</button>
-            <div class="modal-body" id="modalBody">
-                <!-- Сюда JS будет подставлять подробный конспект -->
-            </div>
+            <div class="modal-body" id="modalBody"></div>
         </div>
     </div>
 
-    <!-- Хранилище подробных конспектов (скрыто от пользователя, используется скриптом) -->
+    <!-- Конспекты для модалки -->
     <template id="mechanics-deep">
         <h2>Подробный конспект: Механика</h2>
-        <p>Здесь может быть развернутая теория кинематики и динамики.</p>
-        <ul>
-            <li><strong>ИСО:</strong> Инерциальные системы отсчета — это системы, в которых выполняется первый закон Ньютона.</li>
-            <li><strong>Силы в механике:</strong> Сила тяжести, сила упругости (закон Гука <code>F=-kx</code>), сила трения.</li>
-        </ul>
+        <p>Инерциальные системы отсчета, законы Ньютона и силы в природе.</p>
     </template>
-
     <template id="thermodynamics-deep">
         <h2>Подробный конспект: Термодинамика</h2>
-        <p>Полный разбор изопроцессов и циклов тепловых машин.</p>
-        <p>Формула КПД идеального теплового двигателя (Цикл Карно): <code>η = (T₁ - T₂) / T₁</code></p>
+        <p>Формула КПД идеального теплового двигателя: <code>η = (T₁ - T₂) / T₁</code></p>
     </template>
-
     <template id="electrodynamics-deep">
         <h2>Подробный конспект: Электродинамика</h2>
         <p>Детальная информация о законах постоянного тока и электромагнитной индукции.</p>
