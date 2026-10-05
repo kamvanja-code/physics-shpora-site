@@ -676,3 +676,25 @@ body {
         text-align: center;
     }
 }
+    /* Исправляем главный каркас: запрещаем сжимать контент по горизонтали */
+    .main-layout {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    /* Заставляем рабочую область занимать 100% ширины экрана телефона */
+    .content-area {
+        width: 100% !important;
+        flex: none;
+        overflow-x: hidden;
+    }
+
+    /* Делаем так, чтобы боковое меню выезжало НАД контентом, а не сдвигало его */
+    .sidebar {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        height: calc(100vh - 60px);
+        z-index: 999;
+        box-shadow: 5px 0 15px rgba(0,0,0,0.2);
+    }
