@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', (e) => {
         if (e.target && e.target.classList.contains('advanced-btn')) {
             currentOpenTemplateId = e.target.getAttribute('data-depth');
-            const template = document.getElementById(currentOpenTemplateId);
+            const template = document.getElementById(currentOpenTemplateId + "-deep");
             if (template) {
                 modalBody.innerHTML = '';
                 modalBody.appendChild(template.content.cloneNode(true));
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function syncUIWithStorage() {
-        document.querySelectorAll('.card').forEach(card => {
+        document.querySelectorAll('.content-area .card').forEach(card => {
             const id = card.getAttribute('data-formula-id');
             const btn = card.querySelector('.important-toggle');
             if (importantFormulas.includes(id) && btn) btn.classList.add('active');
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = '';
         if (learnedThemes.length === 0) { container.innerHTML = '<p style="color: #7f8c8d; padding: 10px 0;">Нет изученных тем.</p>'; return; }
         learnedThemes.forEach(templateId => {
-            const template = document.getElementById(templateId);
+            const template = document.getElementById(templateId + "-deep");
             if (template) {
                 const tempDiv = document.createElement('div'); tempDiv.appendChild(template.content.cloneNode(true));
                 const titleText = tempDiv.querySelector('h2') ? tempDiv.querySelector('h2').innerText : "Конспект";
