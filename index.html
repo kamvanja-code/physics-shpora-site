@@ -7,31 +7,36 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Кнопка открытия/закрытия меню -->
+    <button class="menu-toggle-btn" id="menuToggleBtn">☰ Разделы</button>
+
     <div class="app-container">
-        <!-- Левая панель: Список категорий -->
-        <aside class="sidebar">
+        <!-- Левая панель: Список категорий (по умолчанию скрыта) -->
+        <aside class="sidebar" id="sidebar">
             <h2>Разделы физики</h2>
             <ul class="category-list">
-                <!-- Каждая категория имеет data-target, совпадающий с id контента справа -->
                 <li class="category-item active" data-target="mechanics">Механика</li>
                 <li class="category-item" data-target="thermodynamics">Термодинамика</li>
                 <li class="category-item" data-target="electrodynamics">Электродинамика</li>
             </ul>
         </aside>
 
-        <!-- Правая панель: Контент с материалами -->
+        <!-- Правая панель: Контент -->
         <main class="content-area">
 
             <!-- Раздел: Механика -->
             <div id="mechanics" class="content-section active">
-                <h2>Механика</h2>
+                <div class="section-header">
+                    <h2>Механика</h2>
+                    <!-- Кнопка углубленного изучения с data-depth, указывающим на ID конспекта -->
+                    <button class="advanced-btn" data-depth="mechanics-deep">Углублённое изучение</button>
+                </div>
                 <p class="description">Изучает движение тел и их взаимодействие.</p>
 
                 <div class="card">
                     <h3>Равномерное движение</h3>
                     <p>Формула скорости: <code class="formula">v = s / t</code></p>
                 </div>
-
                 <div class="card">
                     <h3>Второй закон Ньютона</h3>
                     <p>Формула: <code class="formula">F = m · a</code></p>
@@ -40,7 +45,10 @@
 
             <!-- Раздел: Термодинамика -->
             <div id="thermodynamics" class="content-section">
-                <h2>Термодинамика</h2>
+                <div class="section-header">
+                    <h2>Термодинамика</h2>
+                    <button class="advanced-btn" data-depth="thermodynamics-deep">Углублённое изучение</button>
+                </div>
                 <p class="description">Изучает тепловые свойства систем и перенос энергии.</p>
 
                 <div class="card">
@@ -51,7 +59,10 @@
 
             <!-- Раздел: Электродинамика -->
             <div id="electrodynamics" class="content-section">
-                <h2>Электродинамика</h2>
+                <div class="section-header">
+                    <h2>Электродинамика</h2>
+                    <button class="advanced-btn" data-depth="electrodynamics-deep">Углублённое изучение</button>
+                </div>
                 <p class="description">Изучает электромагнитное поле и заряды.</p>
 
                 <div class="card">
@@ -62,6 +73,38 @@
 
         </main>
     </div>
+
+    <!-- Модальное окно для углубленного изучения -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-window">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-body" id="modalBody">
+                <!-- Сюда JS будет подставлять подробный конспект -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Хранилище подробных конспектов (скрыто от пользователя, используется скриптом) -->
+    <template id="mechanics-deep">
+        <h2>Подробный конспект: Механика</h2>
+        <p>Здесь может быть развернутая теория кинематики и динамики.</p>
+        <ul>
+            <li><strong>ИСО:</strong> Инерциальные системы отсчета — это системы, в которых выполняется первый закон Ньютона.</li>
+            <li><strong>Силы в механике:</strong> Сила тяжести, сила упругости (закон Гука <code>F=-kx</code>), сила трения.</li>
+        </ul>
+    </template>
+
+    <template id="thermodynamics-deep">
+        <h2>Подробный конспект: Термодинамика</h2>
+        <p>Полный разбор изопроцессов и циклов тепловых машин.</p>
+        <p>Формула КПД идеального теплового двигателя (Цикл Карно): <code>η = (T₁ - T₂) / T₁</code></p>
+    </template>
+
+    <template id="electrodynamics-deep">
+        <h2>Подробный конспект: Электродинамика</h2>
+        <p>Детальная информация о законах постоянного тока и электромагнитной индукции.</p>
+    </template>
+
     <script src="script.js"></script>
 </body>
 </html>
