@@ -255,25 +255,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Логика открытия выпадающего описания Duolingo-пьедесталов
+    // Логика открытия подсказок достижений по центру экрана
     document.querySelectorAll('.pedestal-card').forEach(card => {
         card.addEventListener('click', (e) => {
-            e.stopPropagation();
+            e.stopPropagation(); // Останавливаем всплытие, чтобы клик не улетал на документ
+            
             const isOpen = card.classList.contains('open');
+            
+            // Сначала закрываем вообще все открытые подсказки на странице
             document.querySelectorAll('.pedestal-card').forEach(c => c.classList.remove('open'));
-            if (!isOpen) card.classList.add('open');
+            
+            // Если карточка была закрыта — открываем её тултип
+            if (!isOpen) {
+                card.classList.add('open');
+            }
         });
     });
+
+    // Закрываем подсказку при клике в любую пустую точку экрана
     document.addEventListener('click', () => { 
         document.querySelectorAll('.pedestal-card').forEach(c => c.classList.remove('open')); 
     });
-
-    function checkAchievementsSilent() {
-        if (learnedThemes.length >= 1 && !unlockedAchievements.includes('first-step')) unlockedAchievements.push('first-step');
-        if (importantFormulas.length >= 1 && !unlockedAchievements.includes('formula-fan')) unlockedAchievements.push('formula-fan');
-        if (learnedThemes.length === 3 && !unlockedAchievements.includes('phys-master')) unlockedAchievements.push('phys-master');
-        localStorage.setItem('unlockedAchievements', JSON.stringify(unlockedAchievements));
-    }
 
     // РЕНДЕРИНГ СПИСКОВ ИЗУЧЕННОГО И ВАЖНОГО
     function renderLearnedList() {
