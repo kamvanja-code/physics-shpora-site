@@ -142,12 +142,50 @@ body {
     cursor: default;
     pointer-events: none;
 }
-/* ЕДИНЫЙ СТРОГИЙ МЕДИАЗАПРОС ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ */
-@media screen and (max-width: 768px) {
-    /* Перестраиваем главный каркас в вертикальный режим */
+
+    /* Принудительно растягиваем основу сайта на физическую ширину экрана */
+    html, body {
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important; /* Блокируем горизонтальный сдвиг */
+    }
+
+    /* Шапка больше не растягивает экран, а прячет лишние кнопки в прокрутку */
+    .top-navbar {
+        width: 100% !important;
+        max-width: 100vw !important;
+        padding: 0 10px;
+        overflow-x: auto !important; /* Включаем свайп кнопок пальцем */
+        display: flex;
+    }
+    
+    /* Контейнер кнопок выстраивается в одну линию и скроллится внутри шапки */
+    .nav-container {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 8px;
+        width: max-content !important;
+    }
+
+    /* Сами кнопки не сжимаются в кашу, сохраняя читаемость */
+    .menu-toggle-btn, .nav-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Выпрямляем каркас и контентную область */
     .main-layout {
-        flex-direction: column;
-        overflow-y: auto;
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+
+    .content-area {
+        width: 100% !important;
+        max-width: 100vw !important;
+        flex: 1 !important;
+        padding: 20px 15px;
     }
 
     /* Рабочая область занимает всю ширину экрана без сжатия контента */
