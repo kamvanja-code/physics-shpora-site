@@ -13,7 +13,7 @@ body {
     overflow: hidden;
 }
 
-/* Кастомные полосы прокрутки (ползунки) */
+/* Кастомные ползунки прокрутки */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -71,7 +71,6 @@ body {
     background-color: #e2e6e9;
 }
 
-/* Эффект для активных кнопок хедера при переключении страниц */
 .nav-btn.active-nav {
     background-color: #3498db;
     color: white;
@@ -124,11 +123,11 @@ body {
     font-weight: bold;
 }
 
-/* РАБОЧАЯ ОБЛАСТЬ (ПОЛЗУНОК ТУТ) */
+/* РАБОЧАЯ ОБЛАСТЬ */
 .content-area {
     flex: 1;
     padding: 40px;
-    overflow-y: auto; /* Ползунок для длинных списков карточек */
+    overflow-y: auto;
     background-color: #fff;
     position: relative;
 }
@@ -171,7 +170,6 @@ body {
     margin-bottom: 10px;
 }
 
-/* Кнопка "!" */
 .important-toggle {
     width: 28px;
     height: 28px;
@@ -194,7 +192,6 @@ body {
     background-color: #fef5ec;
 }
 
-/* Состояние, когда формула выбрана важной */
 .important-toggle.active {
     background-color: #e67e22;
     border-color: #e67e22;
@@ -212,7 +209,7 @@ body {
     margin-top: 5px;
 }
 
-/* РАСШИРЕННОЕ МОДАЛЬНОЕ ОКНО */
+/* МОДАЛЬНОЕ ОКНО */
 .modal-overlay {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -229,8 +226,8 @@ body {
     background-color: white;
     border-radius: 12px;
     width: 85%;
-    max-width: 800px; /* Увеличили ширину поля информации */
-    height: 75vh;     /* Задали фиксированную высоту окна */
+    max-width: 800px;
+    height: 75vh;
     position: relative;
     transform: scale(0.9);
     transition: transform 0.3s ease;
@@ -245,11 +242,10 @@ body {
     height: 100%;
 }
 
-/* Контентная часть внутри модалки (ПОЛЗУНОК ТУТ) */
 .modal-body {
     flex: 1;
     padding: 40px 40px 20px 40px;
-    overflow-y: auto; /* Включает ползунок прокрутки для теории */
+    overflow-y: auto;
 }
 
 .modal-body h2 { color: #2c3e50; margin-bottom: 20px; font-size: 1.8rem;}
@@ -257,7 +253,6 @@ body {
 .modal-body ul { margin-left: 20px; margin-bottom: 15px; color: #34495e;}
 .modal-body li { margin-bottom: 8px; }
 
-/* Подвал окна с кнопкой отметки */
 .modal-footer {
     padding: 20px 40px;
     border-top: 1px solid #ecf0f1;
@@ -288,7 +283,11 @@ body {
     z-index: 10;
 }
 
-/* СТИЛИ ДЛЯ АККОРДЕОНА (ИЗУЧЕННОЕ) */
+/* СТИЛИ ДЛЯ АККОРДЕОНА */
+.accordion-container {
+    margin-top: 15px;
+}
+
 .accordion-item {
     background: #f8f9fa;
     border: 1px solid #e2e6e9;
@@ -306,6 +305,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    user-select: none;
 }
 
 .accordion-content {
@@ -317,11 +317,21 @@ body {
 }
 
 .accordion-item.open .accordion-content {
-    max-height: 500px; /* Приблизительная высота с запасом */
+    max-height: 500px;
     padding: 20px;
-    overflow-y: auto; /* Внутренний ползунок, если теория длинная */
+    overflow-y: auto;
 }
 
-/* Анимация секций */
-.content-section { display: none; }
-.content-section.active { display: block; }
+/* Переключение видимости секций с мягким появлением */
+.content-section {
+    display: none;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.content-section.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}

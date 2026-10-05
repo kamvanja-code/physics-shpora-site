@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Хранилища в LocalStorage
+    // База данных в LocalStorage
     let learnedThemes = JSON.parse(localStorage.getItem('learnedThemes')) || [];
     let importantFormulas = JSON.parse(localStorage.getItem('importantFormulas')) || [];
 
@@ -18,47 +18,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentOpenTemplateId = '';
 
-    // Инициализация интерфейса подгруженными данными
+    // Синхронизируем кнопки восклицательных знаков при старте
     syncUIWithStorage();
 
     // 1. УПРАВЛЕНИЕ БОКОВЫМ МЕНЮ
-    menuToggleBtn.addEventListener('click', () => {
+    menuToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         sidebar.classList.toggle('open');
     });
 
-    // 2. ПЕРЕКЛЮЧЕНИЕ РАЗДЕЛОВ И СЕКЦИЙ ХЕДЕРА
-    function switchSection(targetId) {
-        contentSections.forEach(section => section.classList.remove('active'));
+    // Закрытие меню при клике в любое свободное место
+    document.addEventListener('click', (e) => {
+        if (!sidebar.contains(e.target) && e.target !== menuToggleBtn) {
+            sidebar.classList.remove('open');
+        }
+    });
+
+    // 2. ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ СЕКЦИЙ (исправленная версия)
+    function switchActiveSection(targetId) {
+        contentSections.forEach(section => {
+            section.classList.remove('active', 'leaving');
+        });
+
         const targetSection = document.getElementById(targetId);
-        if (targetSection) targetSection.classList.add('active');
+        if (targetSection) {
+            targetSection.classList.add('active');
+        }
         sidebar.classList.remove('open');
     }
 
+    // Клик по левому меню (категории физики)
     categoryItems.forEach(item => {
         item.addEventListener('click', () => {
             categoryItems.forEach(el => el.classList.remove('active'));
             navButtons.forEach(btn => btn.classList.remove('active-nav'));
+
             item.classList.add('active');
-            switchSection(item.getAttribute('data-target'));
+            const target = item.getAttribute('data-target');
+            switchActiveSection(target);
         });
     });
 
+    // Клик по верхним кнопкам хедера ("Изученное", "Важное")
     navButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             categoryItems.forEach(el => el.classList.remove('active'));
             navButtons.forEach(b => b.classList.remove('active-nav'));
-            btn.classList.add('active-nav');
 
+            btn.classList.add('active-nav');
             const target = btn.getAttribute('data-target');
+
             if (target === 'learned-section') renderLearnedList();
             if (target === 'important-section') renderImportantList();
-            switchSection(target);
+
+            switchActiveSection(target);
         });
     });
 
-    // 3. ОТКРЫТИЕ МОДАЛКИ (УГЛУБЛЕННОЕ ИЗУЧЕНИЕ)
+    // 3. ОТКРЫТИЕ МОДАЛКИ (УГЛУБЛЕННОЕ ИЗУЧЕНИЕ) — Глобальный перехватчик клика
     document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('advanced-btn')) {
+        if (e.target && e.target.classList.contains('advanced-btn')) {
+            e.preventDefault();
             currentOpenTemplateId = e.target.getAttribute('data-depth');
             const template = document.getElementById(currentOpenTemplateId);
 
@@ -94,30 +114,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Закрытие модального окна
     const closeModal = () => modalOverlay.classList.remove('open');
     modalClose.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
 
     // 4. ДОБАВЛЕНИЕ ФОРМУЛ В ВАЖНОЕ
     document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('important-toggle')) {
+        if (e.target && e.target.classList.contains('important-toggle')) {
             const card = e.target.closest('.card');
+            if (!card) return;
+
             const formulaId = card.getAttribute('data-formula-id');
 
             if (importantFormulas.includes(formulaId)) {
-                // Удаляем
                 importantFormulas = importantFormulas.filter(id => id !== formulaId);
-                e.target.classList.remove('active');
+                // Находим все копии этой кнопки на экране и гасим их оранжевый цвет
+                document.querySelectorAll(`.card[data-formula-id="${formulaId}"] .important-toggle`).forEach(btn => {
+                    btn.classList.remove('active');
+                });
             } else {
-                // Добавляем
                 importantFormulas.push(formulaId);
-                e.target.classList.add('active');
+                document.querySelectorAll(`.card[data-formula-id="${formulaId}"] .important-toggle`).forEach(btn => {
+                    btn.classList.add('active');
+                });
             }
             localStorage.setItem('importantFormulas', JSON.stringify(importantFormulas));
+
+            // Если мы находимся на вкладке "Важное", сразу обновляем список при удалении элемента
+            const activeNavBtn = document.querySelector('.nav-btn.active-nav');
+            if (activeNavBtn && activeNavBtn.getAttribute('data-target') === 'important-section') {
+                renderImportantList();
+            }
         }
     });
 
-    // Синхронизация кнопок "!" на основном экране при загрузке страницы
     function syncUIWithStorage() {
         document.querySelectorAll('.card').forEach(card => {
             const id = card.getAttribute('data-formula-id');
@@ -134,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = '';
 
         if (learnedThemes.length === 0) {
-            container.innerHTML = '<p style="color: #7f8c8d;">Вы пока не отметили ни одной темы.</p>';
+            container.innerHTML = '<p style="color: #7f8c8d; padding: 10px;">Вы пока не отметили ни одной темы.</p>';
             return;
         }
 
@@ -143,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (template) {
                 const tempDiv = document.createElement('div');
                 tempDiv.appendChild(template.content.cloneNode(true));
-                const titleText = tempDiv.querySelector('h2') ? tempDiv.querySelector('h2').innerText : templateId;
+                const titleText = tempDiv.querySelector('h2') ? tempDiv.querySelector('h2').innerText : "Конспект";
 
                 const accordionItem = document.createElement('div');
                 accordionItem.classList.add('accordion-item');
@@ -153,11 +184,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="accordion-content"></div>
                 `;
 
-                // Перемещаем очищенное тело конспекта в контентную часть аккордеона
                 accordionItem.querySelector('.accordion-content').appendChild(tempDiv);
                 container.appendChild(accordionItem);
 
-                // Логика клика для раскрытия
                 accordionItem.querySelector('.accordion-header').addEventListener('click', () => {
                     accordionItem.classList.toggle('open');
                 });
@@ -171,16 +200,16 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = '';
 
         if (importantFormulas.length === 0) {
-            container.innerHTML = '<p style="color: #7f8c8d;">Нет формул, отмеченных как важные.</p>';
+            container.innerHTML = '<p style="color: #7f8c8d; padding: 10px;">Нет формул, отмеченных как важные.</p>';
             return;
         }
 
+        // Чтобы найти карточки, ищем оригиналы в шаблонах или скрытых секциях
         importantFormulas.forEach(formulaId => {
-            const originalCard = document.querySelector(`.card[data-formula-id="${formulaId}"]`);
+            const originalCard = document.querySelector(`.content-section:not(#important-section) .card[data-formula-id="${formulaId}"]`);
             if (originalCard) {
                 const clonedCard = originalCard.cloneNode(true);
-                // Убираем интерактивную кнопку из сохраненного списка, чтобы не путать
-                clonedCard.querySelector('.important-toggle').remove();
+                // Делаем так, чтобы кнопку "!" можно было нажать и в списке "Важное" для удаления
                 container.appendChild(clonedCard);
             }
         });
