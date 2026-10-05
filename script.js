@@ -1,9 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Загрузка данных из памяти браузера
     let learnedThemes = JSON.parse(localStorage.getItem('learnedThemes')) || [];
     let importantFormulas = JSON.parse(localStorage.getItem('importantFormulas')) || [];
     let unlockedAchievements = JSON.parse(localStorage.getItem('unlockedAchievements')) || [];
     let sessionLearnCount = 0;
 
+    // Очередь для вылетающих уведомлений
     let toastQueue = [];
     let isToastProcessing = false;
 
@@ -17,12 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
         "Поздравляем, ты только что уменьшил энтропию Вселенной!"
     ];
 
+    // Поиск элементов навигации
     const menuToggleBtn = document.getElementById('menuToggleBtn');
     const sidebar = document.getElementById('sidebar');
     const categoryItems = document.querySelectorAll('.category-item');
     const navButtons = document.querySelectorAll('.nav-btn');
     const contentSections = document.querySelectorAll('.content-section');
 
+    // Элементы модального окна
     const modalOverlay = document.getElementById('modalOverlay');
     const modalClose = document.getElementById('modalClose');
     const modalBody = document.getElementById('modalBody');
@@ -33,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     syncUIWithStorage();
     checkAchievementsSilent();
 
+    // Открытие и закрытие бокового меню
     if (menuToggleBtn) {
         menuToggleBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -77,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showSection(target);
         });
     });
+    // Открытие модального окна с конспектом
     document.addEventListener('click', (e) => {
         if (e.target && e.target.classList.contains('advanced-btn')) {
             currentOpenTemplateId = e.target.getAttribute('data-depth');
@@ -101,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Нажатие кнопки "Отметить изученным" в модалке
     if (markLearnedBtn) {
         markLearnedBtn.addEventListener('click', () => {
             if (currentOpenTemplateId && !learnedThemes.includes(currentOpenTemplateId)) {
@@ -111,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 markLearnedBtn.classList.add('completed');
                 markLearnedBtn.disabled = true;
 
+                // Проверка триггеров на разблокировку достижений
                 checkAndUnlockAchievement('first-step', "🚀 Получено достижение: Первый шаг!");
                 if (learnedThemes.length === 3) {
                     checkAndUnlockAchievement('phys-master', "⚛️ Получено достижение: Архивариус!");
@@ -124,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Закрытие модального окна
     const closeModal = () => { if (modalOverlay) modalOverlay.classList.remove('open'); };
     if (modalClose) modalClose.addEventListener('click', closeModal);
     if (modalOverlay) {
@@ -131,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target === modalOverlay) closeModal();
         });
     }
-
+    // ДВИЖОК ОЧЕРЕДИ УВЕДОМЛЕНИЙ
     function queueToast(text, isAchievement = false) {
         toastQueue.push({ text, isAchievement });
         processToastQueue();
@@ -146,7 +155,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!container) return;
         
         const toast = document.createElement('div');
-        toast.className = currentToast.isAchievement ? 'toast achievement-toast' : 'toast';
+        toast.classList.add('toast');
+        if (currentToast.isAchievement) {
+            toast.classList.add('achievement-toast');
+        }
         toast.innerText = currentToast.text;
         container.appendChild(toast);
 
@@ -157,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 toast.remove();
                 isToastProcessing = false;
-                processToastQueue();
+                processToastQueue(); // Запуск следующего уведомления из очереди
             }, 300);
         }, 4000);
     }
@@ -166,9 +178,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!unlockedAchievements.includes(id)) {
             unlockedAchievements.push(id);
             localStorage.setItem('unlockedAchievements', JSON.stringify(unlockedAchievements));
-            queueToast(notificationText, true);
+            queueToast(notificationText, true); // Добавляем ачивку строго в очередь
         }
     }
+
+    // ДОБАВЛЕНИЕ / УДАЛЕНИЕ ИЗ ВАЖНОГО (КНОПКА "!")
     document.addEventListener('click', (e) => {
         if (e.target && e.target.classList.contains('important-toggle')) {
             const card = e.target.closest('.card');
@@ -206,11 +220,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
+    // ГЕНЕРАЦИЯ ДИНАМИЧЕСКОЙ СЕКЦИИ СТАТИСТИКИ (SVG ГРАФИК + КЛИКИ НАГРАД)
     function renderStatsAndAchievements() {
         const totalThemes = 3; 
         const learnedCount = learnedThemes.length;
         const percentage = (learnedCount / totalThemes) * 100;
+        
+        // Расчет длины дуги для круга SVG (периметр 2 * PI * r)
         const strokeDashOffset = 251.2 - (251.2 * percentage) / 100;
 
         const chartContainer = document.getElementById('pie-chart-container');
@@ -230,6 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
             counterText.innerText = `Изучено: ${learnedCount} из ${totalThemes} разделов`;
         }
 
+        // Синхронизация пьедесталов
         document.querySelectorAll('.pedestal-card').forEach(card => {
             const achId = card.getAttribute('data-ach-id');
             if (unlockedAchievements.includes(achId)) {
@@ -240,28 +257,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Логика открытия подсказок достижений по центру экрана
     document.querySelectorAll('.pedestal-card').forEach(card => {
         card.addEventListener('click', (e) => {
-            e.stopPropagation();
+            e.stopPropagation(); // Останавливаем всплытие, чтобы клик не улетал на документ
+            
             const isOpen = card.classList.contains('open');
+            
+            // Сначала закрываем вообще все открытые подсказки на странице
             document.querySelectorAll('.pedestal-card').forEach(c => c.classList.remove('open'));
+            
+            // Если карточка была закрыта — открываем её тултип
             if (!isOpen) {
                 card.classList.add('open');
             }
         });
     });
 
+    // Закрываем подсказку при клике в любую пустую точку экрана
     document.addEventListener('click', () => { 
         document.querySelectorAll('.pedestal-card').forEach(c => c.classList.remove('open')); 
     });
 
-    function checkAchievementsSilent() {
-        if (learnedThemes.length >= 1 && !unlockedAchievements.includes('first-step')) unlockedAchievements.push('first-step');
-        if (importantFormulas.length >= 1 && !unlockedAchievements.includes('formula-fan')) unlockedAchievements.push('formula-fan');
-        if (learnedThemes.length === 3 && !unlockedAchievements.includes('phys-master')) unlockedAchievements.push('phys-master');
-        localStorage.setItem('unlockedAchievements', JSON.stringify(unlockedAchievements));
-    }
-
+    // РЕНДЕРИНГ СПИСКОВ ИЗУЧЕННОГО И ВАЖНОГО
     function renderLearnedList() {
         const container = document.getElementById('learned-list-container');
         if (!container) return;
@@ -295,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', (e) => {
         if (e.target && e.target.classList.contains('exclude-learned-btn')) {
             const idToRemove = e.target.getAttribute('data-exclude-id');
-            learnedThemes = learnedThemes.filter(id => id !== e.target.getAttribute('data-exclude-id'));
+            learnedThemes = learnedThemes.filter(id => id !== idToRemove);
             localStorage.setItem('learnedThemes', JSON.stringify(learnedThemes));
             renderLearnedList();
         }
