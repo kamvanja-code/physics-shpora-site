@@ -8,20 +8,19 @@
 </head>
 <body>
 
-    <!-- Верхняя панель для кнопок -->
+    <!-- Верхняя панель управления -->
     <header class="top-navbar">
         <div class="nav-container">
             <button class="menu-toggle-btn" id="menuToggleBtn">☰ Разделы</button>
-            <!-- Сюда в будущем можно просто добавлять новые кнопки, например: -->
-            <!-- <button class="nav-btn">Поиск</button> -->
-            <!-- <button class="nav-btn">Тесты</button> -->
+            <button class="nav-btn" data-target="learned-section">📊 Изученное</button>
+            <button class="nav-btn" data-target="important-section">⭐ Важное</button>
         </div>
     </header>
 
-    <!-- Основной каркас сайта (ниже хедера) -->
+    <!-- Основной рабочий блок -->
     <div class="main-layout">
 
-        <!-- Левая панель: Список категорий (теперь плавно сжимается до 0) -->
+        <!-- Левое выпадающее меню -->
         <aside class="sidebar" id="sidebar">
             <h2>Разделы физики</h2>
             <ul class="category-list">
@@ -31,10 +30,10 @@
             </ul>
         </aside>
 
-        <!-- Правая панель: Контент (будет автоматически сдвигаться) -->
+        <!-- Правая область с материалами -->
         <main class="content-area">
 
-            <!-- Раздел: Механика -->
+            <!-- Секция: Механика -->
             <div id="mechanics" class="content-section active">
                 <div class="section-header">
                     <h2>Механика</h2>
@@ -42,13 +41,24 @@
                 </div>
                 <p class="description">Изучает движение тел и их взаимодействие.</p>
 
-                <div class="card">
-                    <h3>Равномерное движение</h3>
+                <div class="card" data-formula-id="mech-1">
+                    <div class="card-header">
+                        <h3>Равномерное движение</h3>
+                        <button class="important-toggle" title="Отметить как важное">!</button>
+                    </div>
                     <p>Формула скорости: <code class="formula">v = s / t</code></p>
+                </div>
+
+                <div class="card" data-formula-id="mech-2">
+                    <div class="card-header">
+                        <h3>Второй закон Ньютона</h3>
+                        <button class="important-toggle" title="Отметить как важное">!</button>
+                    </div>
+                    <p>Формула: <code class="formula">F = m · a</code></p>
                 </div>
             </div>
 
-            <!-- Раздел: Термодинамика -->
+            <!-- Секция: Термодинамика -->
             <div id="thermodynamics" class="content-section">
                 <div class="section-header">
                     <h2>Термодинамика</h2>
@@ -56,13 +66,16 @@
                 </div>
                 <p class="description">Изучает тепловые свойства систем и перенос энергии.</p>
 
-                <div class="card">
-                    <h3>Первое начало термодинамики</h3>
+                <div class="card" data-formula-id="therm-1">
+                    <div class="card-header">
+                        <h3>Первое начало термодинамики</h3>
+                        <button class="important-toggle" title="Отметить как важное">!</button>
+                    </div>
                     <p>Формула: <code class="formula">Q = ΔU + A</code></p>
                 </div>
             </div>
 
-            <!-- Раздел: Электродинамика -->
+            <!-- Секция: Электродинамика -->
             <div id="electrodynamics" class="content-section">
                 <div class="section-header">
                     <h2>Электродинамика</h2>
@@ -70,35 +83,80 @@
                 </div>
                 <p class="description">Изучает электромагнитное поле и заряды.</p>
 
-                <div class="card">
-                    <h3>Закон Ома</h3>
+                <div class="card" data-formula-id="elec-1">
+                    <div class="card-header">
+                        <h3>Закон Ома</h3>
+                        <button class="important-toggle" title="Отметить как важное">!</button>
+                    </div>
                     <p>Формула: <code class="formula">I = U / R</code></p>
+                </div>
+            </div>
+
+            <!-- Новая секция: Изученное -->
+            <div id="learned-section" class="content-section">
+                <h2>Изученные конспекты</h2>
+                <p class="description">Разделы теории, которые вы полностью освоили и отметили изученными.</p>
+                <div id="learned-list-container" class="accordion-container">
+                    <!-- Заполняется динамически через JS -->
+                </div>
+            </div>
+
+            <!-- Новая секция: Важное -->
+            <div id="important-section" class="content-section">
+                <h2>Важные формулы</h2>
+                <p class="description">Ваш персональный список формул, добавленных на вкладку быстрого доступа.</p>
+                <div id="important-list-container">
+                    <!-- Заполняется динамически через JS -->
                 </div>
             </div>
 
         </main>
     </div>
 
-    <!-- Модальное окно (остается без изменений) -->
+    <!-- Модальное окно (Углубленная информация) -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-window">
             <button class="modal-close" id="modalClose">&times;</button>
-            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-wrapper">
+                <div class="modal-body" id="modalBody">
+                    <!-- Теория подгружается из шаблонов ниже -->
+                </div>
+                <div class="modal-footer">
+                    <button class="mark-learned-btn" id="markLearnedBtn">Отметить изученным</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Конспекты для модалки -->
+    <!-- Хранилище конспектов (Шаблоны) -->
     <template id="mechanics-deep">
         <h2>Подробный конспект: Механика</h2>
-        <p>Инерциальные системы отсчета, законы Ньютона и силы в природе.</p>
+        <p><strong>Инерциальные системы отсчета (ИСО)</strong> — это базис всей классической механики. В них тела сохраняют свою скорость неизменной, если на них не действуют внешние силы.</p>
+        <p>Основные силы в природе разделяют на 4 типа фундаментальных взаимодействий, но в механике мы чаще всего работаем со следующими проявлениями:</p>
+        <ul>
+            <li><strong>Сила тяжести:</strong> <code>F = mg</code> (направлена к центру Земли)</li>
+            <li><strong>Сила упругости:</strong> <code>F = -kx</code> (Закон Гука для деформаций)</li>
+            <li><strong>Сила трения скольжения:</strong> <code>F = μN</code> (зависит от силы реакции опоры)</li>
+        </ul>
+        <p>Законы сохранения: закон сохранения импульса выполняется в замкнутых системах, а закон сохранения механической энергии — при отсутствии сил трения и сопротивления среды.</p>
     </template>
+
     <template id="thermodynamics-deep">
         <h2>Подробный конспект: Термодинамика</h2>
-        <p>Формула КПД идеального теплового двигателя: <code>η = (T₁ - T₂) / T₁</code></p>
+        <p>Термодинамическая система описывается макропараметрами: давлением (P), объемом (V) и температурой (T).</p>
+        <p>Уравнение Менделеева-Клапейрона: <code>PV = νRT</code> связывает все ключевые параметры идеального газа в один момент времени.</p>
+        <p>Изопроцессы в газах:</p>
+        <ul>
+            <li><strong>Изохорный (V = const):</strong> закон Шарля <code>P/T = const</code></li>
+            <li><strong>Изобарный (P = const):</strong> закон Гей-Люссака <code>V/T = const</code></li>
+            <li><strong>Изотермический (T = const):</strong> закон Бойля-Мариотта <code>PV = const</code></li>
+        </ul>
     </template>
+
     <template id="electrodynamics-deep">
         <h2>Подробный конспект: Электродинамика</h2>
-        <p>Детальная информация о законах постоянного тока и электромагнитной индукции.</p>
+        <p>Электродинамика изучает поведение электрических зарядов и создаваемых ими полей.</p>
+        <p>Закон Кулона определяет силу взаимодействия неподвижных точечных зарядов в вакууме. Напряженность поля — это его силовая характеристика, равная отношению кулоновской силы к величине заряда.</p>
     </template>
 
     <script src="script.js"></script>

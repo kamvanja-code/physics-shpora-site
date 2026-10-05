@@ -13,7 +13,7 @@ body {
     overflow: hidden;
 }
 
-/* Кастомные ползунки прокрутки */
+/* Настройка встроенных ползунков (скроллбаров) */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -30,7 +30,7 @@ body {
     background: #95a5a6;
 }
 
-/* ВЕРХНЯЯ ПАНЕЛЬ */
+/* ВЕРХНЯЯ ПАНЕЛЬ (HEADER) */
 .top-navbar {
     height: 60px;
     background-color: #ffffff;
@@ -71,6 +71,7 @@ body {
     background-color: #e2e6e9;
 }
 
+/* Подсветка активной кнопки хедера */
 .nav-btn.active-nav {
     background-color: #3498db;
     color: white;
@@ -83,7 +84,7 @@ body {
     overflow: hidden;
 }
 
-/* БОКОВОЕ МЕНЮ */
+/* БОКОВОЕ МЕНЮ (Мягкое раздвижение) */
 .sidebar {
     width: 0;
     background-color: #2c3e50;
@@ -123,11 +124,11 @@ body {
     font-weight: bold;
 }
 
-/* РАБОЧАЯ ОБЛАСТЬ */
+/* ПРАВАЯ ОБЛАСТЬ (С ползунком прокрутки) */
 .content-area {
     flex: 1;
     padding: 40px;
-    overflow-y: auto;
+    overflow-y: auto; /* Включает ползунок для контента */
     background-color: #fff;
     position: relative;
 }
@@ -153,7 +154,7 @@ body {
 
 .advanced-btn:hover { background-color: #27ae60; }
 
-/* КАРТОЧКА ФОРМУЛЫ И ВОСКЛИЦАТЕЛЬНЫЙ ЗНАК */
+/* КАРТОЧКИ ФОРМУЛ И КНОПКА "!" */
 .card {
     background-color: #f8f9fa;
     border-left: 5px solid #3498db;
@@ -209,7 +210,7 @@ body {
     margin-top: 5px;
 }
 
-/* МОДАЛЬНОЕ ОКНО */
+/* МОДАЛЬНОЕ ОКНО С ИНДИВИДУАЛЬНЫМ ПОЛЗУНКОМ */
 .modal-overlay {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -217,7 +218,7 @@ body {
     z-index: 200;
     display: flex; justify-content: center; align-items: center;
     opacity: 0; pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.25s ease;
 }
 
 .modal-overlay.open { opacity: 1; pointer-events: auto; }
@@ -226,11 +227,11 @@ body {
     background-color: white;
     border-radius: 12px;
     width: 85%;
-    max-width: 800px;
-    height: 75vh;
+    max-width: 800px; /* Поле расширено */
+    height: 75vh;     /* Фиксированная высота для работы ползунка */
     position: relative;
-    transform: scale(0.9);
-    transition: transform 0.3s ease;
+    transform: scale(0.95);
+    transition: transform 0.25s ease;
     box-shadow: 0 15px 35px rgba(0,0,0,0.15);
 }
 
@@ -245,7 +246,7 @@ body {
 .modal-body {
     flex: 1;
     padding: 40px 40px 20px 40px;
-    overflow-y: auto;
+    overflow-y: auto; /* Собственный ползунок прокрутки теории */
 }
 
 .modal-body h2 { color: #2c3e50; margin-bottom: 20px; font-size: 1.8rem;}
@@ -283,10 +284,8 @@ body {
     z-index: 10;
 }
 
-/* СТИЛИ ДЛЯ АККОРДЕОНА */
-.accordion-container {
-    margin-top: 15px;
-}
+/* СТИЛИ РАСКРЫВАЮЩИХСЯ СПИСКОВ (АККОРДЕОНОВ) */
+.accordion-container { margin-top: 15px; }
 
 .accordion-item {
     background: #f8f9fa;
@@ -322,16 +321,6 @@ body {
     overflow-y: auto;
 }
 
-/* Переключение видимости секций с мягким появлением */
-.content-section {
-    display: none;
-    opacity: 0;
-    transform: translateY(15px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.content-section.active {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
-}
+/* ПЕРЕКЛЮЧЕНИЕ СЕКЦИЙ */
+.content-section { display: none; }
+.content-section.active { display: block; }
