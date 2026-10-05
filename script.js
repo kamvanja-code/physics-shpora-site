@@ -70,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target && e.target.classList.contains('advanced-btn')) {
             currentOpenTemplateId = e.target.getAttribute('data-depth');
             const template = document.getElementById(currentOpenTemplateId);
-
             if (template) {
                 modalBody.innerHTML = '';
                 modalBody.appendChild(template.content.cloneNode(true));
@@ -99,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
             learnedThemes.push(currentOpenTemplateId);
             localStorage.setItem('learnedThemes', JSON.stringify(learnedThemes));
             updateModalButtonsState();
-
             fireConfettiBurst();
 
             checkAndUnlockAchievement('first-step', "🚀 Получено достижение: Первый шаг!");
@@ -129,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let canvas, ctx, confettiParticles = [];
     function initConfettiEngine() {
         canvas = document.getElementById('confetti-canvas');
+        if (!canvas) return;
         ctx = canvas.getContext('2d');
         window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -137,16 +136,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function fireConfettiBurst() {
         confettiParticles = [];
         const colors = ['#3498db', '#2ecc71', '#e74c3c', '#e67e22', '#9b59b6', '#f1c40f'];
-        for (let i = 0; i < 150; i++) {
+        for (let i = 0; i < 100; i++) {
             confettiParticles.push({
-                x: canvas.width / 2,
-                y: canvas.height * 0.6,
-                size: Math.random() * 8 + 4,
-                color: colors[Math.floor(Math.random() * colors.length)],
-                speedX: Math.random() * 12 - 6,
-                speedY: Math.random() * -15 - 5,
-                gravity: 0.4,
-                opacity: 1
+                x: canvas.width / 2, y: canvas.height * 0.5,
+                size: Math.random() * 6 + 4, color: colors[Math.floor(Math.random() * colors.length)],
+                speedX: Math.random() * 10 - 5, speedY: Math.random() * -12 - 4,
+                gravity: 0.35, opacity: 1
             });
         }
         requestAnimationFrame(updateConfettiLoop);
@@ -156,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         let active = false;
         confettiParticles.forEach(p => {
-            p.x += p.speedX; p.y += p.speedY; p.speedY += p.gravity; p.opacity -= 0.01;
+            p.x += p.speedX; p.y += p.speedY; p.speedY += p.gravity; p.opacity -= 0.015;
             if (p.opacity > 0) {
                 active = true;
                 ctx.fillStyle = p.color; ctx.globalAlpha = p.opacity;
@@ -174,27 +169,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function processToastQueue() {
         if (isToastProcessing || toastQueue.length === 0) return;
         isToastProcessing = true;
-
         const currentToast = toastQueue.shift();
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
-
         toast.classList.add('toast');
-        if (currentToast.isAchievement) {
-            toast.classList.add('achievement-toast');
-        }
+        if (currentToast.isAchievement) toast.classList.add('achievement-toast');
         toast.innerText = currentToast.text;
         container.appendChild(toast);
-
         setTimeout(() => toast.classList.add('show'), 50);
-
         setTimeout(() => {
             toast.classList.remove('show');
-            setTimeout(() => {
-                toast.remove();
-                isToastProcessing = false;
-                processToastQueue();
-            }, 300);
+            setTimeout(() => { toast.remove(); isToastProcessing = false; processToastQueue(); }, 300);
         }, 4000);
     }
 
@@ -211,21 +196,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = e.target.closest('.card');
             if (!card) return;
             const formulaId = card.getAttribute('data-formula-id');
-
             if (importantFormulas.includes(formulaId)) {
                 importantFormulas = importantFormulas.filter(id => id !== formulaId);
                 document.querySelectorAll(`.card[data-formula-id="${formulaId}"] .important-toggle`).forEach(btn => btn.classList.remove('active'));
             } else {
                 importantFormulas.push(formulaId);
                 document.querySelectorAll(`.card[data-formula-id="${formulaId}"] .important-toggle`).forEach(btn => btn.classList.add('active'));
-                checkAndUnlockAchievement('formula-fan', "⭐ Получено achievement: Знаток формул!");
+                checkAndUnlockAchievement('formula-fan', "⭐ Получено достижение: Знаток формул!");
             }
             localStorage.setItem('importantFormulas', JSON.stringify(importantFormulas));
-
-            const currentActiveNav = document.querySelector('.nav-btn.active-nav');
-            if (currentActiveNav && currentActiveNav.getAttribute('data-target') === 'important-section') {
-                renderImportantList();
-            }
+            const activeNav = document.querySelector('.nav-btn.active-nav');
+            if (activeNav && activeNav.getAttribute('data-target') === 'important-section') renderImportantList();
         }
     });
 
@@ -236,14 +217,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (importantFormulas.includes(id) && btn) btn.classList.add('active');
         });
     }
-    function renderStatsAndAchievements() {
-        const totalThemesCount = 3;
-        const learnedCount = learnedThemes.length;
-        const percentage = totalThemesCount > 0 ? (learnedCount / totalThemesCount) * 100 : 0;
-        const strokeDashOffset = 251.2 - (251.2 * percentage) / 100;
 
-        const chartContainer = document.getElementById('pie-chart-container');
-        chartContainer.innerHTML = `
+    function renderStatsAndAchievements() {
+        const learnedCount = learnedThemes.length;
+        const strokeDashOffset = 251.2 - (251.2 * (learnedCount / 3)) || 251.2;
+        document.getElementById('pie-chart-container').innerHTML = `
             <svg width="100%" height="100%" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="40" fill="transparent" stroke="#e2e8f0" stroke-width="12"/>
                 <circle cx="50" cy="50" r="40" fill="transparent" stroke="#3498db" stroke-width="12"
@@ -251,12 +229,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     transform="rotate(-90 50 50)" stroke-linecap="round" style="transition: stroke-dashoffset 0.5s ease;"/>
             </svg>
         `;
-
-        document.getElementById('chartCounterText').innerText = `Изучено: ${learnedCount} из ${totalThemesCount} конспектов`;
-
+        document.getElementById('chartCounterText').innerText = `Изучено: ${learnedCount} из 3 конспектов`;
         document.querySelectorAll('.pedestal-card').forEach(card => {
-            const achId = card.getAttribute('data-ach-id');
-            if (unlockedAchievements.includes(achId)) card.classList.add('unlocked');
+            if (unlockedAchievements.includes(card.getAttribute('data-ach-id'))) card.classList.add('unlocked');
             else card.classList.remove('unlocked');
         });
     }
@@ -269,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isOpen) card.classList.add('open');
         });
     });
-    document.addEventListener('click', () => { document.querySelectorAll('.pedestal-card').forEach(c => c.classList.remove('open')); });
+    document.addEventListener('click', () => document.querySelectorAll('.pedestal-card').forEach(c => c.classList.remove('open')));
 
     function checkAchievementsSilent() {
         if (learnedThemes.length >= 1 && !unlockedAchievements.includes('first-step')) unlockedAchievements.push('first-step');
@@ -279,9 +254,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderLearnedList() {
-        const container = document.getElementById('learned-list-container'); container.innerHTML = '';
-        if (learnedThemes.length === 0) { container.innerHTML = '<p style="color: #7f8c8d;">Нет изученных тем.</p>'; return; }
-
+        const container = document.getElementById('learned-list-container');
+        container.innerHTML = '';
+        if (learnedThemes.length === 0) { container.innerHTML = '<p style="color: #7f8c8d; padding: 10px 0;">Нет изученных тем.</p>'; return; }
         learnedThemes.forEach(templateId => {
             const template = document.getElementById(templateId);
             if (template) {
@@ -300,18 +275,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('click', (e) => {
         if (e.target && e.target.classList.contains('exclude-learned-btn')) {
-            const idToRemove = e.target.getAttribute('data-exclude-id');
-            learnedThemes = learnedThemes.filter(id => id !== idToRemove);
+            learnedThemes = learnedThemes.filter(id => id !== e.target.getAttribute('data-exclude-id'));
             localStorage.setItem('learnedThemes', JSON.stringify(learnedThemes));
             renderLearnedList();
         }
     });
 
     function renderImportantList() {
-        const container = document.getElementById('important-list-container'); container.innerHTML = '';
-        if (importantFormulas.length === 0) { container.innerHTML = '<p style="color: #7f8c8d;">Нет важных формул.</p>'; return; }
+        const container = document.getElementById('important-list-container');
+        container.innerHTML = '';
+        if (importantFormulas.length === 0) { container.innerHTML = '<p style="color: #7f8c8d; padding: 10px 0;">Нет важных формул.</p>'; return; }
         importantFormulas.forEach(formulaId => {
-            const originalCard = document.querySelector(`.content-section:not(#important-section) .card[data-formula-id="${formulaId}"]`);
+            const originalCard = document.querySelector(`.content-area .card[data-formula-id="${formulaId}"]`);
             if (originalCard) container.appendChild(originalCard.cloneNode(true));
         });
     }
