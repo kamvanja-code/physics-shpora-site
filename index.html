@@ -8,6 +8,9 @@
 </head>
 <body>
 
+    <!-- Контейнер для всплывающих мотивационных уведомлений -->
+    <div id="toast-container" class="toast-container"></div>
+
     <!-- Верхняя панель управления -->
     <header class="top-navbar">
         <div class="nav-container">
@@ -36,7 +39,7 @@
             <!-- Секция: Механика -->
             <div id="mechanics" class="content-section active">
                 <div class="section-header">
-                    <h2>Механика</h2>
+                    <h2>Mechanics</h2>
                     <button class="advanced-btn" data-depth="mechanics-deep">Углублённое изучение</button>
                 </div>
                 <p class="description">Изучает движение тел и их взаимодействие.</p>
@@ -61,7 +64,7 @@
             <!-- Секция: Термодинамика -->
             <div id="thermodynamics" class="content-section">
                 <div class="section-header">
-                    <h2>Термодинамика</h2>
+                    <h2>Thermodynamics</h2>
                     <button class="advanced-btn" data-depth="thermodynamics-deep">Углублённое изучение</button>
                 </div>
                 <p class="description">Изучает тепловые свойства систем и перенос энергии.</p>
@@ -78,7 +81,7 @@
             <!-- Секция: Электродинамика -->
             <div id="electrodynamics" class="content-section">
                 <div class="section-header">
-                    <h2>Электродинамика</h2>
+                    <h2>Electrodynamics</h2>
                     <button class="advanced-btn" data-depth="electrodynamics-deep">Углублённое изучение</button>
                 </div>
                 <p class="description">Изучает электромагнитное поле и заряды.</p>
@@ -92,7 +95,7 @@
                 </div>
             </div>
 
-            <!-- Новая секция: Изученное -->
+            <!-- Секция: Изученное -->
             <div id="learned-section" class="content-section">
                 <h2>Изученные конспекты</h2>
                 <p class="description">Разделы теории, которые вы полностью освоили и отметили изученными.</p>
@@ -101,7 +104,7 @@
                 </div>
             </div>
 
-            <!-- Новая секция: Важное -->
+            <!-- Секция: Важное -->
             <div id="important-section" class="content-section">
                 <h2>Важные формулы</h2>
                 <p class="description">Ваш персональный список формул, добавленных на вкладку быстрого доступа.</p>
@@ -159,6 +162,8 @@
         <p>Закон Кулона определяет силу взаимодействия неподвижных точечных зарядов в вакууме. Напряженность поля — это его силовая характеристика, равная отношению кулоновской силы к величине заряда.</p>
     </template>
 
+    <!-- Подключение библиотеки Canvas Confetti со стороннего CDN хостинга -->
+    <script src="https://jsdelivr.net"></script>
     <script src="script.js"></script>
 </body>
 </html>

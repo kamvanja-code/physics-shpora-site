@@ -11,6 +11,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    position: relative;
 }
 
 /* Настройка встроенных ползунков (скроллбаров) */
@@ -71,7 +72,6 @@ body {
     background-color: #e2e6e9;
 }
 
-/* Подсветка активной кнопки хедера */
 .nav-btn.active-nav {
     background-color: #3498db;
     color: white;
@@ -84,7 +84,7 @@ body {
     overflow: hidden;
 }
 
-/* БОКОВОЕ МЕНЮ (Мягкое раздвижение) */
+/* БОКОВОЕ МЕНЮ */
 .sidebar {
     width: 0;
     background-color: #2c3e50;
@@ -124,11 +124,11 @@ body {
     font-weight: bold;
 }
 
-/* ПРАВАЯ ОБЛАСТЬ (С ползунком прокрутки) */
+/* ПРАВАЯ ОБЛАСТЬ */
 .content-area {
     flex: 1;
     padding: 40px;
-    overflow-y: auto; /* Включает ползунок для контента */
+    overflow-y: auto;
     background-color: #fff;
     position: relative;
 }
@@ -210,7 +210,7 @@ body {
     margin-top: 5px;
 }
 
-/* МОДАЛЬНОЕ ОКНО С ИНДИВИДУАЛЬНЫМ ПОЛЗУНКОМ */
+/* МОДАЛЬНОЕ ОКНО */
 .modal-overlay {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -227,8 +227,8 @@ body {
     background-color: white;
     border-radius: 12px;
     width: 85%;
-    max-width: 800px; /* Поле расширено */
-    height: 75vh;     /* Фиксированная высота для работы ползунка */
+    max-width: 800px;
+    height: 75vh;
     position: relative;
     transform: scale(0.95);
     transition: transform 0.25s ease;
@@ -245,8 +245,8 @@ body {
 
 .modal-body {
     flex: 1;
-    padding: 40px 40px 20px 40px;
-    overflow-y: auto; /* Собственный ползунок прокрутки теории */
+    padding: 40px;
+    overflow-y: auto;
 }
 
 .modal-body h2 { color: #2c3e50; margin-bottom: 20px; font-size: 1.8rem;}
@@ -284,43 +284,106 @@ body {
     z-index: 10;
 }
 
-/* СТИЛИ РАСКРЫВАЮЩИХСЯ СПИСКОВ (АККОРДЕОНОВ) */
-.accordion-container { margin-top: 15px; }
+/* ОБНОВЛЕННЫЙ КРАСИВЫЙ ДИЗАЙН ВКЛАДКИ ИЗУЧЕННОЕ */
+.accordion-container { margin-top: 20px; }
 
 .accordion-item {
-    background: #f8f9fa;
-    border: 1px solid #e2e6e9;
-    margin-bottom: 10px;
-    border-radius: 6px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 14px;
+    border-radius: 8px;
     overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    transition: box-shadow 0.2s ease;
+}
+.accordion-item:hover {
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08);
 }
 
 .accordion-header {
-    padding: 15px 20px;
-    background: #f1f3f5;
+    padding: 18px 24px;
+    background: #f8fafc;
     cursor: pointer;
     font-weight: 600;
-    color: #2c3e50;
+    color: #1e293b;
     display: flex;
     justify-content: space-between;
     align-items: center;
     user-select: none;
+    border-bottom: 1px solid transparent;
+    transition: background-color 0.2s;
+}
+.accordion-header:hover { background: #f1f5f9; }
+
+.accordion-item.open .accordion-header {
+    border-color: #e2e8f0;
+    background: #f1f5f9;
 }
 
 .accordion-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease;
-    padding: 0 20px;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), padding 0.35s ease;
+    padding: 0 24px;
     background: white;
 }
 
+/* Отступы для текста внутри открытого аккордеона */
 .accordion-item.open .accordion-content {
-    max-height: 500px;
-    padding: 20px;
+    max-height: 600px;
+    padding: 24px 30px; /* Отступы от краев конспекта стали глубже и эстетичнее */
     overflow-y: auto;
 }
+
+/* Кнопка "Забыть тему" во вкладке изученного */
+.exclude-learned-btn {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.2s;
+}
+.exclude-learned-btn:hover { background-color: #dc2626; }
 
 /* ПЕРЕКЛЮЧЕНИЕ СЕКЦИЙ */
 .content-section { display: none; }
 .content-section.active { display: block; }
+
+/* СТИЛИ КОМИЧНЫХ МОТИВАЦИОННЫХ УВЕДОМЛЕНИЙ */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.toast {
+    background-color: #1e293b;
+    color: #f8fafc;
+    padding: 16px 28px;
+    border-radius: 10px;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15), 0 10px 10px -5px rgba(0,0,0,0.1);
+    font-weight: 600;
+    font-size: 1rem;
+    border-left: 5px solid #eab308; /* Желтая полоса внимания */
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    text-align: center;
+    max-width: 450px;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}

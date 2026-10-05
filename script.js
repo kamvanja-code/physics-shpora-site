@@ -3,6 +3,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let learnedThemes = JSON.parse(localStorage.getItem('learnedThemes')) || [];
     let importantFormulas = JSON.parse(localStorage.getItem('importantFormulas')) || [];
 
+    // Счетчик изучений за текущую сессию пользователя (для каждого 2-го раза)
+    let sessionLearnCount = 0;
+
+    // Массив комичных мотивационных фраз
+    const funnyQuotes = [
+        "С большими знаниями приходит большая ответственность. Не сломай диван ею!",
+        "Ого, теперь твой мозг весит на пару граммов больше. Осторожно при ходьбе!",
+        "Физика — сила, а без неё ты... просто набор хаотично движущихся молекул.",
+        "Ньютон гордился бы тобой. А теперь иди съешь яблоко 🍏",
+        "Твоя ментальная энергия совершила полезную работу. КПД стремится к 100%!",
+        "Осторожно! Уровень интеллекта зашкаливает, датчики зафиксировали аномалию!",
+        "Поздравляем, ты только что уменьшил энтропию Вселенной на крошечную долю!"
+    ];
+
     // Навигационные элементы
     const menuToggleBtn = document.getElementById('menuToggleBtn');
     const sidebar = document.getElementById('sidebar');
@@ -27,35 +41,28 @@ document.addEventListener('DOMContentLoaded', () => {
         sidebar.classList.toggle('open');
     });
 
-    // Закрытие меню при клике по любому свободному месту на экране
     document.addEventListener('click', (e) => {
         if (!sidebar.contains(e.target) && e.target !== menuToggleBtn) {
             sidebar.classList.remove('open');
         }
     });
 
-    // Общая функция переключения секций контента
     function showSection(targetId) {
         contentSections.forEach(section => section.classList.remove('active'));
         const targetSection = document.getElementById(targetId);
-        if (targetSection) {
-            targetSection.classList.add('active');
-        }
+        if (targetSection) targetSection.classList.add('active');
         sidebar.classList.remove('open');
     }
 
-    // Обработка кликов по левому меню (Разделы физики)
     categoryItems.forEach(item => {
         item.addEventListener('click', () => {
             categoryItems.forEach(el => el.classList.remove('active'));
             navButtons.forEach(btn => btn.classList.remove('active-nav'));
-
             item.classList.add('active');
             showSection(item.getAttribute('data-target'));
         });
     });
 
-    // Обработка кликов по верхним кнопкам хедера (Изученное, Важное)
     navButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             categoryItems.forEach(el => el.classList.remove('active'));
@@ -70,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
             showSection(target);
         });
     });
-
     // 2. ОТКРЫТИЕ МОДАЛЬНОГО ОКНА (УГЛУБЛЕННОЕ ИЗУЧЕНИЕ)
     document.addEventListener('click', (e) => {
         if (e.target && e.target.classList.contains('advanced-btn')) {
@@ -81,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 modalBody.innerHTML = '';
                 modalBody.appendChild(template.content.cloneNode(true));
 
-                // Проверяем статус "Изучено" для текущего шаблона
                 if (learnedThemes.includes(currentOpenTemplateId)) {
                     markLearnedBtn.innerText = 'Изучено ✓';
                     markLearnedBtn.classList.add('completed');
@@ -97,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Клик на кнопку "Отметить изученным" внутри модалки
+    // КЛИК "ОТМЕТИТЬ ИЗУЧЕННЫМ" (+ КОНФЕТТИ + УВЕДОМЛЕНИЕ)
     markLearnedBtn.addEventListener('click', () => {
         if (currentOpenTemplateId && !learnedThemes.includes(currentOpenTemplateId)) {
             learnedThemes.push(currentOpenTemplateId);
@@ -106,14 +111,46 @@ document.addEventListener('DOMContentLoaded', () => {
             markLearnedBtn.innerText = 'Изучено ✓';
             markLearnedBtn.classList.add('completed');
             markLearnedBtn.disabled = true;
+
+            // Салют конфетти
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                });
+            }
+
+            // Срабатывание триггера на каждое второе изучение
+            sessionLearnCount++;
+            if (sessionLearnCount % 2 === 0) {
+                showMotivationalToast();
+            }
         }
     });
 
-    // Закрытие модального окна
+    // Функция генерации всплывающих цитат сверху экрана
+    function showMotivationalToast() {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.classList.add('toast');
+
+        const randomQuote = funnyQuotes[Math.floor(Math.random() * funnyQuotes.length)];
+        toast.innerText = randomQuote;
+
+        container.appendChild(toast);
+
+        setTimeout(() => toast.classList.add('show'), 100);
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 4500);
+    }
+
     const closeModal = () => modalOverlay.classList.remove('open');
     modalClose.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
-
     // 3. ДОБАВЛЕНИЕ / УДАЛЕНИЕ ИЗ ВАЖНОГО (КНОПКА "!")
     document.addEventListener('click', (e) => {
         if (e.target && e.target.classList.contains('important-toggle')) {
@@ -123,13 +160,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const formulaId = card.getAttribute('data-formula-id');
 
             if (importantFormulas.includes(formulaId)) {
-                // Если уже есть — удаляем
                 importantFormulas = importantFormulas.filter(id => id !== formulaId);
                 document.querySelectorAll(`.card[data-formula-id="${formulaId}"] .important-toggle`).forEach(btn => {
                     btn.classList.remove('active');
                 });
             } else {
-                // Если нет — добавляем
                 importantFormulas.push(formulaId);
                 document.querySelectorAll(`.card[data-formula-id="${formulaId}"] .important-toggle`).forEach(btn => {
                     btn.classList.add('active');
@@ -137,7 +172,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             localStorage.setItem('importantFormulas', JSON.stringify(importantFormulas));
 
-            // Живое обновление списка на вкладке "Важное" при удалении карточки
             const currentActiveNav = document.querySelector('.nav-btn.active-nav');
             if (currentActiveNav && currentActiveNav.getAttribute('data-target') === 'important-section') {
                 renderImportantList();
@@ -145,7 +179,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Подсветка оранжевым кнопок "!" для сохраненных формул при обновлении страницы
     function syncUIWithStorage() {
         document.querySelectorAll('.card').forEach(card => {
             const id = card.getAttribute('data-formula-id');
@@ -156,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 4. ГЕНЕРАЦИЯ СПИСКА ИЗУЧЕННОГО (АККОРДЕОН)
+    // 4. ГЕНЕРАЦИЯ СПИСКА ИЗУЧЕННОГО + ИСКЛЮЧЕНИЕ ИЗ СПИСКА
     function renderLearnedList() {
         const container = document.getElementById('learned-list-container');
         container.innerHTML = '';
@@ -178,19 +211,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 accordionItem.innerHTML = `
                     <div class="accordion-header">${titleText} <span>▼</span></div>
-                    <div class="accordion-content"></div>
+                    <div class="accordion-content">
+                        <div class="theory-text-wrapper"></div>
+                        <button class="exclude-learned-btn" data-exclude-id="${templateId}">❌ Удалить из изученного</button>
+                    </div>
                 `;
 
-                accordionItem.querySelector('.accordion-content').appendChild(tempDiv);
+                accordionItem.querySelector('.theory-text-wrapper').appendChild(tempDiv);
                 container.appendChild(accordionItem);
 
-                // Событие раскрытия аккордеона по клику
                 accordionItem.querySelector('.accordion-header').addEventListener('click', () => {
                     accordionItem.classList.toggle('open');
                 });
             }
         });
     }
+
+    // Исключение темы из изученного
+    document.addEventListener('click', (e) => {
+        if (e.target && e.target.classList.contains('exclude-learned-btn')) {
+            const idToRemove = e.target.getAttribute('data-exclude-id');
+            learnedThemes = learnedThemes.filter(id => id !== idToRemove);
+            localStorage.setItem('learnedThemes', JSON.stringify(learnedThemes));
+            renderLearnedList();
+        }
+    });
 
     // 5. ГЕНЕРАЦИЯ СПИСКА ВАЖНОГО
     function renderImportantList() {
@@ -203,7 +248,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         importantFormulas.forEach(formulaId => {
-            // Ищем шаблон карточки на скрытых страницах тем
             const originalCard = document.querySelector(`.content-section:not(#important-section) .card[data-formula-id="${formulaId}"]`);
             if (originalCard) {
                 const clonedCard = originalCard.cloneNode(true);
