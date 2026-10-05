@@ -14,7 +14,7 @@ body {
     position: relative;
 }
 
-/* Настройка встроенных ползунков (скроллбаров) */
+/* Ползунки прокрутки */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -31,7 +31,7 @@ body {
     background: #95a5a6;
 }
 
-/* ВЕРХНЯЯ ПАНЕЛЬ (HEADER) */
+/* ВЕРХНЯЯ ПАНЕЛЬ */
 .top-navbar {
     height: 60px;
     background-color: #ffffff;
@@ -76,7 +76,6 @@ body {
     background-color: #3498db;
     color: white;
 }
-
 /* ОСНОВНОЙ КАРКАС */
 .main-layout {
     display: flex;
@@ -124,7 +123,7 @@ body {
     font-weight: bold;
 }
 
-/* ПРАВАЯ ОБЛАСТЬ */
+/* РАБОЧАЯ ОБЛАСТЬ */
 .content-area {
     flex: 1;
     padding: 40px;
@@ -153,8 +152,10 @@ body {
 }
 
 .advanced-btn:hover { background-color: #27ae60; }
+.description { color: #7f8c8d; }
+.cards-wrapper { margin-top: 35px; }
 
-/* КАРТОЧКИ ФОРМУЛ И КНОПКА "!" */
+/* КАРТОЧКИ ФОРМУЛ */
 .card {
     background-color: #f8f9fa;
     border-left: 5px solid #3498db;
@@ -236,16 +237,11 @@ body {
 }
 
 .modal-overlay.open .modal-window { transform: scale(1); }
-
-.modal-wrapper {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
+.modal-wrapper { display: flex; flex-direction: column; height: 100%; }
 
 .modal-body {
     flex: 1;
-    padding: 40px;
+    padding: 40px 45px;
     overflow-y: auto;
 }
 
@@ -283,10 +279,8 @@ body {
     font-size: 2rem; cursor: pointer; color: #95a5a6;
     z-index: 10;
 }
-
-/* ОБНОВЛЕННЫЙ КРАСИВЫЙ ДИЗАЙН ВКЛАДКИ ИЗУЧЕННОЕ */
+/* ВКЛАДКА ИЗУЧЕННОЕ */
 .accordion-container { margin-top: 20px; }
-
 .accordion-item {
     background: #ffffff;
     border: 1px solid #e2e8f0;
@@ -296,9 +290,7 @@ body {
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
     transition: box-shadow 0.2s ease;
 }
-.accordion-item:hover {
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08);
-}
+.accordion-item:hover { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08); }
 
 .accordion-header {
     padding: 18px 24px;
@@ -310,32 +302,24 @@ body {
     justify-content: space-between;
     align-items: center;
     user-select: none;
-    border-bottom: 1px solid transparent;
     transition: background-color 0.2s;
 }
 .accordion-header:hover { background: #f1f5f9; }
-
-.accordion-item.open .accordion-header {
-    border-color: #e2e8f0;
-    background: #f1f5f9;
-}
+.accordion-item.open .accordion-header { border-color: #e2e8f0; background: #f1f5f9; }
 
 .accordion-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), padding 0.35s ease;
+    transition: max-height 0.35s ease, padding 0.35s ease;
     padding: 0 24px;
     background: white;
 }
-
-/* Отступы для текста внутри открытого аккордеона */
 .accordion-item.open .accordion-content {
     max-height: 600px;
-    padding: 24px 30px; /* Отступы от краев конспекта стали глубже и эстетичнее */
+    padding: 24px 35px;
     overflow-y: auto;
 }
 
-/* Кнопка "Забыть тему" во вкладке изученного */
 .exclude-learned-btn {
     background-color: #ef4444;
     color: white;
@@ -350,11 +334,160 @@ body {
 }
 .exclude-learned-btn:hover { background-color: #dc2626; }
 
-/* ПЕРЕКЛЮЧЕНИЕ СЕКЦИЙ */
+/* СЕКЦИЯ СТАТИСТИКИ И ДОСТИЖЕНИЙ */
+.stats-grid {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+    height: calc(100% - 60px);
+}
+
+.chart-box {
+    flex: 1;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-wrapper {
+    width: 180px;
+    height: 180px;
+    margin: 20px 0;
+    position: relative;
+}
+
+.chart-counter {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+.achievements-box {
+    flex: 1.5;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.pedestals-scroll-container {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* ПЬЕДЕСТАЛЫ (DUOLINGO STYLE) */
+.pedestals-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    gap: 15px;
+    padding: 20px 0;
+    border-bottom: 2px dashed #cbd5e1;
+}
+
+.pedestal-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    width: 30%;
+    position: relative;
+}
+
+.pedestal-pillar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    transition: transform 0.2s ease;
+}
+
+.pedestal-card:hover .pedestal-pillar {
+    transform: translateY(-5px);
+}
+
+.pedestal-emoji {
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+    filter: grayscale(100%);
+    opacity: 0.4;
+    transition: all 0.3s ease;
+}
+
+.pillar-block {
+    width: 70px;
+    height: 50px;
+    background-color: #cbd5e1;
+    border-radius: 6px 6px 0 0;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 0 #94a3b8;
+    transition: all 0.3s ease;
+}
+
+.pedestal-card.unlocked .pedestal-emoji {
+    filter: grayscale(0);
+    opacity: 1;
+    animation: floatIcon 2s ease-in-out infinite alternate;
+}
+
+.pedestal-card.unlocked .pillar-block {
+    background-color: #eab308;
+    box-shadow: 0 4px 0 #ca8a04;
+}
+
+.pedestal-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #475569;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.pedestal-dropdown {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 10px;
+    font-size: 0.85rem;
+    color: #64748b;
+    background-color: #ffffff;
+    border-radius: 6px;
+    text-align: center;
+    position: absolute;
+    top: 110px;
+    width: 140%;
+    left: -20%;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: max-height 0.25s ease, padding 0.25s ease;
+}
+
+.pedestal-card.open .pedestal-dropdown {
+    max-height: 100px;
+    padding: 10px;
+}
+
+@keyframes floatIcon {
+    from { transform: translateY(0); }
+    to { transform: translateY(-4px); }
+}
+
+/* УВЕДОМЛЕНИЯ */
 .content-section { display: none; }
 .content-section.active { display: block; }
 
-/* СТИЛИ КОМИЧНЫХ МОТИВАЦИОННЫХ УВЕДОМЛЕНИЙ */
 .toast-container {
     position: fixed;
     top: 20px;
@@ -372,15 +505,20 @@ body {
     color: #f8fafc;
     padding: 16px 28px;
     border-radius: 10px;
-    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15), 0 10px 10px -5px rgba(0,0,0,0.1);
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);
     font-weight: 600;
     font-size: 1rem;
-    border-left: 5px solid #eab308; /* Желтая полоса внимания */
+    border-left: 5px solid #eab308;
     opacity: 0;
     transform: translateY(-20px);
     transition: opacity 0.3s ease, transform 0.3s ease;
     text-align: center;
     max-width: 450px;
+}
+
+.toast.achievement-toast {
+    border-left-color: #3b82f6;
+    background-color: #0f172a;
 }
 
 .toast.show {
