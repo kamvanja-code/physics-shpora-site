@@ -14,6 +14,7 @@ body {
     position: relative;
 }
 
+/* Ползунки прокрутки */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -30,6 +31,7 @@ body {
     background: #95a5a6;
 }
 
+/* ВЕРХНЯЯ ПАНЕЛЬ */
 .top-navbar {
     height: 60px;
     background-color: #ffffff;
@@ -74,12 +76,14 @@ body {
     background-color: #3498db;
     color: white;
 }
+/* ОСНОВНОЙ КАРКАС */
 .main-layout {
     display: flex;
     flex: 1;
     overflow: hidden;
 }
 
+/* БОКОВОЕ МЕНЮ */
 .sidebar {
     width: 0;
     background-color: #2c3e50;
@@ -119,6 +123,7 @@ body {
     font-weight: bold;
 }
 
+/* РАБОЧАЯ ОБЛАСТЬ */
 .content-area {
     flex: 1;
     padding: 40px;
@@ -150,6 +155,7 @@ body {
 .description { color: #7f8c8d; }
 .cards-wrapper { margin-top: 35px; }
 
+/* КАРТОЧКИ ФОРМУЛ */
 .card {
     background-color: #f8f9fa;
     border-left: 5px solid #3498db;
@@ -204,6 +210,8 @@ body {
     color: #e74c3c;
     margin-top: 5px;
 }
+
+/* МОДАЛЬНОЕ ОКНО */
 .modal-overlay {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -271,7 +279,7 @@ body {
     font-size: 2rem; cursor: pointer; color: #95a5a6;
     z-index: 10;
 }
-
+/* ВКЛАДКА ИЗУЧЕННОЕ */
 .accordion-container { margin-top: 20px; }
 .accordion-item {
     background: #ffffff;
@@ -326,6 +334,7 @@ body {
 }
 .exclude-learned-btn:hover { background-color: #dc2626; }
 
+/* СЕКЦИЯ СТАТИСТИКИ И ДОСТИЖЕНИЙ */
 .stats-grid {
     display: flex;
     gap: 30px;
@@ -372,17 +381,24 @@ body {
     flex: 1;
     overflow-y: auto;
     padding-right: 5px;
-    position: relative;
+}
+
+/* ПЬЕДЕСТАЛЫ (DUOLINGO STYLE) С РАЗБИЕНИЕМ ПО 3 В РЯД */
+.pedestals-scroll-container {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+    position: relative; /* Дает точку отсчета для выпадающих окон */
 }
 
 .pedestals-row {
     display: flex;
     justify-content: flex-start;
     align-items: flex-end;
-    gap: 5%;
+    gap: 5%; /* Расстояние между колонками */
     padding: 25px 0;
     border-bottom: 2px dashed #cbd5e1;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Позволяет переносить пьедесталы на новые строки */
 }
 
 .pedestal-card {
@@ -390,8 +406,8 @@ body {
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    width: 30%;
-    margin-bottom: 40px;
+    width: 30%; /* Строго 30% ширины, чтобы умещалось ровно 3 штуки в ряд */
+    margin-bottom: 40px; /* Отступ между рядами */
     position: relative;
 }
 
@@ -449,11 +465,12 @@ body {
     text-align: center;
 }
 
+/* ИСПРАВЛЕННЫЙ ТУЛТИП: ТЕПЕРЬ ОН ВСЕГДА ПО ЦЕНТРУ ЭКРАНА И НИКОГДА НЕ ОБРЕЖЕТСЯ */
 .pedestal-dropdown {
-    position: fixed;
+    position: fixed; /* Привязываем к экрану, а не к блоку с прокруткой */
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.9);
+    transform: translate(-50%, -50%) scale(0.9); /* Центрируем строго по экрану */
     width: 90%;
     max-width: 320px;
     background-color: #ffffff;
@@ -462,21 +479,25 @@ body {
     font-size: 0.95rem;
     color: #334155;
     text-align: center;
-    z-index: 99999 !important;
+    z-index: 99999 !important; /* Выше абсолютно всех элементов на сайте */
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     border: 1px solid #e2e8f0;
+    
+    /* Плавная анимация появления */
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
+/* Состояние, когда подсказка открыта */
 .pedestal-card.open .pedestal-dropdown {
-    max-height: none;
+    max-height: none; /* Убираем старое ограничение высоты */
     opacity: 1;
     pointer-events: auto;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1); /* Слегка увеличивается при появлении */
 }
 
+/* Небольшой заголовок внутри подсказки для красоты */
 .pedestal-dropdown::before {
     content: "🎯 Цель достижения:";
     display: block;
@@ -488,6 +509,7 @@ body {
     letter-spacing: 0.05em;
 }
 
+/* УВЕДОМЛЕНИЯ */
 .content-section { display: none; }
 .content-section.active { display: block; }
 
