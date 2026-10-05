@@ -296,3 +296,59 @@ body {
         text-align: center;
     }
 }
+/* ПОЛНОЭКРАННАЯ ЗАГЛУШКА ПРИ ПОВОРОТЕ ЭКРАНА */
+.orientation-overlay {
+    display: none; /* По умолчанию скрыта на компьютерах */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: #1e293b; /* Глубокий темный фон */
+    z-index: 9999999; /* Поверх абсолютно всех элементов */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.orientation-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px 25px;
+    max-width: 340px;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.phone-icon-rotate {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    display: inline-block;
+    animation: rotatePhone 2.5s ease-in-out infinite;
+}
+
+.orientation-card h2 {
+    color: #0f172a;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.orientation-card p {
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Анимация вращения иконки телефона */
+@keyframes rotatePhone {
+    0% { transform: rotate(0deg); }
+    30% { transform: rotate(-90deg); }
+    70% { transform: rotate(-90deg); }
+    100% { transform: rotate(0deg); }
+}
+
+/* ВКЛЮЧАЕМ ТОЛЬКО ДЛЯ МОБИЛЬНЫХ И ТОЛЬКО В ВЕРТИКАЛЬНОМ РЕЖИМЕ */
+@media screen and (max-width: 768px) and (orientation: portrait) {
+    .orientation-overlay {
+        display: flex; /* Показываем заглушку */
+    }
+}
