@@ -465,38 +465,48 @@ body {
     text-align: center;
 }
 
-/* ИСПРАВЛЕННОЕ ВЫПАДАЮЩЕЕ ОКНО: ТЕПЕРЬ ОНО ПОВЕРХ ВСЕГО */
+/* ИСПРАВЛЕННЫЙ ТУЛТИП: ТЕПЕРЬ ОН ВСЕГДА ПО ЦЕНТРУ ЭКРАНА И НИКОГДА НЕ ОБРЕЖЕТСЯ */
 .pedestal-dropdown {
-    max-height: 0;
-    overflow: hidden;
-    padding: 0 10px;
-    font-size: 0.85rem;
-    color: #64748b;
+    position: fixed; /* Привязываем к экрану, а не к блоку с прокруткой */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9); /* Центрируем строго по экрану */
+    width: 90%;
+    max-width: 320px;
     background-color: #ffffff;
-    border-radius: 6px;
+    border-radius: 12px;
+    padding: 20px;
+    font-size: 0.95rem;
+    color: #334155;
     text-align: center;
-    position: absolute;
-    top: 105px; /* Отображается чуть ниже пьедестала */
-    width: 140%;
-    left: -20%;
-    z-index: 999 !important; /* Гарантированно выводит поверх соседних рядов и блоков */
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15); /* Более глубокая тень для эффекта объема */
+    z-index: 99999 !important; /* Выше абсолютно всех элементов на сайте */
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     border: 1px solid #e2e8f0;
-    transition: max-height 0.2s ease, padding 0.2s ease, opacity 0.2s ease;
+    
+    /* Плавная анимация появления */
     opacity: 0;
     pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
+/* Состояние, когда подсказка открыта */
 .pedestal-card.open .pedestal-dropdown {
-    max-height: 120px;
-    padding: 12px;
+    max-height: none; /* Убираем старое ограничение высоты */
     opacity: 1;
     pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1); /* Слегка увеличивается при появлении */
 }
 
-@keyframes floatIcon {
-    from { transform: translateY(0); }
-    to { transform: translateY(-4px); }
+/* Небольшой заголовок внутри подсказки для красоты */
+.pedestal-dropdown::before {
+    content: "🎯 Цель достижения:";
+    display: block;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 /* УВЕДОМЛЕНИЯ */
