@@ -34,13 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
     checkAchievementsSilent();
 
     menuToggleBtn.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.toggle('open'); });
-    document.addEventListener('click', (e) => { if (!sidebar.contains(e.target) && e.target !== menuToggleBtn) sidebar.classList.remove('open'); });
+    document.addEventListener('click', (e) => { if (sidebar && !sidebar.contains(e.target) && e.target !== menuToggleBtn) sidebar.classList.remove('open'); });
 
     function showSection(targetId) {
         contentSections.forEach(section => section.classList.remove('active'));
         const targetSection = document.getElementById(targetId);
         if (targetSection) targetSection.classList.add('active');
-        sidebar.classList.remove('open');
+        if (sidebar) sidebar.classList.remove('open');
     }
 
     categoryItems.forEach(item => {
@@ -120,9 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const closeModal = () => modalOverlay.classList.remove('open');
-    modalClose.addEventListener('click', closeModal);
-    modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+    if (modalClose) modalClose.addEventListener('click', () => modalOverlay.classList.remove('open'));
+    if (modalOverlay) modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) modalOverlay.classList.remove('open'); });
 
     let canvas, ctx, confettiParticles = [];
     function initConfettiEngine() {
@@ -135,13 +134,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function fireConfettiBurst() {
         confettiParticles = [];
-        const colors = ['#3498db', '#2ecc71', '#e74c3c', '#e67e22', '#9b59b6', '#f1c40f'];
-        for (let i = 0; i < 100; i++) {
+        const colors = ['#3498db', '#2ecc71', '#e74c3c', '#e67e22', '#9b59b6'];
+        for (let i = 0; i < 70; i++) {
             confettiParticles.push({
                 x: canvas.width / 2, y: canvas.height * 0.5,
-                size: Math.random() * 6 + 4, color: colors[Math.floor(Math.random() * colors.length)],
-                speedX: Math.random() * 10 - 5, speedY: Math.random() * -12 - 4,
-                gravity: 0.35, opacity: 1
+                size: Math.random() * 5 + 3, color: colors[Math.floor(Math.random() * colors.length)],
+                speedX: Math.random() * 10 - 5, speedY: Math.random() * -10 - 3,
+                gravity: 0.3, opacity: 1
             });
         }
         requestAnimationFrame(updateConfettiLoop);
@@ -151,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         let active = false;
         confettiParticles.forEach(p => {
-            p.x += p.speedX; p.y += p.speedY; p.speedY += p.gravity; p.opacity -= 0.015;
+            p.x += p.speedX; p.y += p.speedY; p.speedY += p.gravity; p.opacity -= 0.02;
             if (p.opacity > 0) {
                 active = true;
                 ctx.fillStyle = p.color; ctx.globalAlpha = p.opacity;
@@ -171,16 +170,16 @@ document.addEventListener('DOMContentLoaded', () => {
         isToastProcessing = true;
         const currentToast = toastQueue.shift();
         const container = document.getElementById('toast-container');
+        if (!container) return;
         const toast = document.createElement('div');
-        toast.classList.add('toast');
-        if (currentToast.isAchievement) toast.classList.add('achievement-toast');
+        toast.className = currentToast.isAchievement ? 'toast achievement-toast' : 'toast';
         toast.innerText = currentToast.text;
         container.appendChild(toast);
         setTimeout(() => toast.classList.add('show'), 50);
         setTimeout(() => {
             toast.classList.remove('show');
             setTimeout(() => { toast.remove(); isToastProcessing = false; processToastQueue(); }, 300);
-        }, 4000);
+        }, 3500);
     }
 
     function checkAndUnlockAchievement(id, notificationText) {
@@ -211,25 +210,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function syncUIWithStorage() {
-        document.querySelectorAll('.content-area .card').forEach(card => {
+        document.querySelectorAll('.card').forEach(card => {
             const id = card.getAttribute('data-formula-id');
-            const btn = card.querySelector('.important-toggle');
-            if (importantFormulas.includes(id) && btn) btn.classList.add('active');
+            if (importantFormulas.includes(id)) {
+                const btn = card.querySelector('.important-toggle');
+                if (btn) btn.classList.add('active');
+            }
         });
     }
 
     function renderStatsAndAchievements() {
         const learnedCount = learnedThemes.length;
         const strokeDashOffset = 251.2 - (251.2 * (learnedCount / 3)) || 251.2;
-        document.getElementById('pie-chart-container').innerHTML = `
-            <svg width="100%" height="100%" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#e2e8f0" stroke-width="12"/>
-                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#3498db" stroke-width="12"
-                    stroke-dasharray="251.2" stroke-dashoffset="${strokeDashOffset}"
-                    transform="rotate(-90 50 50)" stroke-linecap="round" style="transition: stroke-dashoffset 0.5s ease;"/>
-            </svg>
-        `;
-        document.getElementById('chartCounterText').innerText = `Изучено: ${learnedCount} из 3 конспектов`;
+        const chartContainer = document.getElementById('pie-chart-container');
+        if (chartContainer) {
+            chartContainer.innerHTML = `
+                <svg width="100%" height="100%" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="40" fill="transparent" stroke="#e2e8f0" stroke-width="12"/>
+                    <circle cx="50" cy="50" r="40" fill="transparent" stroke="#3498db" stroke-width="12"
+                        stroke-dasharray="251.2" stroke-dashoffset="${strokeDashOffset}"
+                        transform="rotate(-90 50 50)" stroke-linecap="round"/>
+                </svg>
+            `;
+        }
+        const textCounter = document.getElementById('chartCounterText');
+        if (textCounter) textCounter.innerText = `Изучено: ${learnedCount} из 3 конспектов`;
+
         document.querySelectorAll('.pedestal-card').forEach(card => {
             if (unlockedAchievements.includes(card.getAttribute('data-ach-id'))) card.classList.add('unlocked');
             else card.classList.remove('unlocked');
@@ -255,6 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderLearnedList() {
         const container = document.getElementById('learned-list-container');
+        if (!container) return;
         container.innerHTML = '';
         if (learnedThemes.length === 0) { container.innerHTML = '<p style="color: #7f8c8d; padding: 10px 0;">Нет изученных тем.</p>'; return; }
         learnedThemes.forEach(templateId => {
@@ -262,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (template) {
                 const tempDiv = document.createElement('div'); tempDiv.appendChild(template.content.cloneNode(true));
                 const titleText = tempDiv.querySelector('h2') ? tempDiv.querySelector('h2').innerText : "Конспект";
-                const accordionItem = document.createElement('div'); accordionItem.classList.add('accordion-item');
+                const accordionItem = document.createElement('div'); accordionItem.className = 'accordion-item';
                 accordionItem.innerHTML = `
                     <div class="accordion-header">${titleText} <span>▼</span></div>
                     <div class="accordion-content"><div class="theory-text-wrapper"></div><button class="exclude-learned-btn" data-exclude-id="${templateId}">❌ Удалить из изученного</button></div>
@@ -273,16 +280,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    document.addEventListener('click', (e) => {
-        if (e.target && e.target.classList.contains('exclude-learned-btn')) {
-            learnedThemes = learnedThemes.filter(id => id !== e.target.getAttribute('data-exclude-id'));
-            localStorage.setItem('learnedThemes', JSON.stringify(learnedThemes));
-            renderLearnedList();
-        }
-    });
-
     function renderImportantList() {
         const container = document.getElementById('important-list-container');
+        if (!container) return;
         container.innerHTML = '';
         if (importantFormulas.length === 0) { container.innerHTML = '<p style="color: #7f8c8d; padding: 10px 0;">Нет важных формул.</p>'; return; }
         importantFormulas.forEach(formulaId => {

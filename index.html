@@ -8,13 +8,9 @@
 </head>
 <body>
 
-    <!-- Встроенный Canvas для анимации частиц конфетти -->
     <canvas id="confetti-canvas"></canvas>
-
-    <!-- Контейнер для уведомлений -->
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- Навигация хедера -->
     <header class="top-navbar">
         <div class="nav-container">
             <button class="menu-toggle-btn" id="menuToggleBtn">☰ Разделы</button>
@@ -25,7 +21,6 @@
     </header>
 
     <div class="main-layout">
-        <!-- Левое меню -->
         <aside class="sidebar" id="sidebar">
             <h2>Разделы физики</h2>
             <ul class="category-list">
@@ -35,139 +30,119 @@
             </ul>
         </aside>
 
-        <!-- Рабочее окно контента -->
         <main class="content-area">
-
-            <!-- Раздел: Механика -->
+            <!-- Механика -->
             <div id="mechanics" class="content-section active">
                 <div class="section-header">
                     <h2>Механика</h2>
                     <button class="advanced-btn" data-depth="mechanics">Углублённое изучение</button>
                 </div>
                 <p class="description">Изучает движение тел и их взаимодействие.</p>
-
                 <div class="cards-wrapper">
                     <div class="card" data-formula-id="mech-1">
                         <div class="card-header">
                             <h3>Равномерное движение</h3>
-                            <button class="important-toggle" title="Отметить как важное">!</button>
+                            <button class="important-toggle">!</button>
                         </div>
                         <p>Формула скорости: <code class="formula">v = s / t</code></p>
                     </div>
-
                     <div class="card" data-formula-id="mech-2">
                         <div class="card-header">
                             <h3>Второй закон Ньютона</h3>
-                            <button class="important-toggle" title="Отметить как важное">!</button>
+                            <button class="important-toggle">!</button>
                         </div>
                         <p>Формула: <code class="formula">F = m · a</code></p>
                     </div>
                 </div>
             </div>
-            <!-- Раздел: Термодинамика -->
+
+            <!-- Термодинамика -->
             <div id="thermodynamics" class="content-section">
                 <div class="section-header">
                     <h2>Термодинамика</h2>
                     <button class="advanced-btn" data-depth="thermodynamics">Углублённое изучение</button>
                 </div>
                 <p class="description">Изучает тепловые свойства систем и перенос энергии.</p>
-
                 <div class="cards-wrapper">
                     <div class="card" data-formula-id="therm-1">
                         <div class="card-header">
                             <h3>Первое начало термодинамики</h3>
-                            <button class="important-toggle" title="Отметить как важное">!</button>
+                            <button class="important-toggle">!</button>
                         </div>
                         <p>Формула: <code class="formula">Q = ΔU + A</code></p>
                     </div>
                 </div>
             </div>
 
-            <!-- Раздел: Электродинамика -->
+            <!-- Электродинамика -->
             <div id="electrodynamics" class="content-section">
                 <div class="section-header">
                     <h2>Электродинамика</h2>
                     <button class="advanced-btn" data-depth="electrodynamics">Углублённое изучение</button>
                 </div>
                 <p class="description">Изучает электромагнитное поле и заряды.</p>
-
                 <div class="cards-wrapper">
                     <div class="card" data-formula-id="elec-1">
                         <div class="card-header">
                             <h3>Закон Ома</h3>
-                            <button class="important-toggle" title="Отметить как важное">!</button>
+                            <button class="important-toggle">!</button>
                         </div>
                         <p>Формула: <code class="formula">I = U / R</code></p>
                     </div>
                 </div>
             </div>
 
-            <!-- Раздел: Изученное -->
+            <!-- Изученное -->
             <div id="learned-section" class="content-section">
                 <h2>Изученные конспекты</h2>
-                <p class="description">Разделы теории, которые вы полностью освоили и отметили изученными.</p>
+                <p class="description">Разделы теории, которые вы полностью освоили.</p>
                 <div id="learned-list-container" class="accordion-container"></div>
             </div>
 
-            <!-- Раздел: Важное -->
+            <!-- Важное -->
             <div id="important-section" class="content-section">
                 <h2>Важные формулы</h2>
-                <p class="description">Ваш персональный список формул, добавленных на вкладку быстрого доступа.</p>
+                <p class="description">Ваш персональный список формул.</p>
                 <div id="important-list-container" class="cards-wrapper"></div>
             </div>
 
-            <!-- СЕКЦИЯ: Статистика и достижения -->
+            <!-- Достижения -->
             <div id="stats-section" class="content-section">
                 <h2>Статистика и достижения</h2>
-                <p class="description">Ваш прогресс изучения разделов физики и открытые награды.</p>
-
                 <div class="stats-grid">
                     <div class="chart-box">
                         <h3>Прогресс изучения</h3>
-                        <div class="chart-wrapper">
-                            <div id="pie-chart-container"></div>
-                        </div>
-                        <p class="chart-counter" id="chartCounterText">Загрузка...</p>
+                        <div class="chart-wrapper" id="pie-chart-container"></div>
+                        <p class="chart-counter" id="chartCounterText"></p>
                     </div>
-
                     <div class="achievements-box">
                         <h3>Ваши награды</h3>
                         <div class="pedestals-scroll-container">
                             <div class="pedestals-row">
                                 <div class="pedestal-card" data-ach-id="first-step">
-                                    <div class="pedestal-pillar">
-                                        <span class="pedestal-emoji">🚀</span>
-                                        <div class="pillar-block">I</div>
-                                    </div>
+                                    <div class="pedestal-pillar"><span class="pedestal-emoji">🚀</span><div class="pillar-block">I</div></div>
                                     <span class="pedestal-title">Первый шаг</span>
-                                    <div class="pedestal-dropdown">Изучите свой самый первый углубленный конспект теории.</div>
+                                    <div class="pedestal-dropdown">Изучите первый конспект.</div>
                                 </div>
                                 <div class="pedestal-card" data-ach-id="formula-fan">
-                                    <div class="pedestal-pillar">
-                                        <span class="pedestal-emoji">⭐</span>
-                                        <div class="pillar-block">II</div>
-                                    </div>
+                                    <div class="pedestal-pillar"><span class="pedestal-emoji">⭐</span><div class="pillar-block">II</div></div>
                                     <span class="pedestal-title">Знаток формул</span>
-                                    <div class="pedestal-dropdown">Сохраните хотя бы одну важную формулу во вкладку быстрого доступа.</div>
+                                    <div class="pedestal-dropdown">Добавьте формулу в важное.</div>
                                 </div>
                                 <div class="pedestal-card" data-ach-id="phys-master">
-                                    <div class="pedestal-pillar">
-                                        <span class="pedestal-emoji">⚛️</span>
-                                        <div class="pillar-block">III</div>
-                                    </div>
+                                    <div class="pedestal-pillar"><span class="pedestal-emoji">⚛️</span><div class="pillar-block">III</div></div>
                                     <span class="pedestal-title">Архивариус</span>
-                                    <div class="pedestal-dropdown">Изучите все доступные теоретические конспекты на сайте.</div>
+                                    <div class="pedestal-dropdown">Изучите все конспекты.</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </main>
     </div>
 
-    <!-- Модальное окно -->
+    <!-- Модалка -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-window">
             <button class="modal-close" id="modalClose">&times;</button>
@@ -181,31 +156,22 @@
         </div>
     </div>
 
-    <!-- Шаблоны конспектов -->
+    <!-- Шаблоны -->
     <template id="mechanics-deep">
         <h2>Подробный конспект: Механика</h2>
-        <p><strong>Инерциальные системы отсчета (ИСО)</strong> — это базис всей классической механики. В них тела сохраняют свою скорость неизменной, если на них не действуют внешние силы.</p>
+        <p>Инерциальные системы отсчета (ИСО) — это базис механики. В них тела сохраняют скорость, если нет внешних сил.</p>
         <ul>
-            <li><strong>Сила тяжести:</strong> <code>F = mg</code></li>
-            <li><strong>Сила упругости:</strong> <code>F = -kx</code></li>
-            <li><strong>Сила трения скольжения:</strong> <code>F = μN</code></li>
+            <li>Сила тяжести: <code>F = mg</code></li>
+            <li>Сила упругости: <code>F = -kx</code></li>
         </ul>
     </template>
-
     <template id="thermodynamics-deep">
         <h2>Подробный конспект: Термодинамика</h2>
-        <p>Уравнение Менделеева-Клапейрона: <code>PV = νRT</code> связывает все параметры идеального газа.</p>
-        <ul>
-            <li><strong>Изохорный (V = const):</strong> закон Шарля <code>P/T = const</code></li>
-            <li><strong>Изобарный (P = const):</strong> закон Гей-Люссака <code>V/T = const</code></li>
-            <li><strong>Изотермический (T = const):</strong> закон Бойля-Мариотта <code>PV = const</code></li>
-        </ul>
+        <p>Уравнение Менделеева-Клапейрона: <code>PV = νRT</code> связывает параметры идеального газа.</p>
     </template>
-
     <template id="electrodynamics-deep">
         <h2>Подробный конспект: Электродинамика</h2>
-        <p>Электродинамика изучает поведение электрических зарядов и создаваемых ими полей.</p>
-        <p>Закон Кулона определяет силу взаимодействия неподвижных точечных зарядов в вакууме.</p>
+        <p>Закон Кулона определяет силу взаимодействия точечных зарядов в вакууме.</p>
     </template>
 
     <script src="script2.js"></script>
