@@ -122,9 +122,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 markLearnedBtn.classList.add('completed');
                 markLearnedBtn.disabled = true;
 
+                // 1. Стандартные триггеры
                 checkAndUnlockAchievement('first-step', "🚀 Получено достижение: Первый шаг!");
-                if (learnedThemes.length === 3) {
+                
+                // Исправление: динамически считаем общее количество доступных шаблонов на сайте
+                const totalTemplatesCount = document.querySelectorAll('template').length;
+                if (learnedThemes.length === totalTemplatesCount) {
                     checkAndUnlockAchievement('phys-master', "⚛️ Получено достижение: Архивариус!");
+                }
+
+                // 2. НОВАЯ ЛОГИКА: Проверка для достижения "Мегамозг" (id: blank-1)
+                // Считаем, сколько продвинутых разделов из тех, что открыл пользователь, уже изучено
+                let advancedLearnedCount = 0;
+                learnedThemes.forEach(id => {
+                    if (id.includes('quantum') || id.includes('advanced') || id === 'tmpl-electro') { 
+                        advancedLearnedCount++; 
+                    }
+                });
+                
+                // Если изучено хотя бы 2 сложных темы — открываем ачивку с мозгом!
+                if (advancedLearnedCount >= 2) {
+                    checkAndUnlockAchievement('blank-1', "🧠 Получено достижение: Мегамозг!");
                 }
 
                 sessionLearnCount++;
@@ -134,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
 
     // Закрытие модального окна
     const closeModal = () => { if (modalOverlay) modalOverlay.classList.remove('open'); };
@@ -225,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // ГЕНЕРАЦИЯ ДИНАМИЧЕСКОЙ СЕКЦИИ СТАТИСТИКИ
     function renderStatsAndAchievements() {
-        const totalThemes = 3; 
+        const totalThemes = document.querySelectorAll('.category-item').length;
         const learnedCount = learnedThemes.length;
         const percentage = (learnedCount / totalThemes) * 100;
         
