@@ -563,3 +563,116 @@ body {
     cursor: default;
     pointer-events: none;
 }
+/* МЕДИА-ЗАПРОС ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
+@media screen and (max-width: 768px) {
+    /* Сжатие внутренних отступов главного экрана */
+    .content-area {
+        padding: 20px 15px;
+    }
+
+    /* Боковое меню на весь экран для удобства пальцев */
+    .sidebar.open {
+        width: 100%;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        height: calc(100vh - 60px);
+        z-index: 999;
+    }
+
+    /* Кнопки верхней панели перестраиваем в скролл-линейку, чтобы не переносились */
+    .top-navbar {
+        padding: 0 10px;
+        overflow-x: auto;
+    }
+    
+    .nav-container {
+        gap: 8px;
+        width: max-content;
+    }
+
+    .menu-toggle-btn, .nav-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        white-space: nowrap;
+    }
+
+    /* Адаптация заголовков секций */
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .advanced-btn {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+    }
+}
+/* ПРОДОЛЖЕНИЕ МЕДИА-ЗАПРОСА ДЛЯ СМАРТФОНОВ */
+@media screen and (max-width: 768px) {
+    /* Переводим сетку статистики и наград в вертикальный режим */
+    .stats-grid {
+        flex-direction: column;
+        height: auto;
+        gap: 20px;
+        overflow-y: visible;
+    }
+
+    .chart-box, .achievements-box {
+        flex: none;
+        width: 100%;
+        height: auto;
+    }
+
+    /* Адаптация ряда пьедесталов достижений */
+    .pedestals-row {
+        justify-content: space-around;
+        gap: 15px 0;
+    }
+
+    /* На телефоне показываем по 2 ачивки в ряд вместо 3, чтобы они были крупными */
+    .pedestal-card {
+        width: 45%;
+        margin-bottom: 20px;
+    }
+
+    /* Мобильная подгонка модального окна */
+    .modal-window {
+        width: 95%;
+        height: 85vh;
+    }
+
+    .modal-body {
+        padding: 25px 20px;
+    }
+
+    .modal-body h2 {
+        font-size: 1.4rem;
+    }
+
+    .modal-body p, .modal-body li {
+        font-size: 0.95rem;
+    }
+
+    .modal-footer {
+        padding: 15px 20px;
+    }
+
+    .mark-learned-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Подгонка карточек формул под тач-экраны */
+    .card {
+        padding: 15px;
+    }
+
+    .formula {
+        font-size: 1rem;
+        width: 100%;
+        text-align: center;
+    }
+}
