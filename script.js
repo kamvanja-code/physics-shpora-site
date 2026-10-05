@@ -1,30 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Работа с памятью браузера (LocalStorage)
+    // Загрузка данных из памяти браузера
     let learnedThemes = JSON.parse(localStorage.getItem('learnedThemes')) || [];
     let importantFormulas = JSON.parse(localStorage.getItem('importantFormulas')) || [];
-
-    // Счетчик изучений за текущую сессию пользователя (для каждого 2-го раза)
+    let unlockedAchievements = JSON.parse(localStorage.getItem('unlockedAchievements')) || [];
     let sessionLearnCount = 0;
 
-    // Массив комичных мотивационных фраз
+    // Очередь для вылетающих уведомлений
+    let toastQueue = [];
+    let isToastProcessing = false;
+
     const funnyQuotes = [
         "С большими знаниями приходит большая ответственность. Не сломай диван ею!",
         "Ого, теперь твой мозг весит на пару граммов больше. Осторожно при ходьбе!",
         "Физика — сила, а без неё ты... просто набор хаотично движущихся молекул.",
         "Ньютон гордился бы тобой. А теперь иди съешь яблоко 🍏",
-        "Твоя ментальная энергия совершила полезную работу. КПД стремится к 100%!",
-        "Осторожно! Уровень интеллекта зашкаливает, датчики зафиксировали аномалию!",
-        "Поздравляем, ты только что уменьшил энтропию Вселенной на крошечную долю!"
+        "Твоя ментальная энергия совершила полезную работу. КПД стремится к 100%!"
     ];
 
-    // Навигационные элементы
+    // Поиск элементов навигации
     const menuToggleBtn = document.getElementById('menuToggleBtn');
     const sidebar = document.getElementById('sidebar');
     const categoryItems = document.querySelectorAll('.category-item');
     const navButtons = document.querySelectorAll('.nav-btn');
     const contentSections = document.querySelectorAll('.content-section');
 
-    // Элементы управления модалкой
+    // Элементы модального окна
     const modalOverlay = document.getElementById('modalOverlay');
     const modalClose = document.getElementById('modalClose');
     const modalBody = document.getElementById('modalBody');
@@ -32,17 +32,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentOpenTemplateId = '';
 
-    // Подсвечиваем сохраненные формулы при старте страницы
     syncUIWithStorage();
+    checkAchievementsSilent();
 
-    // 1. ОТКРЫТИЕ И ЗАКРЫТИЕ МЕНЮ РАЗДЕЛОВ
-    menuToggleBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sidebar.classList.toggle('open');
-    });
+    // Открытие и закрытие бокового меню
+    if (menuToggleBtn) {
+        menuToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebar.classList.toggle('open');
+        });
+    }
 
     document.addEventListener('click', (e) => {
-        if (!sidebar.contains(e.target) && e.target !== menuToggleBtn) {
+        if (sidebar && !sidebar.contains(e.target) && e.target !== menuToggleBtn) {
             sidebar.classList.remove('open');
         }
     });
@@ -51,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         contentSections.forEach(section => section.classList.remove('active'));
         const targetSection = document.getElementById(targetId);
         if (targetSection) targetSection.classList.add('active');
-        sidebar.classList.remove('open');
+        if (sidebar) sidebar.classList.remove('open');
     }
 
     categoryItems.forEach(item => {
@@ -73,11 +75,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (target === 'learned-section') renderLearnedList();
             if (target === 'important-section') renderImportantList();
+            if (target === 'stats-section') renderStatsAndAchievements();
 
             showSection(target);
         });
     });
-    // 2. ОТКРЫТИЕ МОДАЛЬНОГО ОКНА (УГЛУБЛЕННОЕ ИЗУЧЕНИЕ)
+    // Открытие модального окна с конспектом
     document.addEventListener('click', (e) => {
         if (e.target && e.target.classList.contains('advanced-btn')) {
             currentOpenTemplateId = e.target.getAttribute('data-depth');
@@ -102,56 +105,82 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // КЛИК "ОТМЕТИТЬ ИЗУЧЕННЫМ" (+ КОНФЕТТИ + УВЕДОМЛЕНИЕ)
-    markLearnedBtn.addEventListener('click', () => {
-        if (currentOpenTemplateId && !learnedThemes.includes(currentOpenTemplateId)) {
-            learnedThemes.push(currentOpenTemplateId);
-            localStorage.setItem('learnedThemes', JSON.stringify(learnedThemes));
+    // Нажатие кнопки "Отметить изученным" в модалке
+    if (markLearnedBtn) {
+        markLearnedBtn.addEventListener('click', () => {
+            if (currentOpenTemplateId && !learnedThemes.includes(currentOpenTemplateId)) {
+                learnedThemes.push(currentOpenTemplateId);
+                localStorage.setItem('learnedThemes', JSON.stringify(learnedThemes));
 
-            markLearnedBtn.innerText = 'Изучено ✓';
-            markLearnedBtn.classList.add('completed');
-            markLearnedBtn.disabled = true;
+                markLearnedBtn.innerText = 'Изучено ✓';
+                markLearnedBtn.classList.add('completed');
+                markLearnedBtn.disabled = true;
 
-            // Салют конфетти
-            if (typeof confetti === 'function') {
-                confetti({
-                    particleCount: 120,
-                    spread: 80,
-                    origin: { y: 0.6 }
-                });
+                // Проверка триггеров на разблокировку достижений
+                checkAndUnlockAchievement('first-step', "🚀 Получено достижение: Первый шаг!");
+                if (learnedThemes.length === 3) {
+                    checkAndUnlockAchievement('phys-master', "⚛️ Получено достижение: Архивариус!");
+                }
+
+                sessionLearnCount++;
+                if (sessionLearnCount % 2 === 0) {
+                    queueToast(funnyQuotes[Math.floor(Math.random() * funnyQuotes.length)], false);
+                }
             }
+        });
+    }
 
-            // Срабатывание триггера на каждое второе изучение
-            sessionLearnCount++;
-            if (sessionLearnCount % 2 === 0) {
-                showMotivationalToast();
-            }
-        }
-    });
+    // Закрытие модального окна
+    const closeModal = () => { if (modalOverlay) modalOverlay.classList.remove('open'); };
+    if (modalClose) modalClose.addEventListener('click', closeModal);
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+    }
+    // ДВИЖОК ОЧЕРЕДИ УВЕДОМЛЕНИЙ
+    function queueToast(text, isAchievement = false) {
+        toastQueue.push({ text, isAchievement });
+        processToastQueue();
+    }
 
-    // Функция генерации всплывающих цитат сверху экрана
-    function showMotivationalToast() {
+    function processToastQueue() {
+        if (isToastProcessing || toastQueue.length === 0) return;
+        isToastProcessing = true;
+
+        const currentToast = toastQueue.shift();
         const container = document.getElementById('toast-container');
+        if (!container) return;
+        
         const toast = document.createElement('div');
         toast.classList.add('toast');
-
-        const randomQuote = funnyQuotes[Math.floor(Math.random() * funnyQuotes.length)];
-        toast.innerText = randomQuote;
-
+        if (currentToast.isAchievement) {
+            toast.classList.add('achievement-toast');
+        }
+        toast.innerText = currentToast.text;
         container.appendChild(toast);
 
-        setTimeout(() => toast.classList.add('show'), 100);
+        setTimeout(() => toast.classList.add('show'), 50);
 
         setTimeout(() => {
             toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 300);
-        }, 4500);
+            setTimeout(() => {
+                toast.remove();
+                isToastProcessing = false;
+                processToastQueue(); // Запуск следующего уведомления из очереди
+            }, 300);
+        }, 4000);
     }
 
-    const closeModal = () => modalOverlay.classList.remove('open');
-    modalClose.addEventListener('click', closeModal);
-    modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
-    // 3. ДОБАВЛЕНИЕ / УДАЛЕНИЕ ИЗ ВАЖНОГО (КНОПКА "!")
+    function checkAndUnlockAchievement(id, notificationText) {
+        if (!unlockedAchievements.includes(id)) {
+            unlockedAchievements.push(id);
+            localStorage.setItem('unlockedAchievements', JSON.stringify(unlockedAchievements));
+            queueToast(notificationText, true); // Добавляем ачивку строго в очередь
+        }
+    }
+
+    // ДОБАВЛЕНИЕ / УДАЛЕНИЕ ИЗ ВАЖНОГО (КНОПКА "!")
     document.addEventListener('click', (e) => {
         if (e.target && e.target.classList.contains('important-toggle')) {
             const card = e.target.closest('.card');
@@ -169,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelectorAll(`.card[data-formula-id="${formulaId}"] .important-toggle`).forEach(btn => {
                     btn.classList.add('active');
                 });
+                checkAndUnlockAchievement('formula-fan', "⭐ Получено достижение: Знаток формул!");
             }
             localStorage.setItem('importantFormulas', JSON.stringify(importantFormulas));
 
@@ -188,27 +218,80 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    // ГЕНЕРАЦИЯ ДИНАМИЧЕСКОЙ СЕКЦИИ СТАТИСТИКИ (SVG ГРАФИК + КЛИКИ НАГРАД)
+    function renderStatsAndAchievements() {
+        const totalThemes = 3; 
+        const learnedCount = learnedThemes.length;
+        const percentage = (learnedCount / totalThemes) * 100;
+        
+        // Расчет длины дуги для круга SVG (периметр 2 * PI * r)
+        const strokeDashOffset = 251.2 - (251.2 * percentage) / 100;
 
-    // 4. ГЕНЕРАЦИЯ СПИСКА ИЗУЧЕННОГО + ИСКЛЮЧЕНИЕ ИЗ СПИСКА
+        const chartContainer = document.getElementById('pie-chart-container');
+        if (chartContainer) {
+            chartContainer.innerHTML = `
+                <svg width="100%" height="100%" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="40" fill="transparent" stroke="#e2e8f0" stroke-width="12"/>
+                    <circle cx="50" cy="50" r="40" fill="transparent" stroke="#3498db" stroke-width="12"
+                        stroke-dasharray="251.2" stroke-dashoffset="${strokeDashOffset}"
+                        transform="rotate(-90 50 50)" stroke-linecap="round" style="transition: stroke-dashoffset 0.5s ease;"/>
+                </svg>
+            `;
+        }
+
+        const counterText = document.getElementById('chartCounterText');
+        if (counterText) {
+            counterText.innerText = `Изучено: ${learnedCount} из ${totalThemes} разделов`;
+        }
+
+        // Синхронизация пьедесталов
+        document.querySelectorAll('.pedestal-card').forEach(card => {
+            const achId = card.getAttribute('data-ach-id');
+            if (unlockedAchievements.includes(achId)) {
+                card.classList.add('unlocked');
+            } else {
+                card.classList.remove('unlocked');
+            }
+        });
+    }
+
+    // Логика открытия выпадающего описания Duolingo-пьедесталов
+    document.querySelectorAll('.pedestal-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = card.classList.contains('open');
+            document.querySelectorAll('.pedestal-card').forEach(c => c.classList.remove('open'));
+            if (!isOpen) card.classList.add('open');
+        });
+    });
+    document.addEventListener('click', () => { 
+        document.querySelectorAll('.pedestal-card').forEach(c => c.classList.remove('open')); 
+    });
+
+    function checkAchievementsSilent() {
+        if (learnedThemes.length >= 1 && !unlockedAchievements.includes('first-step')) unlockedAchievements.push('first-step');
+        if (importantFormulas.length >= 1 && !unlockedAchievements.includes('formula-fan')) unlockedAchievements.push('formula-fan');
+        if (learnedThemes.length === 3 && !unlockedAchievements.includes('phys-master')) unlockedAchievements.push('phys-master');
+        localStorage.setItem('unlockedAchievements', JSON.stringify(unlockedAchievements));
+    }
+
+    // РЕНДЕРИНГ СПИСКОВ ИЗУЧЕННОГО И ВАЖНОГО
     function renderLearnedList() {
         const container = document.getElementById('learned-list-container');
+        if (!container) return;
         container.innerHTML = '';
-
         if (learnedThemes.length === 0) {
             container.innerHTML = '<p style="color: #7f8c8d; padding: 10px 0;">Вы пока не отметили ни одной темы как изученную.</p>';
             return;
         }
-
         learnedThemes.forEach(templateId => {
             const template = document.getElementById(templateId);
             if (template) {
                 const tempDiv = document.createElement('div');
                 tempDiv.appendChild(template.content.cloneNode(true));
-                const titleText = tempDiv.querySelector('h2') ? tempDiv.querySelector('h2').innerText : "Подробный конспект";
-
+                const titleText = tempDiv.querySelector('h2') ? tempDiv.querySelector('h2').innerText : "Конспект";
                 const accordionItem = document.createElement('div');
                 accordionItem.classList.add('accordion-item');
-
                 accordionItem.innerHTML = `
                     <div class="accordion-header">${titleText} <span>▼</span></div>
                     <div class="accordion-content">
@@ -216,18 +299,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         <button class="exclude-learned-btn" data-exclude-id="${templateId}">❌ Удалить из изученного</button>
                     </div>
                 `;
-
                 accordionItem.querySelector('.theory-text-wrapper').appendChild(tempDiv);
                 container.appendChild(accordionItem);
-
-                accordionItem.querySelector('.accordion-header').addEventListener('click', () => {
-                    accordionItem.classList.toggle('open');
-                });
+                accordionItem.querySelector('.accordion-header').addEventListener('click', () => accordionItem.classList.toggle('open'));
             }
         });
     }
 
-    // Исключение темы из изученного
     document.addEventListener('click', (e) => {
         if (e.target && e.target.classList.contains('exclude-learned-btn')) {
             const idToRemove = e.target.getAttribute('data-exclude-id');
@@ -237,16 +315,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 5. ГЕНЕРАЦИЯ СПИСКА ВАЖНОГО
     function renderImportantList() {
         const container = document.getElementById('important-list-container');
+        if (!container) return;
         container.innerHTML = '';
-
         if (importantFormulas.length === 0) {
             container.innerHTML = '<p style="color: #7f8c8d; padding: 10px 0;">Нет формул, отмеченных как важные.</p>';
             return;
         }
-
         importantFormulas.forEach(formulaId => {
             const originalCard = document.querySelector(`.content-section:not(#important-section) .card[data-formula-id="${formulaId}"]`);
             if (originalCard) {
