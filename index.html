@@ -4,23 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Шпаргалка по физике</title>
-    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <canvas id="confetti-canvas"></canvas>
+    <!-- Контейнер для всплывающих мотивационных уведомлений -->
     <div id="toast-container" class="toast-container"></div>
 
+    <!-- Верхняя панель управления -->
     <header class="top-navbar">
         <div class="nav-container">
             <button class="menu-toggle-btn" id="menuToggleBtn">☰ Разделы</button>
             <button class="nav-btn" data-target="learned-section">📊 Изученное</button>
             <button class="nav-btn" data-target="important-section">⭐ Важное</button>
-            <button class="nav-btn" data-target="stats-section">🏆 Достижения</button>
         </div>
     </header>
 
+    <!-- Основной рабочий блок -->
     <div class="main-layout">
+
+        <!-- Левое выпадающее меню -->
         <aside class="sidebar" id="sidebar">
             <h2>Разделы физики</h2>
             <ul class="category-list">
@@ -30,445 +33,137 @@
             </ul>
         </aside>
 
+        <!-- Правая область с материалами -->
         <main class="content-area">
-            <!-- Механика -->
+
+            <!-- Секция: Механика -->
             <div id="mechanics" class="content-section active">
                 <div class="section-header">
-                    <h2>Механика</h2>
-                    <button class="advanced-btn" data-depth="mechanics">Углублённое изучение</button>
+                    <h2>Mechanics</h2>
+                    <button class="advanced-btn" data-depth="mechanics-deep">Углублённое изучение</button>
                 </div>
                 <p class="description">Изучает движение тел и их взаимодействие.</p>
-                <div class="cards-wrapper">
-                    <div class="card" data-formula-id="mech-1">
-                        <div class="card-header">
-                            <h3>Равномерное движение</h3>
-                            <button class="important-toggle">!</button>
-                        </div>
-                        <p>Формула скорости: <code class="formula">v = s / t</code></p>
+
+                <div class="card" data-formula-id="mech-1">
+                    <div class="card-header">
+                        <h3>Равномерное движение</h3>
+                        <button class="important-toggle" title="Отметить как важное">!</button>
                     </div>
-                    <div class="card" data-formula-id="mech-2">
-                        <div class="card-header">
-                            <h3>Второй закон Ньютона</h3>
-                            <button class="important-toggle">!</button>
-                        </div>
-                        <p>Формула: <code class="formula">F = m · a</code></p>
+                    <p>Формула скорости: <code class="formula">v = s / t</code></p>
+                </div>
+
+                <div class="card" data-formula-id="mech-2">
+                    <div class="card-header">
+                        <h3>Второй закон Ньютона</h3>
+                        <button class="important-toggle" title="Отметить как важное">!</button>
                     </div>
+                    <p>Формула: <code class="formula">F = m · a</code></p>
                 </div>
             </div>
 
-            <!-- Термодинамика -->
+            <!-- Секция: Термодинамика -->
             <div id="thermodynamics" class="content-section">
                 <div class="section-header">
-                    <h2>Термодинамика</h2>
-                    <button class="advanced-btn" data-depth="thermodynamics">Углублённое изучение</button>
+                    <h2>Thermodynamics</h2>
+                    <button class="advanced-btn" data-depth="thermodynamics-deep">Углублённое изучение</button>
                 </div>
                 <p class="description">Изучает тепловые свойства систем и перенос энергии.</p>
-                <div class="cards-wrapper">
-                    <div class="card" data-formula-id="therm-1">
-                        <div class="card-header">
-                            <h3>Первое начало термодинамики</h3>
-                            <button class="important-toggle">!</button>
-                        </div>
-                        <p>Формула: <code class="formula">Q = ΔU + A</code></p>
+
+                <div class="card" data-formula-id="therm-1">
+                    <div class="card-header">
+                        <h3>Первое начало термодинамики</h3>
+                        <button class="important-toggle" title="Отметить как важное">!</button>
                     </div>
+                    <p>Формула: <code class="formula">Q = ΔU + A</code></p>
                 </div>
             </div>
-            <!-- Электродинамика -->
+
+            <!-- Секция: Электродинамика -->
             <div id="electrodynamics" class="content-section">
                 <div class="section-header">
-                    <h2>Электродинамика</h2>
-                    <button class="advanced-btn" data-depth="electrodynamics">Углублённое изучение</button>
+                    <h2>Electrodynamics</h2>
+                    <button class="advanced-btn" data-depth="electrodynamics-deep">Углублённое изучение</button>
                 </div>
                 <p class="description">Изучает электромагнитное поле и заряды.</p>
-                <div class="cards-wrapper">
-                    <div class="card" data-formula-id="elec-1">
-                        <div class="card-header">
-                            <h3>Закон Ома</h3>
-                            <button class="important-toggle">!</button>
-                        </div>
-                        <p>Формула: <code class="formula">I = U / R</code></p>
+
+                <div class="card" data-formula-id="elec-1">
+                    <div class="card-header">
+                        <h3>Закон Ома</h3>
+                        <button class="important-toggle" title="Отметить как важное">!</button>
                     </div>
+                    <p>Формула: <code class="formula">I = U / R</code></p>
                 </div>
             </div>
 
+            <!-- Секция: Изученное -->
             <div id="learned-section" class="content-section">
                 <h2>Изученные конспекты</h2>
-                <div id="learned-list-container" class="accordion-container"></div>
-            </div>
-
-            <div id="important-section" class="content-section">
-                <h2>Важные формулы</h2>
-                <div id="important-list-container" class="cards-wrapper"></div>
-            </div>
-
-            <div id="stats-section" class="content-section">
-                <h2>Статистика и достижения</h2>
-                <div class="stats-grid">
-                    <div class="chart-box">
-                        <h3>Прогресс изучения</h3>
-                        <div class="chart-wrapper" id="pie-chart-container"></div>
-                        <p class="chart-counter" id="chartCounterText"></p>
-                    </div>
-                    <div class="achievements-box">
-                        <h3>Ваши награды</h3>
-                        <div class="pedestals-scroll-container">
-                            <div class="pedestals-row">
-                                <div class="pedestal-card" data-ach-id="first-step">
-                                    <div class="pedestal-pillar"><span class="pedestal-emoji">🚀</span><div class="pillar-block">I</div></div>
-                                    <span class="pedestal-title">Первый шаг</span>
-                                    <div class="pedestal-dropdown">Изучите первый конспект.</div>
-                                </div>
-                                <div class="pedestal-card" data-ach-id="formula-fan">
-                                    <div class="pedestal-pillar"><span class="pedestal-emoji">⭐</span><div class="pillar-block">II</div></div>
-                                    <span class="pedestal-title">Знаток формул</span>
-                                    <div class="pedestal-dropdown">Добавьте формулу в важное.</div>
-                                </div>
-                                <div class="pedestal-card" data-ach-id="phys-master">
-                                    <div class="pedestal-pillar"><span class="pedestal-emoji">⚛️</span><div class="pillar-block">III</div></div>
-                                    <span class="pedestal-title">Архивариус</span>
-                                    <div class="pedestal-dropdown">Изучите все конспекты.</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <p class="description">Разделы теории, которые вы полностью освоили и отметили изученными.</p>
+                <div id="learned-list-container" class="accordion-container">
+                    <!-- Заполняется динамически через JS -->
                 </div>
             </div>
+
+            <!-- Секция: Важное -->
+            <div id="important-section" class="content-section">
+                <h2>Важные формулы</h2>
+                <p class="description">Ваш персональный список формул, добавленных на вкладку быстрого доступа.</p>
+                <div id="important-list-container">
+                    <!-- Заполняется динамически через JS -->
+                </div>
+            </div>
+
         </main>
     </div>
 
+    <!-- Модальное окно (Углубленная информация) -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-window">
             <button class="modal-close" id="modalClose">&times;</button>
             <div class="modal-wrapper">
-                <div class="modal-body" id="modalBody"></div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Теория подгружается из шаблонов ниже -->
+                </div>
                 <div class="modal-footer">
                     <button class="mark-learned-btn" id="markLearnedBtn">Отметить изученным</button>
-                    <button class="exclude-modal-btn" id="excludeModalBtn">Убрать из изученного</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Хранилище конспектов (Шаблоны) -->
     <template id="mechanics-deep">
         <h2>Подробный конспект: Механика</h2>
-        <p>Инерциальные системы отсчета (ИСО) — это базис механики. В них тела сохраняют скорость, если нет внешних сил.</p>
+        <p><strong>Инерциальные системы отсчета (ИСО)</strong> — это базис всей классической механики. В них тела сохраняют свою скорость неизменной, если на них не действуют внешние силы.</p>
+        <p>Основные силы в природе разделяют на 4 типа фундаментальных взаимодействий, но в механике мы чаще всего работаем со следующими проявлениями:</p>
+        <ul>
+            <li><strong>Сила тяжести:</strong> <code>F = mg</code> (направлена к центру Земли)</li>
+            <li><strong>Сила упругости:</strong> <code>F = -kx</code> (Закон Гука для деформаций)</li>
+            <li><strong>Сила трения скольжения:</strong> <code>F = μN</code> (зависит от силы реакции опоры)</li>
+        </ul>
+        <p>Законы сохранения: закон сохранения импульса выполняется в замкнутых системах, а закон сохранения механической энергии — при отсутствии сил трения и сопротивления среды.</p>
     </template>
+
     <template id="thermodynamics-deep">
         <h2>Подробный конспект: Термодинамика</h2>
-        <p>Уравнение Менделеева-Клапейрона: <code>PV = νRT</code> связывает параметры идеального газа.</p>
+        <p>Термодинамическая система описывается макропараметрами: давлением (P), объемом (V) и температурой (T).</p>
+        <p>Уравнение Менделеева-Клапейрона: <code>PV = νRT</code> связывает все ключевые параметры идеального газа в один момент времени.</p>
+        <p>Изопроцессы в газах:</p>
+        <ul>
+            <li><strong>Изохорный (V = const):</strong> закон Шарля <code>P/T = const</code></li>
+            <li><strong>Изобарный (P = const):</strong> закон Гей-Люссака <code>V/T = const</code></li>
+            <li><strong>Изотермический (T = const):</strong> закон Бойля-Мариотта <code>PV = const</code></li>
+        </ul>
     </template>
+
     <template id="electrodynamics-deep">
         <h2>Подробный конспект: Электродинамика</h2>
-        <p>Закон Кулона определяет силу взаимодействия точечных зарядов в вакууме.</p>
+        <p>Электродинамика изучает поведение электрических зарядов и создаваемых ими полей.</p>
+        <p>Закон Кулона определяет силу взаимодействия неподвижных точечных зарядов в вакууме. Напряженность поля — это его силовая характеристика, равная отношению кулоновской силы к величине заряда.</p>
     </template>
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        let learnedThemes = JSON.parse(localStorage.getItem('learnedThemes')) || [];
-        let importantFormulas = JSON.parse(localStorage.getItem('importantFormulas')) || [];
-        let unlockedAchievements = JSON.parse(localStorage.getItem('unlockedAchievements')) || [];
-        let sessionLearnCount = 0;
 
-        let toastQueue = [];
-        let isToastProcessing = false;
-
-        const funnyQuotes = [
-            "С большими знаниями приходит большая ответственность. Не сломай диван ею!",
-            "Ого, теперь твой мозг весит на пару граммов больше. Осторожно при ходьбе!",
-            "Физика — сила, а без неё ты... просто набор хаотично движущихся молекул.",
-            "Ньютон гордился бы тобой. А теперь иди съешь яблоко 🍏",
-            "Твоя ментальная энергия совершила полезную работу. КПД стремится к 100%!"
-        ];
-
-        const menuToggleBtn = document.getElementById('menuToggleBtn');
-        const sidebar = document.getElementById('sidebar');
-        const categoryItems = document.querySelectorAll('.category-item');
-        const navButtons = document.querySelectorAll('.nav-btn');
-        const contentSections = document.querySelectorAll('.content-section');
-
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modalClose = document.getElementById('modalClose');
-        const modalBody = document.getElementById('modalBody');
-        const markLearnedBtn = document.getElementById('markLearnedBtn');
-        const excludeModalBtn = document.getElementById('excludeModalBtn');
-
-        let currentOpenTemplateId = '';
-
-        initConfettiEngine();
-        syncUIWithStorage();
-        checkAchievementsSilent();
-
-        if (menuToggleBtn) {
-            menuToggleBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                sidebar.classList.toggle('open');
-            });
-        }
-
-        document.addEventListener('click', (e) => {
-            if (sidebar && !sidebar.contains(e.target) && e.target !== menuToggleBtn) {
-                sidebar.classList.remove('open');
-            }
-        });
-
-        function showSection(targetId) {
-            contentSections.forEach(section => section.classList.remove('active'));
-            const targetSection = document.getElementById(targetId);
-            if (targetSection) targetSection.classList.add('active');
-            if (sidebar) sidebar.classList.remove('open');
-        }
-
-        categoryItems.forEach(item => {
-            item.addEventListener('click', () => {
-                categoryItems.forEach(el => el.classList.remove('active'));
-                navButtons.forEach(btn => btn.classList.remove('active-nav'));
-                item.classList.add('active');
-                showSection(item.getAttribute('data-target'));
-            });
-        });
-
-        navButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                categoryItems.forEach(el => el.classList.remove('active'));
-                navButtons.forEach(b => b.classList.remove('active-nav'));
-                btn.classList.add('active-nav');
-                const target = btn.getAttribute('data-target');
-
-                if (target === 'learned-section') renderLearnedList();
-                if (target === 'important-section') renderImportantList();
-                if (target === 'stats-section') renderStatsAndAchievements();
-
-                showSection(target);
-            });
-        });
-        document.addEventListener('click', (e) => {
-            if (e.target && e.target.classList.contains('advanced-btn')) {
-                currentOpenTemplateId = e.target.getAttribute('data-depth');
-                const template = document.getElementById(currentOpenTemplateId + "-deep");
-                if (template) {
-                    modalBody.innerHTML = '';
-                    modalBody.appendChild(template.content.cloneNode(true));
-                    updateModalButtonsState();
-                    modalOverlay.classList.add('open');
-                }
-            }
-        });
-
-        function updateModalButtonsState() {
-            if (learnedThemes.includes(currentOpenTemplateId)) {
-                markLearnedBtn.innerText = 'Изучено ✓';
-                markLearnedBtn.classList.add('completed');
-                markLearnedBtn.disabled = true;
-                excludeModalBtn.style.display = 'block';
-            } else {
-                markLearnedBtn.innerText = 'Отметить изученным';
-                markLearnedBtn.classList.remove('completed');
-                markLearnedBtn.disabled = false;
-                excludeModalBtn.style.display = 'none';
-            }
-        }
-
-        if (markLearnedBtn) {
-            markLearnedBtn.addEventListener('click', () => {
-                if (currentOpenTemplateId && !learnedThemes.includes(currentOpenTemplateId)) {
-                    learnedThemes.push(currentOpenTemplateId);
-                    localStorage.setItem('learnedThemes', JSON.stringify(learnedThemes));
-                    updateModalButtonsState();
-                    fireConfettiBurst();
-
-                    checkAndUnlockAchievement('first-step', "🚀 Получено достижение: Первый шаг!");
-                    if (learnedThemes.length === 3) {
-                        checkAndUnlockAchievement('phys-master', "⚛️ Получено достижение: Архивариус!");
-                    }
-
-                    sessionLearnCount++;
-                    if (sessionLearnCount % 2 === 0) {
-                        queueToast(funnyQuotes[Math.floor(Math.random() * funnyQuotes.length)], false);
-                    }
-                }
-            });
-        }
-
-        if (excludeModalBtn) {
-            excludeModalBtn.addEventListener('click', () => {
-                if (currentOpenTemplateId && learnedThemes.includes(currentOpenTemplateId)) {
-                    learnedThemes = learnedThemes.filter(id => id !== currentOpenTemplateId);
-                    localStorage.setItem('learnedThemes', JSON.stringify(learnedThemes));
-                    updateModalButtonsState();
-                }
-            });
-        }
-
-        if (modalClose) modalClose.addEventListener('click', () => modalOverlay.classList.remove('open'));
-        if (modalOverlay) modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) modalOverlay.classList.remove('open'); });
-
-        let canvas, ctx, confettiParticles = [];
-        function initConfettiEngine() {
-            canvas = document.getElementById('confetti-canvas');
-            if (!canvas) return;
-            ctx = canvas.getContext('2d');
-            window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        }
-
-        function fireConfettiBurst() {
-            confettiParticles = [];
-            const colors = ['#3498db', '#2ecc71', '#e74c3c', '#e67e22', '#9b59b6'];
-            for (let i = 0; i < 70; i++) {
-                confettiParticles.push({
-                    x: canvas.width / 2, y: canvas.height * 0.5,
-                    size: Math.random() * 5 + 3, color: colors[Math.floor(Math.random() * colors.length)],
-                    speedX: Math.random() * 10 - 5, speedY: Math.random() * -10 - 3,
-                    gravity: 0.3, opacity: 1
-                });
-            }
-            requestAnimationFrame(updateConfettiLoop);
-        }
-
-        function updateConfettiLoop() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            let active = false;
-            confettiParticles.forEach(p => {
-                p.x += p.speedX; p.y += p.speedY; p.speedY += p.gravity; p.opacity -= 0.02;
-                if (p.opacity > 0) {
-                    active = true;
-                    ctx.fillStyle = p.color; ctx.globalAlpha = p.opacity;
-                    ctx.fillRect(p.x, p.y, p.size, p.size);
-                }
-            });
-            ctx.globalAlpha = 1;
-            if (active) requestAnimationFrame(updateConfettiLoop);
-        }
-        function queueToast(text, isAchievement = false) {
-            toastQueue.push({ text, isAchievement });
-            processToastQueue();
-        }
-
-        function processToastQueue() {
-            if (isToastProcessing || toastQueue.length === 0) return;
-            isToastProcessing = true;
-            const currentToast = toastQueue.shift();
-            const container = document.getElementById('toast-container');
-            if (!container) return;
-            const toast = document.createElement('div');
-            toast.className = currentToast.isAchievement ? 'toast achievement-toast' : 'toast';
-            toast.innerText = currentToast.text;
-            container.appendChild(toast);
-            setTimeout(() => toast.classList.add('show'), 50);
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => { toast.remove(); isToastProcessing = false; processToastQueue(); }, 300);
-            }, 3500);
-        }
-
-        function checkAndUnlockAchievement(id, notificationText) {
-            if (!unlockedAchievements.includes(id)) {
-                unlockedAchievements.push(id);
-                localStorage.setItem('unlockedAchievements', JSON.stringify(unlockedAchievements));
-                queueToast(notificationText, true);
-            }
-        }
-
-        document.addEventListener('click', (e) => {
-            if (e.target && e.target.classList.contains('important-toggle')) {
-                const card = e.target.closest('.card');
-                if (!card) return;
-                const formulaId = card.getAttribute('data-formula-id');
-                if (importantFormulas.includes(formulaId)) {
-                    importantFormulas = importantFormulas.filter(id => id !== formulaId);
-                    document.querySelectorAll(`.card[data-formula-id="${formulaId}"] .important-toggle`).forEach(btn => btn.classList.remove('active'));
-                } else {
-                    importantFormulas.push(formulaId);
-                    document.querySelectorAll(`.card[data-formula-id="${formulaId}"] .important-toggle`).forEach(btn => btn.classList.add('active'));
-                    checkAndUnlockAchievement('formula-fan', "⭐ Получено достижение: Знаток формул!");
-                }
-                localStorage.setItem('importantFormulas', JSON.stringify(importantFormulas));
-                const activeNav = document.querySelector('.nav-btn.active-nav');
-                if (activeNav && activeNav.getAttribute('data-target') === 'important-section') renderImportantList();
-            }
-        });
-
-        function syncUIWithStorage() {
-            document.querySelectorAll('.card').forEach(card => {
-                const id = card.getAttribute('data-formula-id');
-                if (importantFormulas.includes(id)) {
-                    const btn = card.querySelector('.important-toggle');
-                    if (btn) btn.classList.add('active');
-                }
-            });
-        }
-
-        function renderStatsAndAchievements() {
-            const learnedCount = learnedThemes.length;
-            const strokeDashOffset = 251.2 - (251.2 * (learnedCount / 3)) || 251.2;
-            const chartContainer = document.getElementById('pie-chart-container');
-            if (chartContainer) {
-                chartContainer.innerHTML = `
-                    <svg width="100%" height="100%" viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="40" fill="transparent" stroke="#e2e8f0" stroke-width="12"/>
-                        <circle cx="50" cy="50" r="40" fill="transparent" stroke="#3498db" stroke-width="12"
-                            stroke-dasharray="251.2" stroke-dashoffset="${strokeDashOffset}"
-                            transform="rotate(-90 50 50)" stroke-linecap="round"/>
-                    </svg>
-                `;
-            }
-            const textCounter = document.getElementById('chartCounterText');
-            if (textCounter) textCounter.innerText = `Изучено: ${learnedCount} из 3 конспектов`;
-
-            document.querySelectorAll('.pedestal-card').forEach(card => {
-                if (unlockedAchievements.includes(card.getAttribute('data-ach-id'))) card.classList.add('unlocked');
-                else card.classList.remove('unlocked');
-            });
-        }
-
-        document.querySelectorAll('.pedestal-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const isOpen = card.classList.contains('open');
-                document.querySelectorAll('.pedestal-card').forEach(c => c.classList.remove('open'));
-                if (!isOpen) card.classList.add('open');
-            });
-        });
-        document.addEventListener('click', () => document.querySelectorAll('.pedestal-card').forEach(c => c.classList.remove('open')));
-
-        function checkAchievementsSilent() {
-            if (learnedThemes.length >= 1 && !unlockedAchievements.includes('first-step')) unlockedAchievements.push('first-step');
-            if (importantFormulas.length >= 1 && !unlockedAchievements.includes('formula-fan')) unlockedAchievements.push('formula-fan');
-            if (learnedThemes.length === 3 && !unlockedAchievements.includes('phys-master')) unlockedAchievements.push('phys-master');
-            localStorage.setItem('unlockedAchievements', JSON.stringify(unlockedAchievements));
-        }
-
-        function renderLearnedList() {
-            const container = document.getElementById('learned-list-container');
-            if (!container) return;
-            container.innerHTML = '';
-            if (learnedThemes.length === 0) { container.innerHTML = '<p style="color: #7f8c8d; padding: 10px 0;">Нет изученных тем.</p>'; return; }
-            learnedThemes.forEach(templateId => {
-                const template = document.getElementById(templateId + "-deep");
-                if (template) {
-                    const tempDiv = document.createElement('div'); tempDiv.appendChild(template.content.cloneNode(true));
-                    const titleText = tempDiv.querySelector('h2') ? tempDiv.querySelector('h2').innerText : "Конспект";
-                    const accordionItem = document.createElement('div'); accordionItem.className = 'accordion-item';
-                    accordionItem.innerHTML = `
-                        <div class="accordion-header">${titleText} <span>▼</span></div>
-                        <div class="accordion-content"><div class="theory-text-wrapper"></div><button class="exclude-learned-btn" data-exclude-id="${templateId}">❌ Удалить из изученного</button></div>
-                    `;
-                    accordionItem.querySelector('.theory-text-wrapper').appendChild(tempDiv); container.appendChild(accordionItem);
-                    accordionItem.querySelector('.accordion-header').addEventListener('click', () => accordionItem.classList.toggle('open'));
-                }
-            });
-        }
-
-        function renderImportantList() {
-            const container = document.getElementById('important-list-container');
-            if (!container) return;
-            container.innerHTML = '';
-            if (importantFormulas.length === 0) { container.innerHTML = '<p style="color: #7f8c8d; padding: 10px 0;">Нет важных формул.</p>'; return; }
-            importantFormulas.forEach(formulaId => {
-                const originalCard = document.querySelector(`.content-area .card[data-formula-id="${formulaId}"]`);
-                if (originalCard) container.appendChild(originalCard.cloneNode(true));
-            });
-        }
-    });
-    </script>
+    <!-- Подключение библиотеки Canvas Confetti со стороннего CDN хостинга -->
+    <script src="https://jsdelivr.net"></script>
+    <script src="script.js"></script>
 </body>
 </html>
