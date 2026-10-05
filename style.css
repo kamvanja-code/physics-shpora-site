@@ -9,67 +9,95 @@ body {
     background-color: #f4f7f6;
     height: 100vh;
     display: flex;
-    flex-direction: column; /* Элементы идут сверху вниз: Хедер -> Основной контент */
+    flex-direction: column;
     overflow: hidden;
 }
 
-/* ВЕРХНЯЯ ПАНЕЛЬ (HEADER) */
+/* Кастомные полосы прокрутки (ползунки) */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background: #bdc3c7;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #95a5a6;
+}
+
+/* ВЕРХНЯЯ ПАНЕЛЬ */
 .top-navbar {
     height: 60px;
     background-color: #ffffff;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     display: flex;
-    align-items: center; /* Центрирование по вертикали */
+    align-items: center;
     padding: 0 20px;
     z-index: 100;
 }
 
-/* Контейнер для кнопок (выровнен по вертикали) */
 .nav-container {
     display: flex;
     align-items: center;
-    gap: 15px; /* Расстояние между будущими кнопками */
+    gap: 12px;
 }
 
-/* Кнопка Разделы и другие будущие кнопки */
-.menu-toggle-btn, .nav-btn {
+.menu-toggle-btn {
     background-color: #2c3e50;
     color: white;
+}
+
+.nav-btn {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+}
+
+.menu-toggle-btn, .nav-btn {
     border: none;
-    padding: 10px 20px;
+    padding: 10px 18px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 500;
-    transition: background-color 0.2s, transform 0.1s;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
 }
 
-.menu-toggle-btn:hover, .nav-btn:hover {
-    background-color: #34495e;
+.nav-btn:hover {
+    background-color: #e2e6e9;
 }
 
-/* ОСНОВНОЙ КАРКАС (Ниже хедера) */
+/* Эффект для активных кнопок хедера при переключении страниц */
+.nav-btn.active-nav {
+    background-color: #3498db;
+    color: white;
+}
+
+/* ОСНОВНОЙ КАРКАС */
 .main-layout {
     display: flex;
-    flex: 1; /* Занимает все оставшееся пространство по высоте */
+    flex: 1;
     overflow: hidden;
 }
 
-/* БОКОВОЕ МЕНЮ (Теперь работает через изменение ширины) */
+/* БОКОВОЕ МЕНЮ */
 .sidebar {
-    width: 0; /* Изначально закрыто */
+    width: 0;
     background-color: #2c3e50;
     color: #ecf0f1;
-    overflow: hidden; /* Чтобы текст не вылезал, пока ширина 0 */
-    white-space: nowrap; /* Запрещаем перенос строк при скрытии */
+    overflow: hidden;
+    white-space: nowrap;
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
-    padding: 20px 0; /* Верхний/нижний паддинг оставляем, боковой убираем */
+    padding: 20px 0;
 }
 
-/* Класс, который добавляется при открытии */
 .sidebar.open {
     width: 280px;
-    padding: 20px; /* Возвращаем боковые отступы при открытии */
+    padding: 20px;
 }
 
 .sidebar h2 {
@@ -88,29 +116,23 @@ body {
     margin-bottom: 8px;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
+    transition: background-color 0.2s;
 }
 
-.category-item:hover {
-    background-color: #34495e;
-    transform: translateX(5px);
-}
-
-.category-item.active {
+.category-item:hover, .category-item.active {
     background-color: #3498db;
     font-weight: bold;
 }
 
-/* ПРАВАЯ ПАНЕЛЬ КОНТЕНТА (Сдвигается сама благодаря flex-grow) */
+/* РАБОЧАЯ ОБЛАСТЬ (ПОЛЗУНОК ТУТ) */
 .content-area {
-    flex: 1; /* Занимает всё доступное свободное место справа */
+    flex: 1;
     padding: 40px;
-    overflow-y: auto;
+    overflow-y: auto; /* Ползунок для длинных списков карточек */
     background-color: #fff;
     position: relative;
 }
 
-/* Шапка раздела с кнопкой */
 .section-header {
     display: flex;
     align-items: center;
@@ -118,7 +140,6 @@ body {
     margin-bottom: 10px;
 }
 
-/* Кнопка "Углубленное изучение" */
 .advanced-btn {
     background-color: #2ecc71;
     color: white;
@@ -126,61 +147,64 @@ body {
     padding: 8px 14px;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
-    transition: background-color 0.2s, transform 0.1s;
+    transition: background-color 0.2s;
 }
 
-.advanced-btn:hover {
-    background-color: #27ae60;
-    transform: scale(1.03);
-}
+.advanced-btn:hover { background-color: #27ae60; }
 
-/* АНИМАЦИИ ПЕРЕКЛЮЧЕНИЯ КОНТЕНТА */
-.content-section {
-    display: none;
-}
-
-.content-section.active {
-    display: block;
-    animation: fadeInRight 0.4s forwards cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.content-section.leaving {
-    display: block;
-    animation: fadeOutLeft 0.3s forwards ease-in;
-    position: absolute;
-    width: calc(100% - 80px);
-}
-
-@keyframes fadeInRight {
-    from { opacity: 0; transform: translateX(30px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes  fadeOutLeft {
-    from { opacity: 1; transform: translateX(0); }
-    to { opacity: 0; transform: translateX(-30px); }
-}
-
-.description {
-    color: #7f8c8d;
-    margin-bottom: 30px;
-}
-
+/* КАРТОЧКА ФОРМУЛЫ И ВОСКЛИЦАТЕЛЬНЫЙ ЗНАК */
 .card {
     background-color: #f8f9fa;
     border-left: 5px solid #3498db;
     padding: 20px;
     margin-bottom: 15px;
     border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Кнопка "!" */
+.important-toggle {
+    width: 28px;
+    height: 28px;
+    border: 2px solid #bdc3c7;
+    background: transparent;
+    color: #7f8c8d;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.important-toggle:hover {
+    border-color: #e67e22;
+    color: #e67e22;
+    background-color: #fef5ec;
+}
+
+/* Состояние, когда формула выбрана важной */
+.important-toggle.active {
+    background-color: #e67e22;
+    border-color: #e67e22;
+    color: white;
 }
 
 .formula {
     display: inline-block;
     background-color: #e8ebed;
-    padding: 4px 8px;
+    padding: 6px 12px;
     border-radius: 4px;
     font-family: monospace;
     font-size: 1.1rem;
@@ -188,52 +212,116 @@ body {
     margin-top: 5px;
 }
 
-/* МОДАЛЬНОЕ ОКНО */
+/* РАСШИРЕННОЕ МОДАЛЬНОЕ ОКНО */
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
     z-index: 200;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    pointer-events: none;
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; pointer-events: none;
     transition: opacity 0.3s ease;
 }
 
-.modal-overlay.open {
-    opacity: 1;
-    pointer-events: auto;
-}
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
 
 .modal-window {
     background-color: white;
-    padding: 40px;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 650px;
-    max-height: 80vh;
-    overflow-y: auto;
+    border-radius: 12px;
+    width: 85%;
+    max-width: 800px; /* Увеличили ширину поля информации */
+    height: 75vh;     /* Задали фиксированную высоту окна */
     position: relative;
-    transform: scale(0.8);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
 }
 
-.modal-overlay.open .modal-window {
-    transform: scale(1);
+.modal-overlay.open .modal-window { transform: scale(1); }
+
+.modal-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
+
+/* Контентная часть внутри модалки (ПОЛЗУНОК ТУТ) */
+.modal-body {
+    flex: 1;
+    padding: 40px 40px 20px 40px;
+    overflow-y: auto; /* Включает ползунок прокрутки для теории */
+}
+
+.modal-body h2 { color: #2c3e50; margin-bottom: 20px; font-size: 1.8rem;}
+.modal-body p { line-height: 1.7; color: #34495e; margin-bottom: 15px; font-size: 1.05rem;}
+.modal-body ul { margin-left: 20px; margin-bottom: 15px; color: #34495e;}
+.modal-body li { margin-bottom: 8px; }
+
+/* Подвал окна с кнопкой отметки */
+.modal-footer {
+    padding: 20px 40px;
+    border-top: 1px solid #ecf0f1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.mark-learned-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.mark-learned-btn:hover { background-color: #2980b9; }
+.mark-learned-btn.completed { background-color: #95a5a6; cursor: default; }
 
 .modal-close {
     position: absolute;
-    top: 15px;
-    right: 20px;
-    background: none;
-    border: none;
-    font-size: 2rem;
-    cursor: pointer;
-    color: #7f8c8d;
+    top: 15px; right: 20px;
+    background: none; border: none;
+    font-size: 2rem; cursor: pointer; color: #95a5a6;
+    z-index: 10;
 }
+
+/* СТИЛИ ДЛЯ АККОРДЕОНА (ИЗУЧЕННОЕ) */
+.accordion-item {
+    background: #f8f9fa;
+    border: 1px solid #e2e6e9;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.accordion-header {
+    padding: 15px 20px;
+    background: #f1f3f5;
+    cursor: pointer;
+    font-weight: 600;
+    color: #2c3e50;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0 20px;
+    background: white;
+}
+
+.accordion-item.open .accordion-content {
+    max-height: 500px; /* Приблизительная высота с запасом */
+    padding: 20px;
+    overflow-y: auto; /* Внутренний ползунок, если теория длинная */
+}
+
+/* Анимация секций */
+.content-section { display: none; }
+.content-section.active { display: block; }
