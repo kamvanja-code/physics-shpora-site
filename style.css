@@ -698,3 +698,16 @@ body {
         z-index: 999;
         box-shadow: 5px 0 15px rgba(0,0,0,0.2);
     }
+.sidebar-divider {
+    list-style: none;
+    padding: 15px 15px 5px 15px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #7f8c8d;
+    font-weight: 700;
+    border-top: 1px solid #34495e;
+    margin-top: 10px;
+    cursor: default;
+    pointer-events: none;
+}
