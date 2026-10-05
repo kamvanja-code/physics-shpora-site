@@ -550,3 +550,16 @@ body {
     opacity: 1;
     transform: translateY(0);
 }
+.sidebar-divider {
+    list-style: none;
+    padding: 15px 15px 5px 15px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #7f8c8d;
+    font-weight: 700;
+    border-top: 1px solid #34495e;
+    margin-top: 10px;
+    cursor: default;
+    pointer-events: none;
+}
