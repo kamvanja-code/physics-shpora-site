@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const funnyQuotes = [
         "С большими знаниями приходит большая ответственность",
-        "Осторожней, а то аурометр рядом с тобой зашкаливает!",
+        "Осторожней, ато аурометр рядом с тобой зашкаливает!",
         "Физика — сила, а без неё ты... просто набор хаотично движущихся молекул.",
         "Ньютон гордился бы тобой. А теперь иди съешь яблоко 🍏",
         "Твоя интеллектуальная энергия совершила полезную работу. КПД стремится к 100%!",
@@ -33,11 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const markLearnedBtn = document.getElementById('markLearnedBtn');
 
     let currentOpenTemplateId = '';
-
-    // ИСПРАВЛЕНИЕ: Добавлена отсутствующая функция, из-за которой всё падало!
-    function checkAchievementsSilent() {
-        console.log("Инициализация достижений прошла успешно.");
-    }
 
     syncUIWithStorage();
     checkAchievementsSilent();
@@ -106,6 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     markLearnedBtn.classList.remove('completed');
                     markLearnedBtn.disabled = false;
                 }
+
                 modalOverlay.classList.add('open');
             }
         }
@@ -122,27 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 markLearnedBtn.classList.add('completed');
                 markLearnedBtn.disabled = true;
 
-                // 1. Стандартные триггеры
+                // Проверка триггеров на разблокировку достижений
                 checkAndUnlockAchievement('first-step', "🚀 Получено достижение: Первый шаг!");
-                
-                // Исправление: динамически считаем общее количество доступных шаблонов на сайте
-                const totalTemplatesCount = document.querySelectorAll('template').length;
-                if (learnedThemes.length === totalTemplatesCount) {
+                if (learnedThemes.length === 3) {
                     checkAndUnlockAchievement('phys-master', "⚛️ Получено достижение: Архивариус!");
-                }
-
-                // 2. НОВАЯ ЛОГИКА: Проверка для достижения "Мегамозг" (id: blank-1)
-                // Считаем, сколько продвинутых разделов из тех, что открыл пользователь, уже изучено
-                let advancedLearnedCount = 0;
-                learnedThemes.forEach(id => {
-                    if (id.includes('quantum') || id.includes('advanced') || id === 'tmpl-electro') { 
-                        advancedLearnedCount++; 
-                    }
-                });
-                
-                // Если изучено хотя бы 2 сложных темы — открываем ачивку с мозгом!
-                if (advancedLearnedCount >= 2) {
-                    checkAndUnlockAchievement('blank-1', "🧠 Получено достижение: Мегамозг!");
                 }
 
                 sessionLearnCount++;
@@ -152,7 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
 
     // Закрытие модального окна
     const closeModal = () => { if (modalOverlay) modalOverlay.classList.remove('open'); };
@@ -191,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 toast.remove();
                 isToastProcessing = false;
-                processToastQueue();
+                processToastQueue(); // Запуск следующего уведомления из очереди
             }, 300);
         }, 4000);
     }
@@ -200,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!unlockedAchievements.includes(id)) {
             unlockedAchievements.push(id);
             localStorage.setItem('unlockedAchievements', JSON.stringify(unlockedAchievements));
-            queueToast(notificationText, true);
+            queueToast(notificationText, true); // Добавляем ачивку строго в очередь
         }
     }
 
@@ -242,12 +220,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    // ГЕНЕРАЦИЯ ДИНАМИЧЕСКОЙ СЕКЦИИ СТАТИСТИКИ
+    // ГЕНЕРАЦИЯ ДИНАМИЧЕСКОЙ СЕКЦИИ СТАТИСТИКИ (SVG ГРАФИК + КЛИКИ НАГРАД)
     function renderStatsAndAchievements() {
-        const totalThemes = document.querySelectorAll('.category-item').length;
+        const totalThemes = 3; 
         const learnedCount = learnedThemes.length;
         const percentage = (learnedCount / totalThemes) * 100;
         
+        // Расчет длины дуги для круга SVG (периметр 2 * PI * r)
         const strokeDashOffset = 251.2 - (251.2 * percentage) / 100;
 
         const chartContainer = document.getElementById('pie-chart-container');
@@ -267,6 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
             counterText.innerText = `Изучено: ${learnedCount} из ${totalThemes} разделов`;
         }
 
+        // Синхронизация пьедесталов
         document.querySelectorAll('.pedestal-card').forEach(card => {
             const achId = card.getAttribute('data-ach-id');
             if (unlockedAchievements.includes(achId)) {
@@ -277,18 +257,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Логика открытия подсказок достижений
+    // Логика открытия подсказок достижений по центру экрана
     document.querySelectorAll('.pedestal-card').forEach(card => {
         card.addEventListener('click', (e) => {
-            e.stopPropagation();
+            e.stopPropagation(); // Останавливаем всплытие, чтобы клик не улетал на документ
+            
             const isOpen = card.classList.contains('open');
+            
+            // Сначала закрываем вообще все открытые подсказки на странице
             document.querySelectorAll('.pedestal-card').forEach(c => c.classList.remove('open'));
+            
+            // Если карточка была закрыта — открываем её тултип
             if (!isOpen) {
                 card.classList.add('open');
             }
         });
     });
 
+    // Закрываем подсказку при клике в любую пустую точку экрана
     document.addEventListener('click', () => { 
         document.querySelectorAll('.pedestal-card').forEach(c => c.classList.remove('open')); 
     });
