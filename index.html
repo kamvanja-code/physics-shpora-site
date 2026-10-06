@@ -6,6 +6,14 @@
     <title>Шпаргалка по физике</title>
     <!-- Подключение стилей (замените style.css на ваше имя файла, если оно другое) -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- CSS-стили для шрифтов и символов формул -->
+    <link rel="stylesheet" href="https://jsdelivr.net">
+    <!-- Сам скрипт библиотеки -->
+    <script defer src="https://jsdelivr.net"></script>
+    <!-- Скрипт автоматического поиска формул на странице -->
+    <script defer src="https://jsdelivr.net" onload="renderMathInElement(document.body);"></script>
+
 </head>
 <body>
 
@@ -55,57 +63,62 @@
                     <p class="description">Изучает движение материальных тел и взаимодействие между ними.</p>
                 
                     <div class="cards-wrapper">
-                        <!-- Карточка 1: Скорость -->
-                        <div class="card" data-formula-id="mech-1">
-                            <div class="card-header">
-                                <h3>Скорость при равномерном движении</h3>
-                                <button class="important-toggle">!</button>
-                            </div>
-                            <p>Определяет быстроту перемещения тела и направление его движения.</p>
-                            <span class="formula">v = s / t</span>
+                    <!-- РАЗДЕЛ: МЕХАНИКА (ПОЛНЫЙ КУРС) -->
+                    <div class="physics-block" id="mechanics-block">
+                        <div class="section-header">
+                            <h2>Механика</h2>
                         </div>
-                
-                        <!-- Карточка 2: Ускорение -->
-                        <div class="card" data-formula-id="mech-2">
-                            <div class="card-header">
-                                <h3>Ускорение (равноускоренное движение)</h3>
-                                <button class="important-toggle">!</button>
+                        <p class="description">Изучает механическое движение тел и причины, вызывающие изменение этого движения.</p>
+                    
+                        <div class="cards-wrapper">
+                            
+                            <!-- ПОДТЕМА 1: КИНЕМАТИКА -->
+                            <div class="card" data-formula-id="mech-kinematics">
+                                <div class="card-header">
+                                    <h3>1. Кинематика прямолинейного движения</h3>
+                                    <button class="advanced-btn" data-depth="mech-kin-advanced">Углублённое изучение</button>
+                                    <button class="important-toggle">!</button>
+                                </div>
+                                <p>Описывает движение тел с помощью математического аппарата, не учитывая причины движения.</p>
+                                <span class="formula">$x(t) = x_0 + v_{0x} \cdot t + \frac{a_x \cdot t^2}{2}$</span>
                             </div>
-                            <p>Показывает, как быстро меняется скорость тела за единицу времени.</p>
-                            <span class="formula">a = (v - v₀) / t</span>
-                        </div>
-                
-                        <!-- Карточка 3: Второй закон Ньютона -->
-                        <div class="card" data-formula-id="mech-3">
-                            <div class="card-header">
-                                <h3>Второй закон Ньютона</h3>
-                                <button class="important-toggle">!</button>
+                    
+                            <!-- ПОДТЕМА 2: ДИНАМИКА -->
+                            <div class="card" data-formula-id="mech-dynamics">
+                                <div class="card-header">
+                                    <h3>2. Динамика и законы Ньютона</h3>
+                                    <button class="advanced-btn" data-depth="mech-dyn-advanced">Углублённое изучение</button>
+                                    <button class="important-toggle">!</button>
+                                </div>
+                                <p>Изучает причины изменения скорости тел при их взаимодействии друг с другом.</p>
+                                <span class="formula">$\vec{F} = m \cdot \vec{a}$</span>
                             </div>
-                            <p>Основной закон динамики: ускорение тела пропорционально равнодействующей всех сил.</p>
-                            <span class="formula">F = m · a</span>
-                        </div>
-                
-                        <!-- Карточка 4: Закон Гука -->
-                        <div class="card" data-formula-id="mech-4">
-                            <div class="card-header">
-                                <h3>Закон Гука (Сила упругости)</h3>
-                                <button class="important-toggle">!</button>
+                    
+                            <!-- ПОДТЕМА 3: СИЛЫ В ПРИРОДЕ -->
+                            <div class="card" data-formula-id="mech-forces">
+                                <div class="card-header">
+                                    <h3>3. Силы в механике</h3>
+                                    <button class="important-toggle">!</button>
+                                    <button class="advanced-btn" data-depth="mech-forces-advanced">Углублённое изучение</button>
+                                </div>
+                                <p>Основные виды сил, с которыми взаимодействуют макроскопические тела в классической физике.</p>
+                                <span class="formula">$F_{тяж} = m \cdot g \quad | \quad F_{упр} = -k \cdot x \quad | \quad F_{тр} = \mu \cdot N$</span>
                             </div>
-                            <p>Сила упругости, возникающая при деформации тела, пропорциональна его удлинению.</p>
-                            <span class="formula">F_упр = -k · x</span>
-                        </div>
-                
-                        <!-- Карточка 5: Импульс -->
-                        <div class="card" data-formula-id="mech-5">
-                            <div class="card-header">
-                                <h3>Импульс тела (Количество движения)</h3>
-                                <button class="important-toggle">!</button>
+                    
+                            <!-- ПОДТЕМА 4: ЗАКОНЫ СОХРАНЕНИЯ -->
+                            <div class="card" data-formula-id="mech-conservation">
+                                <div class="card-header">
+                                    <h3>4. Импульс, работа и законы сохранения</h3>
+                                    <button class="advanced-btn" data-depth="mech-cons-advanced">Углублённое изучение</button>
+                                    <button class="important-toggle">!</button>
+                                </div>
+                                <p>Фундаментальные принципы замкнутых систем, основанные на свойствах симметрии пространства и времени.</p>
+                                <span class="formula">$E_к = \frac{m \cdot v^2}{2} \quad | \quad E_п = m \cdot g \cdot h \quad | \quad \vec{p} = m \cdot \vec{v}$</span>
                             </div>
-                            <p>Векторная величина, равная произведению массы тела на его скорость.</p>
-                            <span class="formula">p = m · v</span>
+                    
                         </div>
                     </div>
-                </div>
+
 
                 <!-- ТЕРМОДИНАМИКА -->
                 <div id="thermo-block" class="physics-block" style="margin-top: 40px;">
