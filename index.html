@@ -45,28 +45,64 @@
             <!-- СЕКЦИЯ 1: ТЕОРИЯ И КАРТОЧКИ -->
             <section id="theory-section" class="content-section active">
                 
-                <!-- МЕХАНИКА -->
-                <div id="mechanics-block" class="physics-block">
+                <!-- Блок Механики на главном экране -->
+                <div class="physics-block" id="mechanics-block">
                     <div class="section-header">
                         <h2>Механика</h2>
-                        <button class="advanced-btn" data-depth="mechanics-depth">Углублённое изучение</button>
+                        <!-- Кнопка вызывает модалку, связываясь по ID с template -->
+                        <button class="advanced-btn" data-depth="mechanics-advanced">Углублённое изучение</button>
                     </div>
-                    <p class="description">Изучает движение тел и их взаимодействие.</p>
-                    
+                    <p class="description">Изучает движение материальных тел и взаимодействие между ними.</p>
+                
                     <div class="cards-wrapper">
-                        <div class="card" data-formula-id="v-speed">
+                        <!-- Карточка 1: Скорость -->
+                        <div class="card" data-formula-id="mech-1">
                             <div class="card-header">
-                                <h3>Равномерное движение</h3>
+                                <h3>Скорость при равномерном движении</h3>
                                 <button class="important-toggle">!</button>
                             </div>
+                            <p>Определяет быстроту перемещения тела и направление его движения.</p>
                             <span class="formula">v = s / t</span>
                         </div>
-                        <div class="card" data-formula-id="f-newton">
+                
+                        <!-- Карточка 2: Ускорение -->
+                        <div class="card" data-formula-id="mech-2">
+                            <div class="card-header">
+                                <h3>Ускорение (равноускоренное движение)</h3>
+                                <button class="important-toggle">!</button>
+                            </div>
+                            <p>Показывает, как быстро меняется скорость тела за единицу времени.</p>
+                            <span class="formula">a = (v - v₀) / t</span>
+                        </div>
+                
+                        <!-- Карточка 3: Второй закон Ньютона -->
+                        <div class="card" data-formula-id="mech-3">
                             <div class="card-header">
                                 <h3>Второй закон Ньютона</h3>
                                 <button class="important-toggle">!</button>
                             </div>
+                            <p>Основной закон динамики: ускорение тела пропорционально равнодействующей всех сил.</p>
                             <span class="formula">F = m · a</span>
+                        </div>
+                
+                        <!-- Карточка 4: Закон Гука -->
+                        <div class="card" data-formula-id="mech-4">
+                            <div class="card-header">
+                                <h3>Закон Гука (Сила упругости)</h3>
+                                <button class="important-toggle">!</button>
+                            </div>
+                            <p>Сила упругости, возникающая при деформации тела, пропорциональна его удлинению.</p>
+                            <span class="formula">F_упр = -k · x</span>
+                        </div>
+                
+                        <!-- Карточка 5: Импульс -->
+                        <div class="card" data-formula-id="mech-5">
+                            <div class="card-header">
+                                <h3>Импульс тела (Количество движения)</h3>
+                                <button class="important-toggle">!</button>
+                            </div>
+                            <p>Векторная величина, равная произведению массы тела на его скорость.</p>
+                            <span class="formula">p = m · v</span>
                         </div>
                     </div>
                 </div>
