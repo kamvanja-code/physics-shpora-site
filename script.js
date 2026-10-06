@@ -58,23 +58,59 @@ document.addEventListener('DOMContentLoaded', () => {
         if (sidebar) sidebar.classList.remove('open');
     }
 
-    // Переключение через категории бокового меню
+    // Новая логика переключения разделов физики в боковом меню
     categoryItems.forEach(item => {
         item.addEventListener('click', () => {
             categoryItems.forEach(el => el.classList.remove('active'));
             navButtons.forEach(btn => btn.classList.remove('active-nav'));
             item.classList.add('active');
             
+            // Включаем вкладку теории
+            showSection('theory-section');
+            
             const target = item.getAttribute('data-target');
-            if (target.includes('-anchor')) {
-                showSection('theory-section');
-                const element = document.getElementById(target);
-                if (element) element.scrollIntoView({ behavior: 'smooth' });
+            const allBlocks = document.querySelectorAll('.physics-block');
+            
+            if (target === 'all-blocks') {
+                // Показываем абсолютно все разделы сплошным текстом
+                allBlocks.forEach(block => block.style.display = 'block');
             } else {
-                showSection(target);
+                // Скрываем всё, кроме выбранного блока
+                allBlocks.forEach(block => {
+                    if (block.id === target) {
+                        block.style.display = 'block';
+                    } else {
+                        block.style.display = 'none';
+                    }
+                });
             }
         });
     });
+
+    // Изменение в переключении верхних табов (чтобы сбрасывать фильтр при возврате на вкладку теории)
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            categoryItems.forEach(el => el.classList.remove('active'));
+            navButtons.forEach(b => b.classList.remove('active-nav'));
+
+            btn.classList.add('active-nav');
+            const target = btn.getAttribute('data-target');
+
+            if (target === 'theory-section') {
+                // При клике на верхнюю вкладку "Теория" показываем снова все разделы
+                document.querySelectorAll('.physics-block').forEach(block => block.style.display = 'block');
+                const allItem = document.querySelector('.category-item[data-target="all-blocks"]');
+                if (allItem) allItem.classList.add('active');
+            }
+
+            if (target === 'learned-section') renderLearnedList();
+            if (target === 'important-section') renderImportantList();
+            if (target === 'stats-section') renderStatsAndAchievements();
+
+            showSection(target);
+        });
+    });
+
 
     // Переключение верхних табов
     navButtons.forEach(btn => {
