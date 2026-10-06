@@ -207,42 +207,6 @@
         </div>
     </div>
 
-    <!-- Шаблоны конспектов -->
-    <template id="mechanics-deep">
-        <h2>Подробный конспект: Механика</h2>
-        <p><strong>Инерциальные системы отсчета (ИСО)</strong> — это базис всей классической механики. В них тела сохраняют свою скорость неизменной, если на них не действуют внешние силы.</p>
-        <ul>
-            <li><strong>Сила тяжести:</strong> F = mg (направлена к центру Земли)</li>
-            <li><strong>Сила упругости:</strong> F = -kx (Закон Гука для деформаций)</li>
-            <li><strong>Сила трения скольжения:</strong> F = μN</li>
-        </ul>
-    </template>
-
-    <template id="thermodynamics-deep">
-        <h2>Подробный конспект: Термодинамика</h2>
-        <p>Уравнение Менделеева-Клапейрона: <code>PV = νRT</code> связывает все ключевые параметры идеального газа в один момент времени.</p>
-    </template>
-
-    <template id="electrodynamics-deep">
-        <h2>Подробный конспект: Электродинамика</h2>
-        <p>Закон Кулона определяет силу взаимодействия неподвижных точечных зарядов в вакууме. Напряженность поля — это его силовая характеристика.</p>
-    </template>
-
-    <script src="script.js"></script>
-    <!-- Модальное окно для отображения конспектов -->
-    <div id="modalOverlay" class="modal-overlay">
-        <div class="modal-window">
-            <button id="modalClose" class="modal-close">&times;</button>
-            <div class="modal-wrapper">
-                <div id="modalBody" class="modal-body">
-                    <!-- Сюда JavaScript будет подставлять текст конспекта -->
-                </div>
-                <div class="modal-footer">
-                    <button id="markLearnedBtn" class="mark-learned-btn">Отметить изученным</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Шаблоны с текстом конспектов -->
     <template id="mechanics-depth">
         <h2>Подробный конспект: Механика</h2>
@@ -263,6 +227,22 @@
         <h2>Подробный конспект: Электродинамика</h2>
         <p>Закон Кулона определяет силу взаимодействия неподвижных точечных зарядов в вакууме. Напряженность поля — это его силовая характеристика.</p>
     </template>
+
+    <script src="script.js"></script>
+    <!-- Модальное окно для отображения конспектов -->
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal-window">
+            <button id="modalClose" class="modal-close">&times;</button>
+            <div class="modal-wrapper">
+                <div id="modalBody" class="modal-body">
+                    <!-- Сюда JavaScript будет подставлять текст конспекта -->
+                </div>
+                <div class="modal-footer">
+                    <button id="markLearnedBtn" class="mark-learned-btn">Отметить изученным</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
