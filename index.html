@@ -10,7 +10,10 @@
     <link rel="stylesheet" href="https://jsdelivr.net">
     <script defer src="https://jsdelivr.net"></script>
     <script defer src="https://jsdelivr.net" 
-            onload="renderMathInElement(document.body);"></script>
+            onload="renderMathInElement(document.body, {
+              // Разрешаем рендерить формулы внутри любых тегов, убирая ограничения
+              ignoredTags: [] 
+            });"></script>
 
 </head>
 <body>
