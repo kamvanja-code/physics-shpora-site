@@ -276,12 +276,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Рендеринг статистики наград (Динамический подсчет)
+    // Рендеринг статистики наград
     function renderStatsAndAchievements() {
-        // Находим все теги <template>, которые содержат подробные конспекты
-        const templates = document.querySelectorAll('template');
-        const totalThemes = templates.length > 0 ? templates.length : 3; // Защита от деления на 0
-        
+        const totalThemes = 3; 
         const learnedCount = learnedThemes.length;
         const percentage = (learnedCount / totalThemes) * 100;
         
