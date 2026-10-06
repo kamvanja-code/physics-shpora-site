@@ -4,137 +4,141 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Шпаргалка по физике</title>
+    <!-- Подключение стилей (замените style.css на ваше имя файла, если оно другое) -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Контейнер для упорядоченной очереди уведомлений -->
-    <div id="toast-container" class="toast-container"></div>
-
-    <!-- Верхняя панель управления -->
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
     <header class="top-navbar">
         <div class="nav-container">
-            <button class="menu-toggle-btn" id="menuToggleBtn">☰ Разделы</button>
+            <button id="menuToggleBtn" class="menu-toggle-btn">☰ Разделы</button>
+            <button class="nav-btn active-nav" data-target="theory-section">📚 Теория</button>
             <button class="nav-btn" data-target="learned-section">📊 Изученное</button>
             <button class="nav-btn" data-target="important-section">⭐ Важное</button>
             <button class="nav-btn" data-target="stats-section">🏆 Достижения</button>
         </div>
     </header>
 
-    <!-- Основной каркас -->
+    <!-- ОСНОВНОЙ КАРКАС -->
     <div class="main-layout">
-        <!-- Левое меню -->
-        <aside class="sidebar" id="sidebar">
+        
+        <!-- БОКОВОЕ МЕНЮ -->
+        <aside id="sidebar" class="sidebar">
             <h2>Разделы физики</h2>
             <ul class="category-list">
-                <li class="category-item active" data-target="mechanics-section">Механика</li>
-                <li class="category-item" data-target="thermo-section">Термодинамика</li>
-                <li class="category-item" data-target="electro-section">Электродинамика</li>
-                
-                <!-- Визуальный разделитель -->
-                <li class="sidebar-divider">Продвинутые разделы</li>
-                
-                <!-- Пример нового продвинутого раздела -->
-                <li class="category-item" data-target="quantum-section">Квантовая физика</li>
+                <li class="category-item active" data-target="theory-section">Все разделы</li>
+                <li class="sidebar-divider">Тематика</li>
+                <li class="category-item" data-target="mechanics-anchor">Механика</li>
+                <li class="category-item" data-target="thermo-anchor">Термодинамика</li>
+                <li class="category-item" data-target="electro-anchor">Электродинамика</li>
             </ul>
         </aside>
 
-        <!-- Правая область с материалами -->
+        <!-- РАБОЧАЯ ОБЛАСТЬ -->
         <main class="content-area">
-            
-            <!-- Секция: Механика -->
-            <div id="mechanics" class="content-section active">
-                <div class="section-header">
-                    <h2>Механика</h2>
-                    <button class="advanced-btn" data-depth="mechanics-deep">Углублённое изучение</button>
-                </div>
-                <p class="description">Изучает движение тел и их взаимодействие.</p>
-                
-                <div class="card" data-formula-id="mech-1">
-                    <div class="card-header">
-                        <h3>Равномерное движение</h3>
-                        <button class="important-toggle" title="Отметить как важное">!</button>
-                    </div>
-                    <p>Формула скорости: <code class="formula">v = s / t</code></p>
-                </div>
-                
-                <div class="card" data-formula-id="mech-2">
-                    <div class="card-header">
-                        <h3>Второй закон Ньютона</h3>
-                        <button class="important-toggle" title="Отметить как важное">!</button>
-                    </div>
-                    <p>Формула: <code class="formula">F = m · a</code></p>
-                </div>
-            </div>
 
-            <!-- Секция: Термодинамика -->
-            <div id="thermodynamics" class="content-section">
-                <div class="section-header">
-                    <h2>Термодинамика</h2>
-                    <button class="advanced-btn" data-depth="thermodynamics-deep">Углублённое изучение</button>
-                </div>
-                <p class="description">Изучает тепловые свойства систем и перенос энергии.</p>
+            <!-- СЕКЦИЯ 1: ТЕОРИЯ И КАРТОЧКИ -->
+            <section id="theory-section" class="content-section active">
                 
-                <div class="card" data-formula-id="therm-1">
-                    <div class="card-header">
-                        <h3>Первое начало термодинамики</h3>
-                        <button class="important-toggle" title="Отметить как важное">!</button>
+                <!-- МЕХАНИКА -->
+                <div id="mechanics-anchor" class="physics-block">
+                    <div class="section-header">
+                        <h2>Механика</h2>
+                        <button class="advanced-btn" data-depth="mechanics-depth">Углублённое изучение</button>
                     </div>
-                    <p>Формула: <code class="formula">Q = ΔU + A</code></p>
-                </div>
-            </div>
-
-            <!-- Секция: Электродинамика -->
-            <div id="electrodynamics" class="content-section">
-                <div class="section-header">
-                    <h2>Электродинамика</h2>
-                    <button class="advanced-btn" data-depth="electrodynamics-deep">Углублённое изучение</button>
-                </div>
-                <p class="description">Изучает электромагнитное поле и заряды.</p>
-                
-                <div class="card" data-formula-id="elec-1">
-                    <div class="card-header">
-                        <h3>Закон Ома</h3>
-                        <button class="important-toggle" title="Отметить как важное">!</button>
+                    <p class="description">Изучает движение тел и их взаимодействие.</p>
+                    
+                    <div class="cards-wrapper">
+                        <div class="card" data-formula-id="v-speed">
+                            <div class="card-header">
+                                <h3>Равномерное движение</h3>
+                                <button class="important-toggle">!</button>
+                            </div>
+                            <span class="formula">v = s / t</span>
+                        </div>
+                        <div class="card" data-formula-id="f-newton">
+                            <div class="card-header">
+                                <h3>Второй закон Ньютона</h3>
+                                <button class="important-toggle">!</button>
+                            </div>
+                            <span class="formula">F = m · a</span>
+                        </div>
                     </div>
-                    <p>Формула: <code class="formula">I = U / R</code></p>
                 </div>
-            </div>
 
-            <!-- Секция: Изученное -->
-            <div id="learned-section" class="content-section">
+                <!-- ТЕРМОДИНАМИКА -->
+                <div id="thermo-anchor" class="physics-block" style="margin-top: 40px;">
+                    <div class="section-header">
+                        <h2>Термодинамика</h2>
+                        <button class="advanced-btn" data-depth="thermo-depth">Углублённое изучение</button>
+                    </div>
+                    <p class="description">Изучает тепловые свойства систем и перенос энергии.</p>
+                    
+                    <div class="cards-wrapper">
+                        <div class="card" data-formula-id="q-thermo">
+                            <div class="card-header">
+                                <h3>Первое начало термодинамики</h3>
+                                <button class="important-toggle">!</button>
+                            </div>
+                            <span class="formula">Q = ΔU + A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ЭЛЕКТРОДИНАМИКА -->
+                <div id="electro-anchor" class="physics-block" style="margin-top: 40px;">
+                    <div class="section-header">
+                        <h2>Электродинамика</h2>
+                        <button class="advanced-btn" data-depth="electro-depth">Углублённое изучение</button>
+                    </div>
+                    <p class="description">Изучает электромагнитное поле и заряды.</p>
+                    
+                    <div class="cards-wrapper">
+                        <div class="card" data-formula-id="i-ohm">
+                            <div class="card-header">
+                                <h3>Закон Ома</h3>
+                                <button class="important-toggle">!</button>
+                            </div>
+                            <span class="formula">I = U / R</span>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+            <!-- СЕКЦИЯ 2: ИЗУЧЕННОЕ -->
+            <section id="learned-section" class="content-section">
                 <h2>Изученные конспекты</h2>
                 <p class="description">Разделы теории, которые вы полностью освоили и отметили изученными.</p>
                 <div id="learned-list-container" class="accordion-container"></div>
-            </div>
+            </section>
 
-            <!-- Секция: Важное -->
-            <div id="important-section" class="content-section">
+            <!-- СЕКЦИЯ 3: ВАЖНОЕ -->
+            <section id="important-section" class="content-section">
                 <h2>Важные формулы</h2>
                 <p class="description">Ваш персональный список формул, добавленных на вкладку быстрого доступа.</p>
-                <div id="important-list-container"></div>
-            </div>
+                <div id="important-list-container" class="cards-wrapper"></div>
+            </section>
 
-            <!-- СЕКЦИЯ: Статистика и достижения -->
-            <div id="stats-section" class="content-section">
+            <!-- СЕКЦИЯ 4: СТАТИСТИКА И ДОСТИЖЕНИЯ -->
+            <section id="stats-section" class="content-section">
                 <h2>Статистика и достижения</h2>
                 <p class="description">Ваш прогресс изучения разделов физики и открытые награды.</p>
                 
                 <div class="stats-grid">
-                    <!-- Левая сторона: Диаграмма прогресса -->
+                    <!-- Круговой график -->
                     <div class="chart-box">
                         <h3>Прогресс изучения</h3>
-                        <div class="chart-wrapper">
-                            <!-- JS сгенерирует SVG график динамически -->
-                            <div id="pie-chart-container"></div>
-                        </div>
-                        <p class="chart-counter" id="chartCounterText">Загрузка...</p>
+                        <div id="pie-chart-container" class="chart-wrapper"></div>
+                        <div id="chartCounterText" class="chart-counter">Загрузка...</div>
                     </div>
-
-                    <!-- Правая сторона: Пьедесталы наград (Duolingo-style) -->
+                    
+                    <!-- Пьедестал достижений -->
+                    <div class="achievements-box">
+                        <h3>Ваши награды</h3>
                         <div class="pedestals-scroll-container">
                             <div class="pedestals-row">
-                                <!-- Ряд 1 (Существующие ачивки) -->
+                                <!-- Достижение 1 -->
                                 <div class="pedestal-card" data-ach-id="first-step">
                                     <div class="pedestal-pillar">
                                         <span class="pedestal-emoji">🚀</span>
@@ -143,6 +147,7 @@
                                     <span class="pedestal-title">Первый шаг</span>
                                     <div class="pedestal-dropdown">Изучите свой самый первый углубленный конспект теории.</div>
                                 </div>
+                                <!-- Достижение 2 -->
                                 <div class="pedestal-card" data-ach-id="formula-fan">
                                     <div class="pedestal-pillar">
                                         <span class="pedestal-emoji">⭐</span>
@@ -151,6 +156,7 @@
                                     <span class="pedestal-title">Знаток формул</span>
                                     <div class="pedestal-dropdown">Сохраните хотя бы одну важную формулу на панели быстрого доступа.</div>
                                 </div>
+                                <!-- Достижение 3 -->
                                 <div class="pedestal-card" data-ach-id="phys-master">
                                     <div class="pedestal-pillar">
                                         <span class="pedestal-emoji">⚛️</span>
@@ -159,55 +165,34 @@
                                     <span class="pedestal-title">Архивариус</span>
                                     <div class="pedestal-dropdown">Изучите все доступные теоретические конспекты на сайте.</div>
                                 </div>
-
-                                <!-- Ряд 2 (Новые пустые заготовки, выстроятся строго под первыми тремя) -->
-                                <div class="pedestal-card" data-ach-id="custom-ach-1">
-                                    <div class="pedestal-pillar">
-                                        <span class="pedestal-emoji">🧠</span> <!-- Поменяйте эмодзи -->
-                                        <div class="pillar-block">IV</div>
-                                    </div>
-                                    <span class="pedestal-title">Заготовка 1</span> <!-- Впишите название -->
-                                    <div class="pedestal-dropdown">Описание вашей будущей четвертой ачивки.</div> <!-- Впишите описание -->
-                                </div>
-                                <div class="pedestal-card" data-ach-id="custom-ach-2">
-                                    <div class="pedestal-pillar">
-                                        <span class="pedestal-emoji">🔥</span>
-                                        <div class="pillar-block">V</div>
-                                    </div>
-                                    <span class="pedestal-title">Заготовка 2</span>
-                                    <div class="pedestal-dropdown">Описание вашей будущей пятой ачивки.</div>
-                                </div>
-                                <div class="pedestal-card" data-ach-id="custom-ach-3">
-                                    <div class="pedestal-pillar">
-                                        <span class="pedestal-emoji">👑</span>
-                                        <div class="pillar-block">VI</div>
-                                    </div>
-                                    <span class="pedestal-title">Заготовка 3</span>
-                                    <div class="pedestal-dropdown">Описание вашей будущей шестой ачивки.</div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
         </main>
     </div>
 
-    <!-- Модальное окно -->
-    <div class="modal-overlay" id="modalOverlay">
+    <!-- КОНТЕЙНЕР ДЛЯ ВСплывающих УВЕДОМЛЕНИЙ -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ДЛЯ ОТКРЫТИЯ КОНСПЕКТОВ -->
+    <div id="modalOverlay" class="modal-overlay">
         <div class="modal-window">
-            <button class="modal-close" id="modalClose">&times;</button>
+            <button id="modalClose" class="modal-close">&times;</button>
             <div class="modal-wrapper">
-                <div class="modal-body" id="modalBody"></div>
+                <div id="modalBody" class="modal-body">
+                    <!-- Сюда JavaScript подставит текст конспекта -->
+                </div>
                 <div class="modal-footer">
-                    <button class="mark-learned-btn" id="markLearnedBtn">Отметить изученным</button>
+                    <button id="markLearnedBtn" class="mark-learned-btn">Отметить изученным</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Шаблоны с текстом конспектов -->
+    <!-- СКРЫТЫЕ ШАБЛОНЫ С ТЕКСТОМ КОНСПЕКТОВ -->
     <template id="mechanics-depth">
         <h2>Подробный конспект: Механика</h2>
         <p><strong>Инерциальные системы отсчета (ИСО)</strong> — это базис всей классической механики. В них тела сохраняют свою скорость неизменной, если на них не действуют внешние силы.</p>
@@ -217,32 +202,20 @@
             <li><strong>Сила трения скольжения:</strong> F = μN</li>
         </ul>
     </template>
-    
+
     <template id="thermo-depth">
         <h2>Подробный конспект: Термодинамика</h2>
-        <p>Уравнение Менделеева-Клапейрона: PV = νRT связывает все ключевые параметры идеального газа в один момент времени.</p>
+        <p><strong>Уравнение Менделеева-Клапейрона:</strong> PV = νRT связывает все ключевые параметры идеального газа в один момент времени.</p>
+        <p>Здесь P — давление, V — объем, ν — количество вещества, R — универсальная газовая постоянная, T — абсолютная температура.</p>
     </template>
-    
+
     <template id="electro-depth">
         <h2>Подробный конспект: Электродинамика</h2>
-        <p>Закон Кулона определяет силу взаимодействия неподвижных точечных зарядов в вакууме. Напряженность поля — это его силовая характеристика.</p>
+        <p><strong>Закон Кулона</strong> определяет силу взаимодействия неподвижных точечных зарядов в вакууме.</p>
+        <p><strong>Напряженность поля</strong> — это его силовая характеристика, показывающая, с какой силой поле действует на единичный положительный заряд.</p>
     </template>
 
+    <!-- Подключение скрипта (замените script.js на ваше имя файла, если оно другое) -->
     <script src="script.js"></script>
-    <!-- Модальное окно для отображения конспектов -->
-    <div id="modalOverlay" class="modal-overlay">
-        <div class="modal-window">
-            <button id="modalClose" class="modal-close">&times;</button>
-            <div class="modal-wrapper">
-                <div id="modalBody" class="modal-body">
-                    <!-- Сюда JavaScript будет подставлять текст конспекта -->
-                </div>
-                <div class="modal-footer">
-                    <button id="markLearnedBtn" class="mark-learned-btn">Отметить изученным</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </body>
 </html>
