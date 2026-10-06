@@ -711,3 +711,25 @@ body {
     cursor: default;
     pointer-events: none;
 }
+/* Выделение выполненного достижения */
+.pedestal-card.unlocked .pedestal-title {
+    color: #2ecc71 !important; /* Насыщенный зеленый цвет текста */
+    font-weight: 800;
+    text-shadow: 0 1px 2px rgba(46, 204, 113, 0.1);
+}
+
+.pedestal-card.unlocked .pedestal-dropdown {
+    border: 2px solid #2ecc71; /* Зеленая рамка для всплывающего окна */
+    background-color: #fafffa; /* Легкий зеленоватый фон */
+}
+
+/* Красивая плашка "Выполнено" внутри открытого тултипа */
+.pedestal-card.unlocked .pedestal-dropdown::after {
+    content: "✅ ДОСТИЖЕНИЕ ОТКРЫТО";
+    display: block;
+    margin-top: 10px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #27ae60;
+    letter-spacing: 0.05em;
+}
