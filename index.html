@@ -32,6 +32,8 @@
                 <li class="category-item" data-target="mechanics-block">Механика</li>
                 <li class="category-item" data-target="thermo-block">Термодинамика</li>
                 <li class="category-item" data-target="electro-block">Электродинамика</li>
+                <li class="category-item" data-target="electrostat-block">Электростатика</li>
+
                 
                 <!-- НОВЫЙ РАЗДЕЛИТЕЛЬ -->
                 <li class="sidebar-divider">Продвинутый уровень</li>
@@ -105,6 +107,26 @@
                                 <button class="important-toggle">!</button>
                             </div>
                             <span class="formula">I = U / R</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Квантовая физика -->
+                <div id="quantum-block" class="physics-block">
+                    <h2>Квантовая физика</h2>
+                    <p class="description">Изучает физические явления на уровне микромира.</p>
+                    
+                    <div class="cards-wrapper">
+                        <!-- Карточка одной темы/формулы -->
+                        <div class="card" data-formula-id="photoeffect">
+                            <div class="card-header">
+                                <h3>Фотоэффект</h3>
+                                <button class="important-toggle">!</button>
+                            </div>
+                            <div class="formula">E = h · ν</div>
+                            <br><br>
+                            <!-- data-depth связывает карточку с будущим полным конспектом -->
+                            <button class="advanced-btn" data-depth="quantum-consp-1">Углублённое изучение</button>
                         </div>
                     </div>
                 </div>
@@ -244,6 +266,15 @@
         <h2>Подробный конспект: Электродинамика</h2>
         <p><strong>Закон Кулона</strong> определяет силу взаимодействия неподвижных точечных зарядов в вакууме.</p>
         <p><strong>Напряженность поля</strong> — это его силовая характеристика, показывающая, с какой силой поле действует на единичный положительный заряд.</p>
+    </template>
+
+    <template id="quantum-consp-1">
+        <h2>Подробный конспект: Квантовая физика</h2>
+        <p><strong>Энергия кванта:</strong> Уравнение Эйнштейна для фотоэффекта объясняет, как кванты света выбивают электроны из вещества...</p>
+        <ul>
+            <li>Формула: hν = Aвых + Ek</li>
+            <li>Постоянная Планка: h = 6.63·10^-34 Дж·с</li>
+        </ul>
     </template>
 
     <!-- Подключение скрипта (замените script.js на ваше имя файла, если оно другое) -->
