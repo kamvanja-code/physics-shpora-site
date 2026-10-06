@@ -172,6 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (sessionLearnCount % 2 === 0) {
                     queueToast(funnyQuotes[Math.floor(Math.random() * funnyQuotes.length)], false);
                 }
+                sessionLearnCount++;
+                if (sessionLearnCount >= 2) {
+                    checkAndUnlockAchievement('speed-demon', "⚡ Получено достижение: Спидраннер!");
+                }
             }
         });
     }
@@ -246,6 +250,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     btn.classList.add('active');
                 });
                 checkAndUnlockAchievement('formula-fan', "⭐ Получено достижение: Знаток формул!");
+                // Проверяем, совпадает ли количество избранных формул с общим количеством карточек на сайте
+                const totalCardsOnSite = document.querySelectorAll('.content-section:not(#important-section) .card').length;
+                if (importantFormulas.length === totalCardsOnSite) {
+                    checkAndUnlockAchievement('collector-pro', "👑 Получено достижение: Супер-коллекционер!");
+                }
+
             }
             localStorage.setItem('importantFormulas', JSON.stringify(importantFormulas));
 
