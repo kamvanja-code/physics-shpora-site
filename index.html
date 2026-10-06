@@ -7,13 +7,6 @@
     <!-- Подключение стилей (замените style.css на ваше имя файла, если оно другое) -->
     <link rel="stylesheet" href="style.css">
     
-    <!-- CSS-стили для шрифтов и символов формул -->
-    <link rel="stylesheet" href="https://jsdelivr.net">
-    <!-- Сам скрипт библиотеки -->
-    <script defer src="https://jsdelivr.net"></script>
-    <!-- Скрипт автоматического поиска формул на странице -->
-    <script defer src="https://jsdelivr.net" onload="renderMathInElement(document.body);"></script>
-
 </head>
 <body>
 
@@ -53,72 +46,61 @@
             <!-- СЕКЦИЯ 1: ТЕОРИЯ И КАРТОЧКИ -->
             <section id="theory-section" class="content-section active">
                 
-                <!-- Блок Механики на главном экране -->
+                <!-- РАЗДЕЛ: МЕХАНИКА (ПОЛНЫЙ КУРС) -->
                 <div class="physics-block" id="mechanics-block">
                     <div class="section-header">
                         <h2>Механика</h2>
-                        <!-- Кнопка вызывает модалку, связываясь по ID с template -->
-                        <button class="advanced-btn" data-depth="mechanics-advanced">Углублённое изучение</button>
                     </div>
                     <p class="description">Изучает движение материальных тел и взаимодействие между ними.</p>
                 
                     <div class="cards-wrapper">
-                    <!-- РАЗДЕЛ: МЕХАНИКА (ПОЛНЫЙ КУРС) -->
-                    <div class="physics-block" id="mechanics-block">
-                        <div class="section-header">
-                            <h2>Механика</h2>
+                        
+                        <!-- ПОДТЕМА 1 -->
+                        <div class="card" data-formula-id="mech-kinematics">
+                            <div class="card-header">
+                                <h3>1. Кинематика прямолинейного движения</h3>
+                                <button class="advanced-btn" data-depth="mech-kin-advanced">Углублённое изучение</button>
+                                <button class="important-toggle">!</button>
+                            </div>
+                            <p>Описывает движение тел математически, не учитывая причины движения.</p>
+                            <span class="formula">v = s / t</span>
                         </div>
-                        <p class="description">Изучает механическое движение тел и причины, вызывающие изменение этого движения.</p>
-                    
-                        <div class="cards-wrapper">
-                            
-                            <!-- ПОДТЕМА 1: КИНЕМАТИКА -->
-                            <div class="card" data-formula-id="mech-kinematics">
-                                <div class="card-header">
-                                    <h3>1. Кинематика прямолинейного движения</h3>
-                                    <button class="advanced-btn" data-depth="mech-kin-advanced">Углублённое изучение</button>
-                                    <button class="important-toggle">!</button>
-                                </div>
-                                <p>Описывает движение тел с помощью математического аппарата, не учитывая причины движения.</p>
-                                <span class="formula">$x(t) = x_0 + v_{0x} \cdot t + \frac{a_x \cdot t^2}{2}$</span>
+                
+                        <!-- ПОДТЕМА 2 -->
+                        <div class="card" data-formula-id="mech-dynamics">
+                            <div class="card-header">
+                                <h3>2. Динамика и законы Ньютона</h3>
+                                <button class="advanced-btn" data-depth="mech-dyn-advanced">Углублённое изучение</button>
+                                <button class="important-toggle">!</button>
                             </div>
-                    
-                            <!-- ПОДТЕМА 2: ДИНАМИКА -->
-                            <div class="card" data-formula-id="mech-dynamics">
-                                <div class="card-header">
-                                    <h3>2. Динамика и законы Ньютона</h3>
-                                    <button class="advanced-btn" data-depth="mech-dyn-advanced">Углублённое изучение</button>
-                                    <button class="important-toggle">!</button>
-                                </div>
-                                <p>Изучает причины изменения скорости тел при их взаимодействии друг с другом.</p>
-                                <span class="formula">$\vec{F} = m \cdot \vec{a}$</span>
-                            </div>
-                    
-                            <!-- ПОДТЕМА 3: СИЛЫ В ПРИРОДЕ -->
-                            <div class="card" data-formula-id="mech-forces">
-                                <div class="card-header">
-                                    <h3>3. Силы в механике</h3>
-                                    <button class="important-toggle">!</button>
-                                    <button class="advanced-btn" data-depth="mech-forces-advanced">Углублённое изучение</button>
-                                </div>
-                                <p>Основные виды сил, с которыми взаимодействуют макроскопические тела в классической физике.</p>
-                                <span class="formula">$F_{тяж} = m \cdot g \quad | \quad F_{упр} = -k \cdot x \quad | \quad F_{тр} = \mu \cdot N$</span>
-                            </div>
-                    
-                            <!-- ПОДТЕМА 4: ЗАКОНЫ СОХРАНЕНИЯ -->
-                            <div class="card" data-formula-id="mech-conservation">
-                                <div class="card-header">
-                                    <h3>4. Импульс, работа и законы сохранения</h3>
-                                    <button class="advanced-btn" data-depth="mech-cons-advanced">Углублённое изучение</button>
-                                    <button class="important-toggle">!</button>
-                                </div>
-                                <p>Фундаментальные принципы замкнутых систем, основанные на свойствах симметрии пространства и времени.</p>
-                                <span class="formula">$E_к = \frac{m \cdot v^2}{2} \quad | \quad E_п = m \cdot g \cdot h \quad | \quad \vec{p} = m \cdot \vec{v}$</span>
-                            </div>
-                    
+                            <p>Изучает причины изменения скорости тел при их взаимодействии.</p>
+                            <span class="formula">F = m · a</span>
                         </div>
+                
+                        <!-- ПОДТЕМА 3 -->
+                        <div class="card" data-formula-id="mech-forces">
+                            <div class="card-header">
+                                <h3>3. Силы в природе</h3>
+                                <button class="advanced-btn" data-depth="mech-forces-advanced">Углублённое изучение</button>
+                                <button class="important-toggle">!</button>
+                            </div>
+                            <p>Основные виды сил, с которыми взаимодействуют тела в механике.</p>
+                            <span class="formula">F = mg | F = -kx | F = μN</span>
+                        </div>
+                
+                        <!-- ПОДТЕМА 4 -->
+                        <div class="card" data-formula-id="mech-conservation">
+                            <div class="card-header">
+                                <h3>4. Законы сохранения</h3>
+                                <button class="advanced-btn" data-depth="mech-cons-advanced">Углублённое изучение</button>
+                                <button class="important-toggle">!</button>
+                            </div>
+                            <p>Фундаментальные принципы сохранения энергии и импульса в замкнутых системах.</p>
+                            <span class="formula">p = m · v | E = m·v² / 2</span>
+                        </div>
+                
                     </div>
-
+                </div>
 
                 <!-- ТЕРМОДИНАМИКА -->
                 <div id="thermo-block" class="physics-block" style="margin-top: 40px;">
@@ -273,15 +255,54 @@
     </div>
 
     <!-- СКРЫТЫЕ ШАБЛОНЫ С ТЕКСТОМ КОНСПЕКТОВ -->
-    <template id="mechanics-depth">
-        <h2>Подробный конспект: Механика</h2>
-        <p><strong>Инерциальные системы отсчета (ИСО)</strong> — это базис всей классической механики. В них тела сохраняют свою скорость неизменной, если на них не действуют внешние силы.</p>
-        <ul>
-            <li><strong>Сила тяжести:</strong> F = mg (направлена к центру Земли)</li>
-            <li><strong>Сила упругости:</strong> F = -kx (Закон Гука для деформаций)</li>
-            <li><strong>Сила трения скольжения:</strong> F = μN</li>
-        </ul>
-    </template>
+<!-- Шаблон 1: Кинематика -->
+<template id="mech-kin-advanced">
+    <h2>Подробный конспект: Кинематика</h2>
+    <p><strong>Кинематика</strong> описывает движение тел, не вдаваясь в причины, которые это движение вызывают.</p>
+    <ul>
+        <li><strong>Материальная точка:</strong> тело, размерами которого в данных условиях можно пренебречь.</li>
+        <li><strong>Равномерное движение:</strong> движение с постоянной скоростью. Уравнение координаты: x = x0 + v · t</li>
+        <li><strong>Равноускоренное движение:</strong> движение с постоянным ускорением (a = const). Уравнение координаты: x = x0 + v0 · t + (a · t²) / 2</li>
+        <li><strong>Движение по окружности:</strong> скорость меняет направление, из-за чего возникает центростремительное ускорение: a = v² / R</li>
+    </ul>
+</template>
+
+<!-- Шаблон 2: Динамика -->
+<template id="mech-dyn-advanced">
+    <h2>Подробный конспект: Законы Ньютона</h2>
+    <p><strong>Динамика</strong> изучает причины возникновения механического движения.</p>
+    <ul>
+        <li><strong>Первый закон Ньютона:</strong> существуют инерциальные системы отсчета (ИСО), в которых тела сохраняют скорость неизменной, если на них не действуют внешние силы.</li>
+        <li><strong>Второй закон Ньютона:</strong> в ИСО ускорение тела прямо пропорционально равнодействующей всех сил и обратно пропорционально массе: a = F / m (или F = m · a)</li>
+        <li><strong>Третий закон Ньютона:</strong> тела действуют друг на друга с силами, равными по модулю и противоположными по направлению: F1 = -F2. Эти силы приложены к разным телам.</li>
+    </ul>
+</template>
+<!-- Шаблон 3: Силы -->
+<template id="mech-forces-advanced">
+    <h2>Подробный конспект: Силы в механике</h2>
+    <p>Сила — векторная величина, являющаяся мерой воздействия одного тела на другое.</p>
+    <ul>
+        <li><strong>Сила тяжести:</strong> F = mg (направлена к центру Земли, где g — ускорение свободного падения).</li>
+        <li><strong>Всемирное тяготение:</strong> любые два тела притягиваются с силой F = G · (m1 · m2) / r².</li>
+        <li><strong>Сила упругости (Закон Гука):</strong> возникает при деформациях. Формула: F = -kx, где k — жесткость, x — удлинение.</li>
+        <li><strong>Сила трения скольжения:</strong> направлена против движения. Формула: F = μN, где μ — коэффициент трения, N — реакция опоры.</li>
+    </ul>
+</template>
+
+<!-- Шаблон 4: Законы сохранения -->
+<template id="mech-cons-advanced">
+    <h2>Подробный конспект: Законы сохранения</h2>
+    <p>Позволяют узнать состояние системы в начале и в конце, не разбирая сложный промежуточный процесс.</p>
+    <ul>
+        <li><strong>Импульс тела:</strong> p = m · v (векторная величина, количество движения).</li>
+        <li><strong>Закон сохранения импульса (ЗСИ):</strong> в замкнутой системе сумма импульсов тел постоянна: p1 + p2 = const.</li>
+        <li><strong>Кинетическая энергия:</strong> энергия движущегося тела, вычисляется как Eк = (m · v²) / 2.</li>
+        <li><strong>Потенциальная энергия:</strong> энергия взаимодействия. В поле тяжести: Eп = mgh. Для пружины: Eп = (k · x²) / 2.</li>
+        <li><strong>Закон сохранения энергии (ЗСЭ):</strong> полная механическая энергия (Eк + Eп) в замкнутой системе без трения сохраняется.</li>
+    </ul>
+</template>
+
+                
 
     <template id="thermo-depth">
         <h2>Подробный конспект: Термодинамика</h2>
