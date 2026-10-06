@@ -2,23 +2,16 @@
 <html lang="ru">
 <head>
     
-        <!-- 1. Настройка: говорим MathJax искать скобки \( ... \) -->
-    <script>
-      window.MathJax = {
-        tex: {
-          inlineMath: [['\\(', '\\)']]
-        }
-      };
-    </script>
-    
-    <!-- 2. Сам скрипт MathJax -->
-    <script src="https://jsdelivr.net"></script>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Шпаргалка по физике</title>
     <!-- Подключение стилей (замените style.css на ваше имя файла, если оно другое) -->
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://jsdelivr.net">
+    <script defer src="https://jsdelivr.net"></script>
+    <script defer src="https://jsdelivr.net" 
+            onload="renderMathInElement(document.body);"></script>
+
 </head>
 <body>
 
@@ -69,7 +62,7 @@
                     <p class="description">Изучает движение тел и их взаимодействие.</p>
                     
                     <div class="cards-wrapper">
-                                                
+                                                                        
                         <!-- Раздел: Кинематика -->
                         <div class="card" data-formula-id="uniform-motion">
                             <div class="card-header">
