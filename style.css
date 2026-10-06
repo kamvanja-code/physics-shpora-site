@@ -711,25 +711,26 @@ body {
     cursor: default;
     pointer-events: none;
 }
-/* Выделение выполненного достижения */
+/* Выделение выполненного достижения (Жёлтый/Золотой стиль) */
 .pedestal-card.unlocked .pedestal-title {
-    color: #2ecc71 !important; /* Насыщенный зеленый цвет текста */
+    color: #f1c40f !important; /* Красивый золотисто-жёлтый цвет текста */
     font-weight: 800;
-    text-shadow: 0 1px 2px rgba(46, 204, 113, 0.1);
+    text-shadow: 0 1px 2px rgba(241, 196, 15, 0.2);
 }
 
 .pedestal-card.unlocked .pedestal-dropdown {
-    border: 2px solid #2ecc71; /* Зеленая рамка для всплывающего окна */
-    background-color: #fafffa; /* Легкий зеленоватый фон */
+    border: 2px solid #f1c40f; /* Жёлтая рамка для всплывающего окна */
+    background-color: #fffdf4; /* Легкий благородный жёлтый фон */
 }
 
 /* Красивая плашка "Выполнено" внутри открытого тултипа */
 .pedestal-card.unlocked .pedestal-dropdown::after {
-    content: "✅ ДОСТИЖЕНИЕ ОТКРЫТО";
+    content: "👑 ДОСТИЖЕНИЕ ОТКРЫТО";
     display: block;
     margin-top: 10px;
     font-size: 0.8rem;
     font-weight: 800;
-    color: #27ae60;
+    color: #d35400; /* Контрастный оранжево-коричневый цвет для текста похвалы */
     letter-spacing: 0.05em;
 }
+
