@@ -1,11 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Загрузка данных из памяти браузера
+    // Загрузка данных из LocalStorage
     let learnedThemes = JSON.parse(localStorage.getItem('learnedThemes')) || [];
     let importantFormulas = JSON.parse(localStorage.getItem('importantFormulas')) || [];
     let unlockedAchievements = JSON.parse(localStorage.getItem('unlockedAchievements')) || [];
     let sessionLearnCount = 0;
 
-    // Очередь для вылетающих уведомлений
     let toastQueue = [];
     let isToastProcessing = false;
 
@@ -15,11 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
         "Физика — сила, а без неё ты... просто набор хаотично движущихся молекул.",
         "Ньютон гордился бы тобой. А теперь иди съешь яблоко 🍏",
         "Твоя интеллектуальная энергия совершила полезную работу. КПД стремится к 100%!",
-        "😈 Такими темпами и физматом стать можно...",
+        "Такими темпами и физматом стать можно...",
         "Поздравляем, ты только что уменьшил энтропию Вселенной!"
     ];
 
-    // Поиск элементов навигации
+    // Элементы навигации
     const menuToggleBtn = document.getElementById('menuToggleBtn');
     const sidebar = document.getElementById('sidebar');
     const categoryItems = document.querySelectorAll('.category-item');
@@ -34,15 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentOpenTemplateId = '';
 
-    // ИСПРАВЛЕНИЕ: Добавлена отсутствующая функция, из-за которой всё падало!
-    function checkAchievementsSilent() {
-        console.log("Инициализация достижений прошла успешно.");
-    }
-
+    // Синхронизация данных при старте
     syncUIWithStorage();
-    checkAchievementsSilent();
+    renderStatsAndAchievements();
 
-    // Открытие и закрытие бокового меню
+    // Боковое меню (открытие/закрытие)
     if (menuToggleBtn) {
         menuToggleBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -63,15 +58,25 @@ document.addEventListener('DOMContentLoaded', () => {
         if (sidebar) sidebar.classList.remove('open');
     }
 
+    // Переключение через категории бокового меню
     categoryItems.forEach(item => {
         item.addEventListener('click', () => {
             categoryItems.forEach(el => el.classList.remove('active'));
             navButtons.forEach(btn => btn.classList.remove('active-nav'));
             item.classList.add('active');
-            showSection(item.getAttribute('data-target'));
+            
+            const target = item.getAttribute('data-target');
+            if (target.includes('-anchor')) {
+                showSection('theory-section');
+                const element = document.getElementById(target);
+                if (element) element.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                showSection(target);
+            }
         });
     });
 
+    // Переключение верхних табов
     navButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             categoryItems.forEach(el => el.classList.remove('active'));
@@ -87,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showSection(target);
         });
     });
+
     // Открытие модального окна с конспектом
     document.addEventListener('click', (e) => {
         if (e.target && e.target.classList.contains('advanced-btn')) {
@@ -110,8 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-
-    // Нажатие кнопки "Отметить изученным" в модалке
+    // Кнопка "Отметить изученным" в модалке
     if (markLearnedBtn) {
         markLearnedBtn.addEventListener('click', () => {
             if (currentOpenTemplateId && !learnedThemes.includes(currentOpenTemplateId)) {
@@ -143,7 +148,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target === modalOverlay) closeModal();
         });
     }
-    // ДВИЖОК ОЧЕРЕДИ УВЕДОМЛЕНИЙ
+
+    // Уведомления (системная очередь)
     function queueToast(text, isAchievement = false) {
         toastQueue.push({ text, isAchievement });
         processToastQueue();
@@ -185,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ДОБАВЛЕНИЕ / УДАЛЕНИЕ ИЗ ВАЖНОГО (КНОПКА "!")
+    // Добавление формул в Избранное ("!")
     document.addEventListener('click', (e) => {
         if (e.target && e.target.classList.contains('important-toggle')) {
             const card = e.target.closest('.card');
@@ -223,7 +229,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    // ГЕНЕРАЦИЯ ДИНАМИЧЕСКОЙ СЕКЦИИ СТАТИСТИКИ
+
+    // Рендеринг статистики наград
     function renderStatsAndAchievements() {
         const totalThemes = 3; 
         const learnedCount = learnedThemes.length;
@@ -258,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Логика открытия подсказок достижений
+    // Логика всплывающих подсказок достижений
     document.querySelectorAll('.pedestal-card').forEach(card => {
         card.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -274,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.pedestal-card').forEach(c => c.classList.remove('open')); 
     });
 
-    // РЕНДЕРИНГ СПИСКОВ ИЗУЧЕННОГО И ВАЖНОГО
+    // Рендеринг списка изученного
     function renderLearnedList() {
         const container = document.getElementById('learned-list-container');
         if (!container) return;
@@ -311,9 +318,11 @@ document.addEventListener('DOMContentLoaded', () => {
             learnedThemes = learnedThemes.filter(id => id !== idToRemove);
             localStorage.setItem('learnedThemes', JSON.stringify(learnedThemes));
             renderLearnedList();
+            renderStatsAndAchievements();
         }
     });
 
+    // Рендеринг списка избранного
     function renderImportantList() {
         const container = document.getElementById('important-list-container');
         if (!container) return;
