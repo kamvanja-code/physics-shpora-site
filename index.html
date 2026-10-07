@@ -45,28 +45,33 @@
             <!-- СЕКЦИЯ 1: ТЕОРИЯ И КАРТОЧКИ -->
             <section id="theory-section" class="content-section active">
                 
-                <!-- МЕХАНИКА -->
-                <div id="mechanics-block" class="physics-block">
+                <!-- КИНЕМАТИКА -->
+                <div id="kin-block" class="physics-block">
                     <div class="section-header">
-                        <h2>Механика</h2>
-                        <button class="advanced-btn" data-depth="mechanics-depth">Углублённое изучение</button>
+                        <h2>Кинематика</h2>
+                        <button class="advanced-btn" data-depth="kin-depth">Углублённое изучение</button>
                     </div>
-                    <p class="description">Изучает движение тел и их взаимодействие.</p>
+                    <p class="description">Описание движения тел без учета причин, вызвавших это движение.</p>
                     
                     <div class="cards-wrapper">
                         <div class="card" data-formula-id="v-speed">
                             <div class="card-header">
-                                <h3>Равномерное движение</h3>
+                                <h3>Равномерное прямолинейное движение (ПРД)</h3>
                                 <button class="important-toggle">!</button>
                             </div>
                             <span class="formula">v = s / t</span>
+                            <p>• v — скорость тела (м/с)</p>
+                            <p>• s — перемещение / пройденный путь (м)</p>
+                            <p>• t — время движения (с)</p>
                         </div>
                         <div class="card" data-formula-id="f-newton">
                             <div class="card-header">
-                                <h3>Второй закон Ньютона</h3>
+                                <h3>Уравнение движения (координата)</h3>
                                 <button class="important-toggle">!</button>
                             </div>
-                            <span class="formula">F = m · a</span>
+                            <span class="formula">x(t) = x<sub>0</sub> + v<sub>x</sub> &middot; t</span>
+                            <p>• x<sub>0</sub> — начальная координата тела (м)</p>
+                            <p>• v<sub>x</sub> — проекция скорости на ось X (м/с)</p>
                         </div>
                     </div>
                 </div>
