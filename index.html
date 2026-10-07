@@ -52,11 +52,11 @@
                         <button class="advanced-btn" data-depth="kin-depth">Углублённое изучение</button>
                     </div>
                     <p class="description">описание движения тел без учета причин, вызвавших это движение.</p>
-                    
+                    <p><h3>Прямолинейное равномерное движение</h3></p>
                     <div class="cards-wrapper">
-                        <div class="card" data-formula-id="speed">
+                        <div class="card" data-formula-id="v-prd">
                             <div class="card-header">
-                                <h3>Вычисление скорости при прямолинейном равномерном движении</h3>
+                                <h3>Вычисление скорости (ПРД)</h3>
                                 <button class="important-toggle">!</button>
                             </div>
                             <span class="formula">v = s / t</span>
@@ -67,15 +67,48 @@
                         
                         <div class="card" data-formula-id="x-prd">
                             <div class="card-header">
-                                <h3>уравнение координаты для ПРД</h3>
+                                <h3>Уравнение координаты (ПРД)</h3>
                                 <button class="important-toggle">!</button>
                             </div>
                             <span class="formula"><code>x(t) = x<sub>0</sub> + v<sub>x</sub> &middot; t</code></span>
                                 <p>• x<sub>0</sub> — начальная координата (м)</p>
                                 <p>• v<sub>x</sub> — проекция скорости на ось X (м/с)</p>
                         </div>
-                        
                     </div>
+
+                    <p><h3>Прямолинейное равноускоренное движение</h3></p>
+                    <div class="cards-wrapper">
+                        <div class="card" data-formula-id="accel">
+                            <div class="card-header">
+                                <h3>Вычисление ускорения (ПРУД)</h3>
+                                <button class="important-toggle">!</button>
+                            </div>
+                            <span class="formula"><code>a = (v - v<sub>0</sub>) / t</code></span>
+                                <p>• a — ускорение тела (м/с<sup>2</sup>), a = const</p>
+                                <p>• v<sub>0</sub> — начальная скорость</p>
+                                <p>• v — конечная скорость (м/с)</p>
+                        </div>
+                        
+                        <div class="card" data-formula-id="v-prud">
+                            <div class="card-header">
+                                <h3>Мнгновенная скорость (ПРД)</h3>
+                                <button class="important-toggle">!</button>
+                            </div>
+                            <span class="formula"><code>v(t) = v<sub>0</sub> + a &middot; t</code></span>
+                        </div>
+                        
+                        <div class="card" data-formula-id="x-prud">
+                            <div class="card-header">
+                                <h3>Уравнение координаты (ПРУД)</h3>
+                                <button class="important-toggle">!</button>
+                            </div>
+                            <span class="formula"><code>x(t) = x<sub>0</sub> + v<sub>0x</sub> &middot; t + (a<sub>x</sub> &middot; t<sup>2</sup>) / 2</code></span>
+                                <p>• x<sub>0</sub> — начальная координата (м)</p>
+                                <p>• v<sub>0x</sub> — проекция начальной скорости (м/с)</p>
+                                <p>• a<sub>x</sub> — проекция ускорения (м/с<sup>2</sup>)</p>
+                        </div>
+                    </div>
+                    
                 </div>
 
                 <!-- ТЕРМОДИНАМИКА -->
